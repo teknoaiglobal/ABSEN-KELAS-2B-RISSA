@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Ceria Kelas 2B - SDN Rawaendah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Patrick Hand', cursive; /* Tulisan tangan khas SD */
+            background-color: #fff9c4;
+            background-image: 
+                radial-gradient(#ff9e80 15%, transparent 16%),
+                radial-gradient(#81d4fa 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        h1, h2, h3, h4, .btn-text {
+            font-family: 'Fredoka One', cursive; /* Font bulat tebal */
+        }
+
+        /* Hiasan Bunga di Header */
+        .header-decor::before {
+            content: '🌸';
+            font-size: 2rem;
+            margin-right: 10px;
+            animation: spin 10s linear infinite;
+            display: inline-block;
+        }
+        .header-decor::after {
+            content: '🌼';
+            font-size: 2rem;
+            margin-left: 10px;
+            animation: spin 10s linear infinite reverse;
+            display: inline-block;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Kartu Siswa ala Sticky Note */
+        .cute-card {
+            background: #fff;
+            border: none;
+            position: relative;
+            box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            border-radius: 2px; /* Sedikit kotak seperti kertas */
+        }
+        
+        /* Efek Selotip (Washi Tape) */
+        .cute-card::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 25px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.4) 5px, rgba(255,255,255,0.4) 10px);
+            z-index: 10;
+        }
+
+        /* Warna Washi Tape Berbeda */
+        .cute-card:nth-child(odd)::before { background-color: #ffcc80; transform: translateX(-50%) rotate(-2deg); }
+        .cute-card:nth-child(even)::before { background-color: #80cbc4; transform: translateX(-50%) rotate(2deg); }
+
+        .cute-card:hover {
+            transform: scale(1.02) rotate(1deg);
+            z-index: 5;
+            box-shadow: 5px 8px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Tombol Absen Bulat */
+        .status-btn {
+            border-radius: 20px;
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 0.5px;
+            border: 2px solid white;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+        }
+        .status-btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .btn-hadir.selected { background-color: #aed581; color: white; border-color: #8bc34a; }
+        .btn-sakit.selected { background-color: #ffd54f; color: white; border-color: #ffb300; }
+        .btn-izin.selected { background-color: #4fc3f7; color: white; border-color: #039be5; }
+        .btn-alfa.selected { background-color: #ef5350; color: white; border-color: #c62828; }
+
+        /* Papan Tulis Look */
+        .chalkboard-panel {
+            background-color: #37474f;
+            border: 8px solid #8d6e63; /* Bingkai Kayu */
+            border-radius: 12px;
+            color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .chalkboard-panel label, .chalkboard-panel h4, .chalkboard-panel span {
+            color: #eceff1;
+        }
+        
+        /* Input Fields Custom */
+        .custom-input {
+            font-family: 'Fredoka One', cursive;
+            border: 3px solid #ffcc80;
+            border-radius: 10px;
+            color: #5d4037;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #fff3e0; }
+        ::-webkit-scrollbar-thumb { background: #ffb74d; border-radius: 10px; border: 2px solid #fff3e0; }
+    </style>
+</head>
+<body class="text-gray-700 pb-10">
+
+    <div id="app" class="container mx-auto p-4 md:p-6 max-w-7xl">
+
+        <!-- Header -->
+        <header class="text-center mb-10 mt-4 relative">
+            <div class="bg-white/80 backdrop-blur-sm inline-block px-8 py-4 rounded-3xl shadow-lg border-4 border-pink-300 transform rotate-1">
+                <h1 class="text-3xl md:text-5xl text-pink-500 mb-1 header-decor" style="text-shadow: 2px 2px 0px #fff;">Kelas 2B Ceria!</h1>
+                <p class="text-xl text-blue-400 font-bold" style="font-family: 'Patrick Hand', cursive;">SDN Rawaendah • 2025/2026</p>
+                <div class="mt-2 bg-yellow-200 text-yellow-800 px-4 py-1 rounded-full inline-block text-lg font-bold transform -rotate-1 shadow-sm border-2 border-yellow-400">
+                    <i class="fas fa-chalkboard-teacher"></i> Wali Kelas: Ibu RISA AGUSTIAN, S.Pd
+                </div>
+            </div>
+        </header>
+
+        <!-- Monthly Report Panel (Mading Style) -->
+        <div class="bg-pink-100 p-6 rounded-3xl shadow-md mb-8 border-dashed border-4 border-pink-300 relative">
+            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-6 py-1 rounded-full font-bold shadow-sm border-2 border-white">
+                📊 Rekap Bulanan
+            </div>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-2">
+                 <div class="flex items-center gap-2">
+                    <label for="month-select" class="font-bold text-pink-700 text-lg">Bulan:</label>
+                    <select id="month-select" class="custom-input p-2 focus:outline-none focus:ring-4 focus:ring-pink-200"></select>
+                 </div>
+                 <div class="flex items-center gap-2">
+                    <label for="year-input" class="font-bold text-pink-700 text-lg">Tahun:</label>
+                    <input type="number" id="year-input" class="custom-input p-2 w-28 focus:outline-none focus:ring-4 focus:ring-pink-200">
+                 </div>
+                 <button id="print-monthly-btn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-6 rounded-full shadow-lg transform hover:-translate-y-1 transition-all border-b-4 border-purple-700 active:border-b-0 active:translate-y-1">
+                    <i class="fas fa-print"></i> Cetak Rekap
+                 </button>
+            </div>
+        </div>
+
+        <!-- Daily Control Panel (Blackboard Style) -->
+        <div class="chalkboard-panel p-6 mb-10 sticky top-4 z-20">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+                    <div class="flex items-center gap-2 bg-white/10 p-2 rounded-lg">
+                        <label for="date-picker" class="font-bold text-yellow-300 text-xl"><i class="far fa-calendar-alt"></i></label>
+                        <input type="date" id="date-picker" class="bg-transparent text-white font-bold border-none focus:ring-0 text-lg font-mono cursor-pointer">
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="print-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-xl shadow border-b-4 border-red-700 active:border-b-0 active:translate-y-1 transition-all">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button id="wa-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-xl shadow border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all">
+                            <i class="fab fa-whatsapp"></i> WA
+                        </button>
+                    </div>
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="search-input" placeholder="Cari teman..." class="w-full bg-white/20 border-2 border-white/30 rounded-full py-2 pl-10 pr-4 text-white placeholder-gray-300 focus:outline-none focus:bg-white/30 font-bold">
+                        <i class="fas fa-search text-white/50 absolute left-4 top-1/2 -translate-y-1/2"></i>
+                    </div>
+                </div>
+                
+                <div id="save-status" class="bg-white text-green-600 px-4 py-2 rounded-full font-bold shadow-lg opacity-0 transform translate-y-4 transition-all flex items-center gap-2">
+                    <i class="fas fa-check-circle text-2xl"></i> <span>Tersimpan!</span>
+                </div>
+
+                <div id="summary" class="flex flex-wrap justify-center gap-3 font-bold text-lg">
+                    <div class="bg-green-500 text-white px-3 py-1 rounded-lg border-2 border-green-300 shadow">Hadir: <span id="summary-hadir">0</span></div>
+                    <div class="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-lg border-2 border-yellow-200 shadow">Sakit: <span id="summary-sakit">0</span></div>
+                    <div class="bg-blue-400 text-white px-3 py-1 rounded-lg border-2 border-blue-200 shadow">Izin: <span id="summary-izin">0</span></div>
+                    <div class="bg-red-500 text-white px-3 py-1 rounded-lg border-2 border-red-300 shadow">Alfa: <span id="summary-alfa">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keterangan Absensi (Notebook Paper Style) -->
+        <div id="daily-keterangan" class="bg-white p-6 rounded-sm shadow-md mb-8 relative" 
+             style="background-image: linear-gradient(#e1f5fe 1px, transparent 1px); background-size: 100% 2em; line-height: 2em;">
+            <div class="absolute top-0 left-0 w-full h-8 bg-red-100 opacity-50 border-b-2 border-red-200"></div> <!-- Margin atas buku -->
+            <div class="absolute top-0 left-10 h-full w-1 bg-red-200 opacity-50"></div> <!-- Garis tepi buku -->
+            
+            <h4 class="font-bold text-gray-500 text-center mb-4 text-xl relative z-10 bg-white/80 inline-block px-4 rounded-full mx-auto left-0 right-0 w-max">
+                📝 Catatan Hari Ini
+            </h4>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg pl-12 relative z-10">
+                <div>
+                    <h5 class="font-bold text-yellow-600 underline decoration-wavy">Sakit 🤒</h5>
+                    <ul id="sakit-list" class="list-none text-gray-700 font-bold font-hand">
+                        <li>-</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold text-blue-600 underline decoration-wavy">Izin 📩</h5>
+                    <ul id="izin-list" class="list-none text-gray-700 font-bold font-hand">
+                        <li>-</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-bold text-red-600 underline decoration-wavy">Alfa ❌</h5>
+                    <ul id="alfa-list" class="list-none text-gray-700 font-bold font-hand">
+                        <li>-</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student List -->
+        <main id="student-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2">
+            <div class="text-center p-8 col-span-full">
+                <p class="text-gray-500 text-xl font-bold animate-pulse">Sedang membuka buku absen...</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-16 text-gray-500">
+            <p class="font-bold text-lg">Dibuat dengan Ceria 🌻</p>
+            <p class="text-sm opacity-60">ID Aplikasi: <span id="userId" class="font-mono"></span></p>
+        </footer>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Database User (Tekno-335f8)
+        // Konfigurasi ini akan otomatis aktif jika file ini dijalankan di luar platform ini (misal: localhost atau hosting sendiri)
+        const userFirebaseConfig = {
+            apiKey: "AIzaSyCirtabCZOy3XMnNLUc-iKIYGegZJbPqhw",
+            authDomain: "tekno-335f8.firebaseapp.com",
+            projectId: "tekno-335f8",
+            storageBucket: "tekno-335f8.firebasestorage.app",
+            messagingSenderId: "801480259453",
+            appId: "1:801480259453:web:8f4b4261b18704d9cdbe14",
+            measurementId: "G-9QV9LYSLJ7"
+        };
+
+        const students = [
+            { id: 1, name: "ADAM FAIZAL ARKHAN", gender: "L" },
+            { id: 2, name: "AHMAD PUTRA SONHAJI", gender: "L" },
+            { id: 3, name: "AL MUZZAMIL YUSUF", gender: "L" },
+            { id: 4, name: "ALIFA AZKADINA TRIAGUSTIN", gender: "P" },
+            { id: 5, name: "AN-NISAA PUTRI NUGRAHA", gender: "P" },
+            { id: 6, name: "DAFFA PRATAMA", gender: "L" },
+            { id: 7, name: "DEVIA ANANDA ROHMAT", gender: "P" },
+            { id: 8, name: "DEWI ANJANI", gender: "P" },
+            { id: 9, name: "DINDA ADIVA BALQIS", gender: "P" },
+            { id: 10, name: "FADIYAH MUMTAZAH AFLAHA", gender: "P" },
+            { id: 11, name: "FAEYZA ALFAREZEL", gender: "L" },
+            { id: 12, name: "GISYA ATAYA SHAFANA", gender: "P" },
+            { id: 13, name: "HALIMAH TUSYAQDIYAH", gender: "P" },
+            { id: 14, name: "IBNU AL RASYID GUNAWAN", gender: "L" },
+            { id: 15, name: "ILYASA RIZQI", gender: "L" },
+            { id: 16, name: "KHALIF KHALFANI ISHAQI", gender: "L" },
+            { id: 17, name: "KINANTI ANINDITA APSARI", gender: "P" },
+            { id: 18, name: "MAULANA MALIK IBRAHIM", gender: "L" },
+            { id: 19, name: "MUHAMAD AZMI ARRAHMAT", gender: "L" },
+            { id: 20, name: "MUHAMMAD ALBI ADITRI", gender: "L" },
+            { id: 21, name: "MUHAMMAD ALFATTAR SINURAYA", gender: "L" },
+            { id: 22, name: "MUHAMMAD FADLI", gender: "L" },
+            { id: 23, name: "MUHAMMAD HAIKAL FIRDAUS", gender: "L" },
+            { id: 24, name: "MUHAMMAD ISMAIL ASSANI", gender: "L" },
+            { id: 25, name: "MUHAMMAD KHOIR AKBAR", gender: "L" },
+            { id: 26, name: "PUTRI RANIYA YUDI SETIA", gender: "P" },
+            { id: 27, name: "SYAFA FARIZA YUMNA", gender: "P" },
+            { id: 28, name: "SYAFA PUTRI FALISHA", gender: "P" },
+            { id: 29, name: "SYAQILLA ATMARINIE", gender: "P" },
+            { id: 30, name: "SYIFA FATIMATUL ZAHRA", gender: "P" },
+            { id: 31, name: "VELLIN YOURA", gender: "P" },
+            { id: 32, name: "ZAHRATU MEYDINA AZURI", gender: "P" },
+            { id: 33, name: "ZHARIFA ALMAHYRA MARSYA", gender: "P" },
+            { id: 34, name: "ZIVANA KHANZA", gender: "P" }
+        ];
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-absensi-app';
+        
+        // Logika pemilihan config: 
+        // 1. Jika berjalan di Preview ini, gunakan __firebase_config (Database Internal yang aman).
+        // 2. Jika tidak ada (offline/hosting sendiri), gunakan userFirebaseConfig (Database Tekno-335f8 Anda).
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : userFirebaseConfig;
+        
+        let db, auth, userId = null, attendanceUnsubscribe = null;
+
+        try {
+            const app = initializeApp(firebaseConfig);
+            // Menggunakan Firestore (Database standar untuk aplikasi ini)
+            // Pastikan Anda mengaktifkan 'Firestore Database' di Console Firebase Anda
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) {
+            console.error("Error initializing Firebase:", e);
+            document.getElementById('student-list').innerHTML = `<p class="text-red-500 text-center col-span-full">Gagal menginisialisasi aplikasi. Cek konsol browser.</p>`;
+        }
+
+        let currentDate = new Date().toISOString().slice(0, 10);
+        let attendanceData = {};
+        let saveTimeout;
+
+        const datePicker = document.getElementById('date-picker');
+        const studentListContainer = document.getElementById('student-list');
+        const userIdSpan = document.getElementById('userId');
+        const printBtn = document.getElementById('print-btn');
+        const waBtn = document.getElementById('wa-btn');
+        const saveStatusEl = document.getElementById('save-status');
+        const searchInput = document.getElementById('search-input');
+        const monthSelect = document.getElementById('month-select');
+        const yearInput = document.getElementById('year-input');
+        const printMonthlyBtn = document.getElementById('print-monthly-btn');
+
+        function setupMonthlyReportSelectors() {
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+
+            months.forEach((month, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = month;
+                if (index === currentMonth) {
+                    option.selected = true;
+                }
+                monthSelect.appendChild(option);
+            });
+            yearInput.value = currentYear;
+        }
+
+        async function authenticateUser() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    userIdSpan.textContent = userId;
+                    loadAttendanceForDate(currentDate);
+                } else {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (error) { console.error("Error signing in:", error); }
+                }
+            });
+        }
+
+        function renderStudents() {
+            if (!userId) return;
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredStudents = students.filter(student => student.name.toLowerCase().includes(searchTerm));
+            studentListContainer.innerHTML = '';
+            if (filteredStudents.length === 0) {
+                studentListContainer.innerHTML = `<p class="text-gray-500 text-center col-span-full">Siswa tidak ditemukan.</p>`;
+                return;
+            }
+            filteredStudents.forEach((student, index) => {
+                const studentStatus = attendanceData[student.id] || 'Hadir';
+                // Warna kertas card berbeda-beda sedikit
+                const cardColors = ['#fff', '#fffde7', '#e0f7fa', '#fce4ec'];
+                const bgCard = cardColors[index % cardColors.length];
+                
+                const nameColor = student.gender === 'L' ? 'text-blue-600' : 'text-pink-600';
+                const icon = student.gender === 'L' ? '<i class="fas fa-rocket"></i>' : '<i class="fas fa-flower"></i>';
+                
+                const card = document.createElement('div');
+                card.className = `cute-card p-4 flex flex-col`;
+                card.style.backgroundColor = bgCard;
+                
+                card.innerHTML = `
+                    <div class="flex-grow mb-3 text-center pt-2">
+                        <p class="text-xs text-gray-400 font-bold tracking-widest">NO. ${student.id}</p>
+                        <p class="font-bold ${nameColor} text-xl leading-tight mt-1" style="font-family: 'Patrick Hand', cursive;">${student.name}</p>
+                        <div class="mt-1 text-gray-400 text-sm">${icon} ${student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button data-id="${student.id}" data-status="Hadir" class="status-btn btn-hadir py-1 text-sm bg-green-100 text-green-700 hover:bg-green-200 ${studentStatus === 'Hadir' ? 'selected' : ''}">Hadir</button>
+                        <button data-id="${student.id}" data-status="Sakit" class="status-btn btn-sakit py-1 text-sm bg-yellow-100 text-yellow-700 hover:bg-yellow-200 ${studentStatus === 'Sakit' ? 'selected' : ''}">Sakit</button>
+                        <button data-id="${student.id}" data-status="Izin" class="status-btn btn-izin py-1 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 ${studentStatus === 'Izin' ? 'selected' : ''}">Izin</button>
+                        <button data-id="${student.id}" data-status="Alfa" class="status-btn btn-alfa py-1 text-sm bg-red-100 text-red-700 hover:bg-red-200 ${studentStatus === 'Alfa' ? 'selected' : ''}">Alfa</button>
+                    </div>
+                `;
+                studentListContainer.appendChild(card);
+            });
+            updateSummary();
+            updateKeterangan();
+        }
+
+        function updateSummary() {
+            const counts = { Sakit: 0, Izin: 0, Alfa: 0 };
+            let absentCount = 0;
+            Object.keys(attendanceData).forEach(studentId => {
+                const status = attendanceData[studentId];
+                 if (counts.hasOwnProperty(status)) {
+                    counts[status]++;
+                    absentCount++;
+                }
+            });
+            counts.Hadir = students.length - absentCount;
+            document.getElementById('summary-hadir').textContent = counts.Hadir;
+            document.getElementById('summary-sakit').textContent = counts.Sakit;
+            document.getElementById('summary-izin').textContent = counts.Izin;
+            document.getElementById('summary-alfa').textContent = counts.Alfa;
+        }
+
+        function updateKeterangan() {
+            const sakitListEl = document.getElementById('sakit-list');
+            const izinListEl = document.getElementById('izin-list');
+            const alfaListEl = document.getElementById('alfa-list');
+
+            sakitListEl.innerHTML = '';
+            izinListEl.innerHTML = '';
+            alfaListEl.innerHTML = '';
+
+            const sakitStudents = students.filter(s => attendanceData[s.id] === 'Sakit');
+            const izinStudents = students.filter(s => attendanceData[s.id] === 'Izin');
+            const alfaStudents = students.filter(s => attendanceData[s.id] === 'Alfa');
+
+            if (sakitStudents.length === 0) {
+                sakitListEl.innerHTML = '<li>- Nihil -</li>';
+            } else {
+                sakitStudents.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = `• ${s.name}`;
+                    sakitListEl.appendChild(li);
+                });
+            }
+
+            if (izinStudents.length === 0) {
+                izinListEl.innerHTML = '<li>- Nihil -</li>';
+            } else {
+                izinStudents.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = `• ${s.name}`;
+                    izinListEl.appendChild(li);
+                });
+            }
+
+            if (alfaStudents.length === 0) {
+                alfaListEl.innerHTML = '<li>- Nihil -</li>';
+            } else {
+                alfaStudents.forEach(s => {
+                    const li = document.createElement('li');
+                    li.textContent = `• ${s.name}`;
+                    alfaListEl.appendChild(li);
+                });
+            }
+        }
+
+        async function handleAttendanceChange(e) {
+            const button = e.target.closest('.status-btn');
+            if (!button) return;
+            const studentId = button.dataset.id;
+            const status = button.dataset.status;
+            if (status === 'Hadir') {
+                delete attendanceData[studentId];
+            } else {
+                attendanceData[studentId] = status;
+            }
+            // Update UI langsung
+            renderStudents(); 
+            // Save
+            await saveAttendanceToFirestore();
+        }
+        
+        function showSaveStatus() {
+            clearTimeout(saveTimeout);
+            saveStatusEl.style.opacity = '1';
+            saveStatusEl.style.transform = 'translateY(0)';
+            saveTimeout = setTimeout(() => {
+                saveStatusEl.style.opacity = '0';
+                saveStatusEl.style.transform = 'translateY(10px)';
+            }, 2000);
+        }
+
+        async function saveAttendanceToFirestore() {
+            if (!userId) return;
+            try {
+                const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2b/${currentDate}`);
+                await setDoc(docRef, { records: attendanceData });
+                showSaveStatus();
+            } catch (error) { console.error("Gagal menyimpan data ke Firestore:", error); }
+        }
+
+        function loadAttendanceForDate(date) {
+            if (!userId) return;
+            if (attendanceUnsubscribe) attendanceUnsubscribe();
+            const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2b/${date}`);
+            attendanceUnsubscribe = onSnapshot(docRef, (docSnap) => {
+                attendanceData = docSnap.exists() ? docSnap.data().records || {} : {};
+                renderStudents();
+            }, (error) => {
+                console.error("Gagal memuat data dari Firestore:", error);
+                attendanceData = {};
+                renderStudents();
+            });
+        }
+
+        function openPrintView(content, title) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(content);
+            printWindow.document.close();
+            printWindow.document.title = title;
+            printWindow.focus();
+            setTimeout(() => {
+                 printWindow.print();
+                 printWindow.close();
+            }, 250);
+        }
+
+        function copyToWhatsApp() {
+            const dateFormatted = new Date(currentDate).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            
+            const sakit = students.filter(s => attendanceData[s.id] === 'Sakit').map(s => s.name);
+            const izin = students.filter(s => attendanceData[s.id] === 'Izin').map(s => s.name);
+            const alfa = students.filter(s => attendanceData[s.id] === 'Alfa').map(s => s.name);
+            
+            const totalHadir = students.length - (sakit.length + izin.length + alfa.length);
+            const totalSiswa = students.length;
+
+            let message = `*🌺 LAPORAN ABSENSI KELAS 2B 🌺*\n`;
+            message += `🏫 SDN RAWAENDAH\n`;
+            message += `🗓️ Hari/Tanggal: ${dateFormatted}\n\n`;
+            
+            message += `*Tidak Hadir:*\n`;
+            if (sakit.length > 0) message += `🤒 *Sakit:* \n- ${sakit.join('\n- ')}\n`;
+            if (izin.length > 0) message += `📝 *Izin:* \n- ${izin.join('\n- ')}\n`;
+            if (alfa.length > 0) message += `❌ *Alfa:* \n- ${alfa.join('\n- ')}\n`;
+            
+            if (sakit.length === 0 && izin.length === 0 && alfa.length === 0) {
+                message += "✨ Nihil (Semua Hadir) ✨\n";
+            }
+
+            message += `\n*Rekapitulasi:*\n`;
+            message += `✅ Hadir: ${totalHadir}\n`;
+            message += `🤒 Sakit: ${sakit.length}\n`;
+            message += `📝 Izin: ${izin.length}\n`;
+            message += `❌ Alfa: ${alfa.length}\n`;
+            message += `--------------------------\n`;
+            message += `Total Siswa: ${totalSiswa}\n\n`;
+            message += `Wali Kelas,\n`;
+            message += `*RISA AGUSTIAN, S.Pd*`;
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = message;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const originalText = waBtn.innerHTML;
+                waBtn.innerHTML = '<i class="fas fa-check"></i> Disalin!';
+                waBtn.classList.replace('bg-green-500', 'bg-teal-600');
+                setTimeout(() => {
+                    waBtn.innerHTML = originalText;
+                    waBtn.classList.replace('bg-teal-600', 'bg-green-500');
+                }, 2000);
+            } catch (err) {
+                console.error('Gagal menyalin:', err);
+                alert("Gagal menyalin otomatis. Silakan manual.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function printOfficialReport() {
+            const summaryHadir = document.getElementById('summary-hadir').textContent;
+            const summarySakit = document.getElementById('summary-sakit').textContent;
+            const summaryIzin = document.getElementById('summary-izin').textContent;
+            const summaryAlfa = document.getElementById('summary-alfa').textContent;
+            
+            const sakitList = students.filter(s => attendanceData[s.id] === 'Sakit').map(s => s.name).join(', ');
+            const izinList = students.filter(s => attendanceData[s.id] === 'Izin').map(s => s.name).join(', ');
+            const alfaList = students.filter(s => attendanceData[s.id] === 'Alfa').map(s => s.name).join(', ');
+
+            let keteranganHtml = '<div style="margin-top: 10px; font-size: 11pt;"><strong>Keterangan:</strong><br>';
+            if(sakitList) keteranganHtml += `- Sakit: ${sakitList}<br>`;
+            if(izinList) keteranganHtml += `- Izin: ${izinList}<br>`;
+            if(alfaList) keteranganHtml += `- Alfa: ${alfaList}<br>`;
+            keteranganHtml += '</div>';
+            if (!sakitList && !izinList && !alfaList) {
+                keteranganHtml = ''; 
+            }
+
+            let tableRows = '';
+            students.forEach(student => {
+                const status = attendanceData[student.id] || "Hadir";
+                tableRows += `
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${student.id}</td>
+                        <td style="border: 1px solid black; padding: 5px;">${student.name}</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${student.gender}</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${status === 'Hadir' ? '✓' : ''}</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${status === 'Sakit' ? 'S' : ''}</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${status === 'Izin' ? 'I' : ''}</td>
+                        <td style="border: 1px solid black; padding: 5px; text-align: center;">${status === 'Alfa' ? 'A' : ''}</td>
+                    </tr>
+                `;
+            });
+            
+            const formattedDate = new Date(currentDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const todayFormatted = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            const printContent = `
+                <html><head><title>Laporan Harian - ${currentDate}</title><style>@page { size: A4 landscape; margin: 1.5cm; } body { font-family: 'Times New Roman', Times, serif; font-size: 12pt; }</style></head>
+                <body>
+                    <div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt;">
+                        <h2 style="text-align: center; font-weight: bold; margin: 0; text-transform: uppercase;">DAFTAR HADIR SISWA SDN RAWAENDAH 01 KELAS II B<br>TAHUN PELAJARAN 2025/2026</h2>
+                        <p style="text-align: left; margin-top: 20px;">Hari/Tanggal: ${formattedDate}</p>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11pt;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid black; padding: 5px; width: 5%;">No</th><th style="border: 1px solid black; padding: 5px; width: 45%;">Nama Siswa</th>
+                                    <th style="border: 1px solid black; padding: 5px; width: 5%;">L/P</th><th style="border: 1px solid black; padding: 5px; width: 10%;">Hadir</th>
+                                    <th style="border: 1px solid black; padding: 5px; width: 10%;">Sakit</th><th style="border: 1px solid black; padding: 5px; width: 10%;">Izin</th>
+                                    <th style="border: 1px solid black; padding: 5px; width: 10%;">Alfa</th>
+                                </tr>
+                            </thead>
+                            <tbody>${tableRows}</tbody>
+                        </table>
+                        <div style="margin-top: 20px; font-size: 11pt;"><strong>Jumlah:</strong><br>- Hadir: ${summaryHadir} siswa<br>- Sakit: ${summarySakit} siswa<br>- Izin: ${summaryIzin} siswa<br>- Alfa: ${summaryAlfa} siswa<br></div>
+                        ${keteranganHtml}
+                        <table style="width: 100%; margin-top: 40px; font-size: 12pt; border: none;">
+                            <tbody><tr>
+                                <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>HJ. LILIS SUKAESIH, S.Pd.SD.</u></strong><br>NIP. 196807151991032005</td>
+                                <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II B<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. -</td>
+                            </tr></tbody>
+                        </table>
+                    </div>
+                </body></html>`;
+            openPrintView(printContent, `Laporan Harian - ${currentDate}`);
+        }
+        
+        async function printMonthlyReport() {
+            const year = parseInt(yearInput.value);
+            const monthIndex = parseInt(monthSelect.value);
+            const monthName = monthSelect.options[monthSelect.selectedIndex].text;
+            const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+            
+            printMonthlyBtn.disabled = true;
+            printMonthlyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+            const promises = [];
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2b/${dateStr}`);
+                promises.push(getDoc(docRef));
+            }
+
+            const dailyDocs = await Promise.all(promises);
+            const monthlyRecords = {};
+            dailyDocs.forEach((docSnap, index) => {
+                const day = index + 1;
+                if (docSnap.exists()) {
+                    monthlyRecords[day] = docSnap.data().records;
+                }
+            });
+            
+            printMonthlyBtn.disabled = false;
+            printMonthlyBtn.innerHTML = '<i class="fas fa-calendar-alt"></i> Cetak Rekap';
+
+            let dateHeaders = '';
+            for (let day = 1; day <= daysInMonth; day++) {
+                dateHeaders += `<th style="border: 1px solid black; padding: 2px; font-size: 9pt; width: 2%;">${day}</th>`;
+            }
+
+            const monthlySakit = [];
+            const monthlyIzin = [];
+            const monthlyAlfa = [];
+
+            let studentRows = '';
+            students.forEach(student => {
+                let s = 0, i = 0, a = 0;
+                let dateCells = '';
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const status = monthlyRecords[day]?.[student.id] || '';
+                    if (status === 'Sakit') s++;
+                    if (status === 'Izin') i++;
+                    if (status === 'Alfa') a++;
+                    dateCells += `<td style="border: 1px solid black; padding: 2px; text-align: center; font-size: 9pt;">${status ? status.charAt(0) : ''}</td>`;
+                }
+
+                if (s > 0) monthlySakit.push(`${student.name} (${s})`);
+                if (i > 0) monthlyIzin.push(`${student.name} (${i})`);
+                if (a > 0) monthlyAlfa.push(`${student.name} (${a})`);
+
+                studentRows += `
+                    <tr>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${student.id}</td>
+                        <td style="border: 1px solid black; padding: 2px;">${student.name}</td>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${student.gender}</td>
+                        ${dateCells}
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${s || ''}</td>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${i || ''}</td>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${a || ''}</td>
+                        <td style="border: 1px solid black; padding: 2px; text-align: center;">${s+i+a || ''}</td>
+                    </tr>
+                `;
+            });
+
+            let keteranganBulananHtml = '<div style="margin-top: 15px; font-size: 11pt;"><strong>Keterangan Absensi Bulan Ini:</strong><br>';
+            if(monthlySakit.length > 0) keteranganBulananHtml += `- Sakit: ${monthlySakit.join(', ')}<br>`;
+            if(monthlyIzin.length > 0) keteranganBulananHtml += `- Izin: ${monthlyIzin.join(', ')}<br>`;
+            if(monthlyAlfa.length > 0) keteranganBulananHtml += `- Alfa: ${monthlyAlfa.join(', ')}<br>`;
+            keteranganBulananHtml += '</div>';
+            if (monthlySakit.length === 0 && monthlyIzin.length === 0 && monthlyAlfa.length === 0) {
+                keteranganBulananHtml = ''; 
+            }
+
+            const todayFormatted = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            const printContent = `
+                <html><head><title>Rekap Bulanan - ${monthName} ${year}</title><style>@page { size: A4 landscape; margin: 1cm; } body { font-family: 'Times New Roman', Times, serif; font-size: 10pt; }</style></head>
+                <body>
+                    <h3 style="text-align: center; font-weight: bold; margin: 0; text-transform: uppercase;">REKAPITULASI DAFTAR HADIR SISWA KELAS II B<br>TAHUN PELAJARAN 2025/2026</h3>
+                    <p style="text-align: left; margin-top: 15px; font-weight: bold;">Bulan: ${monthName} ${year}</p>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 9pt;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="border: 1px solid black; padding: 2px;">No</th><th rowspan="2" style="border: 1px solid black; padding: 2px;">Nama Siswa</th>
+                                <th rowspan="2" style="border: 1px solid black; padding: 2px;">L/P</th><th colspan="${daysInMonth}" style="border: 1px solid black; padding: 2px; text-align: center;">Tanggal</th>
+                                <th colspan="4" style="border: 1px solid black; padding: 2px; text-align: center;">Jumlah</th>
+                            </tr>
+                            <tr>${dateHeaders}<th style="border: 1px solid black; padding: 2px;">S</th><th style="border: 1px solid black; padding: 2px;">I</th><th style="border: 1px solid black; padding: 2px;">A</th><th style="border: 1px solid black; padding: 2px;">Jml</th></tr>
+                        </thead>
+                        <tbody>${studentRows}</tbody>
+                    </table>
+                    ${keteranganBulananHtml}
+                    <table style="width: 100%; margin-top: 30px; font-size: 11pt; border: none;">
+                        <tbody><tr>
+                            <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>HJ. LILIS SUKAESIH, S.Pd.SD.</u></strong><br>NIP. 196807151991032005</td>
+                            <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II B<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. -</td>
+                        </tr></tbody>
+                    </table>
+                </body></html>`;
+            openPrintView(printContent, `Rekap Bulanan - ${monthName} ${year}`);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            datePicker.value = currentDate;
+            setupMonthlyReportSelectors();
+            authenticateUser();
+        });
+        datePicker.addEventListener('change', (e) => {
+            currentDate = e.target.value;
+            loadAttendanceForDate(currentDate);
+        });
+        studentListContainer.addEventListener('click', handleAttendanceChange);
+        printBtn.addEventListener('click', printOfficialReport);
+        waBtn.addEventListener('click', copyToWhatsApp);
+        printMonthlyBtn.addEventListener('click', printMonthlyReport);
+        searchInput.addEventListener('input', renderStudents);
+    </script>
+</body>
+</html>
