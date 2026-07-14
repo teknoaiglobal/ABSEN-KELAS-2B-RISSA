@@ -118,6 +118,15 @@
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #fffde7; }
         ::-webkit-scrollbar-thumb { background: #ffd54f; border-radius: 10px; border: 2px solid #fffde7; }
+
+        /* Mobile Specific Style Tweaks */
+        @media (max-width: 640px) {
+            .cute-card::before {
+                width: 55px;
+                height: 16px;
+                top: -6px;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-800 pb-16">
@@ -142,103 +151,105 @@
         </div>
     </div>
 
-    <div id="app" class="container mx-auto p-4 md:p-6 max-w-7xl">
+    <div id="app" class="container mx-auto p-3 md:p-6 max-w-7xl">
 
         <!-- Header -->
-        <header class="text-center mb-8 mt-4 relative">
-            <div class="absolute right-4 top-2 flex gap-2">
+        <header class="text-center mb-8 mt-2 relative">
+            <div class="flex justify-center sm:justify-end gap-2 mb-4 sm:absolute sm:right-4 sm:top-2 z-10 flex-wrap">
                 <button id="sound-toggle-btn" class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold p-3 rounded-full shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-yellow-600 active:border-b-0">
                     <i id="sound-icon" class="fas fa-volume-up text-lg"></i>
                 </button>
                 <button id="manage-students-btn" class="bg-sky-400 hover:bg-sky-500 text-white font-bold py-2 px-4 rounded-full shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-sky-600 active:border-b-0 flex items-center gap-2">
-                    <i class="fas fa-users-cog"></i> <span class="hidden sm:inline">Kelola Siswa</span>
+                    <i class="fas fa-users-cog"></i> <span class="inline">Kelola Siswa</span>
                 </button>
             </div>
 
-            <div class="bg-white/90 backdrop-blur-sm inline-block px-8 py-5 rounded-3xl shadow-xl border-4 border-pink-300 transform rotate-1 mt-12 md:mt-4">
-                <h1 class="text-3xl md:text-5xl text-pink-500 mb-1 header-decor" style="text-shadow: 2px 2px 0px #fff;">Kelas 2C Ceria!</h1>
-                <p class="text-xl text-blue-400 font-bold">SDN Rawaendah • 2026/2027</p>
-                <div class="mt-2 bg-yellow-200 text-yellow-900 px-5 py-1.5 rounded-full inline-block text-lg font-bold transform -rotate-1 shadow-sm border-2 border-yellow-400">
-                    <i class="fas fa-chalkboard-teacher"></i> Wali Kelas: Ibu RISA AGUSTIAN, S.Pd
+            <div class="bg-white/90 backdrop-blur-sm inline-block px-4 sm:px-8 py-4 sm:py-5 rounded-3xl shadow-xl border-4 border-pink-300 transform rotate-1 mt-2 w-full max-w-xl mx-auto sm:w-auto">
+                <h1 class="text-2xl sm:text-3xl md:text-5xl text-pink-500 mb-1 header-decor" style="text-shadow: 2px 2px 0px #fff;">Kelas 2C Ceria!</h1>
+                <p class="text-lg sm:text-xl text-blue-400 font-bold">SDN Rawaendah • 2026/2027</p>
+                <div class="mt-2 bg-yellow-200 text-yellow-900 px-4 sm:px-5 py-1 sm:py-1.5 rounded-full inline-block text-sm sm:text-lg font-bold transform -rotate-1 shadow-sm border-2 border-yellow-400 max-w-full">
+                    <i class="fas fa-chalkboard-teacher"></i> Wali Kelas: Ibu RISA AGUSTIAN, S.Pd <span class="text-xs sm:text-sm block opacity-75 font-semibold">NIP. 198608112025212016</span>
                 </div>
             </div>
         </header>
 
         <!-- Dynamic Manage Students Modal -->
-        <div id="manage-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl border-4 border-sky-300 max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
-                <div class="bg-sky-400 p-4 text-white text-center flex justify-between items-center px-6">
-                    <h3 class="text-2xl font-bubble flex items-center gap-2"><i class="fas fa-users-cog"></i> Pengaturan Siswa</h3>
+        <div id="manage-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+            <div class="bg-white rounded-3xl border-4 border-sky-300 max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+                <div class="bg-sky-400 p-4 text-white text-center flex justify-between items-center px-4 sm:px-6">
+                    <h3 class="text-xl sm:text-2xl font-bubble flex items-center gap-2"><i class="fas fa-users-cog"></i> Pengaturan Siswa</h3>
                     <button id="close-manage-btn" class="text-white hover:text-sky-200 text-2xl font-bold"><i class="fas fa-times"></i></button>
                 </div>
-                <div class="p-6 overflow-y-auto flex-grow space-y-4">
-                    <div class="bg-sky-50 p-4 rounded-2xl border-2 border-sky-100 flex flex-col md:flex-row gap-3 items-end">
-                        <div class="flex-grow w-full">
-                            <label class="block text-sky-800 font-bold mb-1">Nama Lengkap Siswa:</label>
-                            <input type="text" id="new-student-name" placeholder="Contoh: BUDI UTOMO" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-sky-100">
+                <div class="p-4 sm:p-6 overflow-y-auto flex-grow space-y-4">
+                    <div class="bg-sky-50 p-3 sm:p-4 rounded-2xl border-2 border-sky-100 flex flex-col gap-3">
+                        <div class="w-full">
+                            <label class="block text-sky-800 font-bold mb-1 text-sm sm:text-base">Nama Lengkap Siswa:</label>
+                            <input type="text" id="new-student-name" placeholder="Contoh: BUDI UTOMO" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-sky-100 text-sm sm:text-base">
                         </div>
-                        <div class="w-full md:w-44">
-                            <label class="block text-sky-800 font-bold mb-1">Gender:</label>
-                            <select id="new-student-gender" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-sky-100">
-                                <option value="L">Laki-laki (L)</option>
-                                <option value="P">Perempuan (P)</option>
-                            </select>
+                        <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end w-full">
+                            <div class="flex-grow">
+                                <label class="block text-sky-800 font-bold mb-1 text-sm sm:text-base">Gender:</label>
+                                <select id="new-student-gender" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-sky-100 text-sm sm:text-base">
+                                    <option value="L">Laki-laki (L)</option>
+                                    <option value="P">Perempuan (P)</option>
+                                </select>
+                            </div>
+                            <button id="add-student-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-6 rounded-xl border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all w-full sm:w-auto h-[48px] mt-2 sm:mt-0">
+                                Tambah
+                            </button>
                         </div>
-                        <button id="add-student-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-6 rounded-xl border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all w-full md:w-auto">
-                            Tambah
-                        </button>
                     </div>
 
                     <div class="border-t border-gray-100 pt-4">
-                        <h4 class="text-lg font-bold text-gray-600 mb-3"><i class="fas fa-list-ol"></i> Daftar Siswa Kelas 2C (<span id="manage-count">0</span> Siswa)</h4>
-                        <div id="manage-student-list" class="space-y-2 max-h-[35vh] overflow-y-auto pr-2">
+                        <h4 class="text-base sm:text-lg font-bold text-gray-600 mb-3"><i class="fas fa-list-ol"></i> Daftar Siswa Kelas 2C (<span id="manage-count">0</span> Siswa)</h4>
+                        <div id="manage-student-list" class="space-y-2 max-h-[35vh] overflow-y-auto pr-1">
                             <!-- Items dynamically loaded -->
                         </div>
                     </div>
                 </div>
-                <div class="p-4 bg-gray-50 text-right border-t border-gray-100 flex justify-between">
-                    <button id="reset-students-btn" class="text-red-500 hover:text-red-600 font-bold underline"><i class="fas fa-undo"></i> Reset ke Bawaan</button>
-                    <button id="save-manage-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-6 rounded-full border-b-4 border-sky-700 active:border-b-0 active:translate-y-1 transition-all">Selesai</button>
+                <div class="p-4 bg-gray-50 text-right border-t border-gray-100 flex justify-between items-center">
+                    <button id="reset-students-btn" class="text-red-500 hover:text-red-600 font-bold underline text-sm sm:text-base"><i class="fas fa-undo"></i> Reset ke Bawaan</button>
+                    <button id="save-manage-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-6 rounded-full border-b-4 border-sky-700 active:border-b-0 active:translate-y-1 transition-all text-sm sm:text-base">Selesai</button>
                 </div>
             </div>
         </div>
 
         <!-- Monthly Report Panel -->
-        <div class="bg-pink-100 p-6 rounded-3xl shadow-md mb-8 border-dashed border-4 border-pink-300 relative">
-            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-6 py-1.5 rounded-full font-bold shadow-md border-2 border-white font-bubble">
+        <div class="bg-pink-100 p-4 sm:p-6 rounded-3xl shadow-md mb-8 border-dashed border-4 border-pink-300 relative">
+            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-5 sm:px-6 py-1.5 rounded-full font-bold shadow-md border-2 border-white font-bubble text-sm sm:text-base whitespace-nowrap">
                 📊 Rekap Bulanan
             </div>
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-2">
-                 <div class="flex items-center gap-2">
-                    <label for="month-select" class="font-bold text-pink-700 text-lg">Bulan:</label>
-                    <select id="month-select" class="custom-input p-2 focus:outline-none focus:ring-4 focus:ring-pink-200"></select>
+            <div class="flex flex-col sm:flex-row justify-center items-stretch sm:items-center gap-3 sm:gap-4 mt-4">
+                 <div class="flex items-center gap-2 justify-center">
+                    <label for="month-select" class="font-bold text-pink-700 text-base sm:text-lg">Bulan:</label>
+                    <select id="month-select" class="custom-input p-1.5 focus:outline-none focus:ring-4 focus:ring-pink-200 text-sm sm:text-base"></select>
                  </div>
-                 <div class="flex items-center gap-2">
-                    <label for="year-input" class="font-bold text-pink-700 text-lg">Tahun:</label>
-                    <input type="number" id="year-input" class="custom-input p-2 w-28 focus:outline-none focus:ring-4 focus:ring-pink-200">
+                 <div class="flex items-center gap-2 justify-center">
+                    <label for="year-input" class="font-bold text-pink-700 text-base sm:text-lg">Tahun:</label>
+                    <input type="number" id="year-input" class="custom-input p-1.5 w-24 focus:outline-none focus:ring-4 focus:ring-pink-200 text-sm sm:text-base">
                  </div>
-                 <div class="flex gap-2">
-                     <button id="preview-monthly-btn" class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-full shadow-md transform hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-blue-600 active:border-b-0 flex items-center gap-1">
+                 <div class="flex flex-row gap-2 justify-center w-full sm:w-auto">
+                     <button id="preview-monthly-btn" class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full shadow-md transform hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-blue-600 active:border-b-0 flex items-center justify-center gap-1 text-xs sm:text-base flex-grow sm:flex-initial">
                         <i class="fas fa-eye"></i> Intip Rekap
                      </button>
-                     <button id="print-monthly-btn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-5 rounded-full shadow-md transform hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-purple-700 active:border-b-0 flex items-center gap-1">
+                     <button id="print-monthly-btn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-full shadow-md transform hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-purple-700 active:border-b-0 flex items-center justify-center gap-1 text-xs sm:text-base flex-grow sm:flex-initial">
                         <i class="fas fa-print"></i> Cetak Rekap
                      </button>
                  </div>
             </div>
             
             <!-- Interactive Live Monthly Preview Box -->
-            <div id="monthly-preview-box" class="mt-6 bg-white rounded-2xl p-4 border-2 border-pink-200 hidden transition-all duration-300">
+            <div id="monthly-preview-box" class="mt-6 bg-white rounded-2xl p-3 sm:p-4 border-2 border-pink-200 hidden transition-all duration-300">
                 <div class="flex justify-between items-center mb-3">
-                    <h4 class="text-lg text-pink-600 font-bold"><i class="fas fa-calendar-alt"></i> Pratinjau Rekap Absen Bulan <span id="preview-month-title">Juli</span></h4>
+                    <h4 class="text-sm sm:text-lg text-pink-600 font-bold"><i class="fas fa-calendar-alt"></i> Pratinjau Rekap Absen Bulan <span id="preview-month-title">Juli</span></h4>
                     <button id="hide-preview-btn" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times-circle text-xl"></i> Tutup</button>
                 </div>
-                <div class="overflow-x-auto border rounded-xl bg-gray-50 max-h-64">
+                <div class="overflow-x-auto border rounded-xl bg-gray-50 max-h-64 -mx-2 sm:mx-0">
                     <table class="min-w-full text-xs text-left text-gray-500">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                             <tr>
                                 <th scope="col" class="px-2 py-2 text-center font-bold">No</th>
-                                <th scope="col" class="px-4 py-2 font-bold">Nama Siswa</th>
+                                <th scope="col" class="px-3 py-2 font-bold">Nama Siswa</th>
                                 <th scope="col" class="px-2 py-2 text-center font-bold">L/P</th>
                                 <th scope="col" class="px-2 py-2 text-center font-bold">S</th>
                                 <th scope="col" class="px-2 py-2 text-center font-bold">I</th>
@@ -254,51 +265,51 @@
         </div>
 
         <!-- Daily Control Panel (Blackboard Style) -->
-        <div class="chalkboard-panel p-6 mb-10 sticky top-4 z-20">
-            <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
-                <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+        <div class="chalkboard-panel p-4 sm:p-6 mb-8 sticky top-2 sm:top-4 z-20">
+            <div class="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 sm:gap-6">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
                     <div class="flex items-center gap-2 bg-white/10 p-2 rounded-lg w-full sm:w-auto justify-center">
-                        <label for="date-picker" class="font-bold text-yellow-300 text-xl"><i class="far fa-calendar-alt"></i></label>
-                        <input type="date" id="date-picker" class="bg-transparent text-white font-bold border-none focus:ring-0 text-lg font-mono cursor-pointer outline-none">
+                        <label for="date-picker" class="font-bold text-yellow-300 text-lg sm:text-xl"><i class="far fa-calendar-alt"></i></label>
+                        <input type="date" id="date-picker" class="bg-transparent text-white font-bold border-none focus:ring-0 text-base sm:text-lg font-mono cursor-pointer outline-none w-full sm:w-auto text-center sm:text-left">
                     </div>
                     <div class="flex gap-2 w-full sm:w-auto justify-center">
-                        <button id="print-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-xl shadow border-b-4 border-red-700 active:border-b-0 active:translate-y-1 transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center">
+                        <button id="print-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 sm:px-4 rounded-xl shadow border-b-4 border-red-700 active:border-b-0 active:translate-y-1 transition-all flex items-center gap-1.5 flex-grow sm:flex-initial justify-center text-xs sm:text-base">
                             <i class="fas fa-file-pdf"></i> PDF Hari Ini
                         </button>
-                        <button id="wa-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-xl shadow border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center">
+                        <button id="wa-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-3 sm:px-4 rounded-xl shadow border-b-4 border-green-700 active:border-b-0 active:translate-y-1 transition-all flex items-center gap-1.5 flex-grow sm:flex-initial justify-center text-xs sm:text-base">
                             <i class="fab fa-whatsapp"></i> Bagikan WA
                         </button>
                     </div>
                     <div class="relative w-full sm:w-64">
-                        <input type="text" id="search-input" placeholder="Cari teman..." class="w-full bg-white/20 border-2 border-white/30 rounded-full py-2 pl-10 pr-4 text-white placeholder-gray-300 focus:outline-none focus:bg-white/30 font-bold">
+                        <input type="text" id="search-input" placeholder="Cari teman..." class="w-full bg-white/20 border-2 border-white/30 rounded-full py-1.5 sm:py-2 pl-10 pr-4 text-white placeholder-gray-300 focus:outline-none focus:bg-white/30 font-bold text-sm sm:text-base">
                         <i class="fas fa-search text-white/50 absolute left-4 top-1/2 -translate-y-1/2"></i>
                     </div>
                 </div>
                 
-                <div id="save-status" class="bg-white text-green-600 px-4 py-2 rounded-full font-bold shadow-lg opacity-0 transform translate-y-4 transition-all flex items-center gap-2 duration-300 absolute lg:relative top-2 left-1/2 lg:left-0 -translate-x-1/2 lg:translate-x-0">
-                    <i class="fas fa-check-circle text-xl animate-bounce"></i> <span>Tersimpan!</span>
+                <div id="save-status" class="bg-white text-green-600 px-3 py-1.5 rounded-full font-bold shadow-lg opacity-0 transform translate-y-4 transition-all flex items-center gap-1.5 duration-300 absolute lg:relative top-2 left-1/2 lg:left-0 -translate-x-1/2 lg:translate-x-0 z-30 text-xs sm:text-sm">
+                    <i class="fas fa-check-circle text-lg sm:text-xl animate-bounce"></i> <span>Tersimpan!</span>
                 </div>
 
-                <div id="summary" class="flex flex-wrap justify-center gap-3 font-bold text-lg">
-                    <div class="bg-green-500 text-white px-3 py-1 rounded-lg border-2 border-green-300 shadow">Hadir: <span id="summary-hadir">0</span></div>
-                    <div class="bg-yellow-400 text-yellow-900 px-3 py-1 rounded-lg border-2 border-yellow-200 shadow">Sakit: <span id="summary-sakit">0</span></div>
-                    <div class="bg-blue-400 text-white px-3 py-1 rounded-lg border-2 border-blue-200 shadow">Izin: <span id="summary-izin">0</span></div>
-                    <div class="bg-red-500 text-white px-3 py-1 rounded-lg border-2 border-red-300 shadow">Alfa: <span id="summary-alfa">0</span></div>
+                <div id="summary" class="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-2 font-bold text-sm sm:text-lg">
+                    <div class="bg-green-500 text-white px-2 py-1 rounded-lg border-2 border-green-300 shadow text-center">Hadir: <span id="summary-hadir">0</span></div>
+                    <div class="bg-yellow-400 text-yellow-900 px-2 py-1 rounded-lg border-2 border-yellow-200 shadow text-center">Sakit: <span id="summary-sakit">0</span></div>
+                    <div class="bg-blue-400 text-white px-2 py-1 rounded-lg border-2 border-blue-200 shadow text-center">Izin: <span id="summary-izin">0</span></div>
+                    <div class="bg-red-500 text-white px-2 py-1 rounded-lg border-2 border-red-300 shadow text-center">Alfa: <span id="summary-alfa">0</span></div>
                 </div>
             </div>
         </div>
 
         <!-- Keterangan Absensi (Notebook Paper Style) -->
-        <div id="daily-keterangan" class="bg-white p-6 rounded-sm shadow-md mb-8 relative border-l-4 border-l-pink-300" 
+        <div id="daily-keterangan" class="bg-white p-4 sm:p-6 rounded-sm shadow-md mb-8 relative border-l-4 border-l-pink-300" 
              style="background-image: linear-gradient(#e1f5fe 1px, transparent 1px); background-size: 100% 2.2em; line-height: 2.2em;">
             <div class="absolute top-0 left-0 w-full h-8 bg-red-100 opacity-50 border-b-2 border-red-200"></div>
-            <div class="absolute top-0 left-10 h-full w-1 bg-red-200 opacity-50"></div>
+            <div class="absolute top-0 left-6 sm:left-10 h-full w-1 bg-red-200 opacity-50"></div>
             
-            <h4 class="font-bold text-gray-500 text-center mb-4 text-xl relative z-10 bg-white/80 inline-block px-4 rounded-full mx-auto left-0 right-0 w-max">
+            <h4 class="font-bold text-gray-500 text-center mb-4 text-lg sm:text-xl relative z-10 bg-white/80 inline-block px-4 rounded-full mx-auto left-0 right-0 w-max">
                 📝 Catatan Hari Ini
             </h4>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg pl-12 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-sm sm:text-lg pl-8 sm:pl-12 relative z-10">
                 <div>
                     <h5 class="font-bold text-yellow-600 underline decoration-wavy">Sakit 🤒</h5>
                     <ul id="sakit-list" class="list-none text-gray-700 font-bold">
@@ -321,7 +332,7 @@
         </div>
 
         <!-- Student List -->
-        <main id="student-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2">
+        <main id="student-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 px-1 sm:px-2">
             <div class="text-center p-8 col-span-full">
                 <p class="text-gray-500 text-xl font-bold animate-pulse">Sedang membuka buku absen...</p>
             </div>
@@ -636,7 +647,7 @@
 
         // Load Students list dynamically from /artifacts/{appId}/public/data/config/students
         async function loadStudentList() {
-            if (!userId) return;
+            if (!db || !userId) return;
             const studentsDocRef = doc(db, `artifacts/${appId}/public/data/config/students`);
             
             // Listen real-time to student changes
@@ -672,27 +683,38 @@
             
             filteredStudents.forEach((student, index) => {
                 const studentStatus = attendanceData[student.id] || 'Hadir';
-                const cardColors = ['#fff', '#fffde7', '#e0f7fa', '#fce4ec'];
+                const cardColors = ['#ffffff', '#fffde7', '#e0f7fa', '#fce4ec'];
                 const bgCard = cardColors[index % cardColors.length];
                 
                 const nameColor = student.gender === 'L' ? 'text-blue-600' : 'text-pink-600';
                 const icon = student.gender === 'L' ? '<i class="fas fa-rocket"></i>' : '<i class="fas fa-seedling"></i>';
                 
+                let statusBadge = '';
+                if (studentStatus === 'Hadir') {
+                    statusBadge = `<span class="bg-green-100 text-green-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border border-green-200"><i class="fas fa-check-circle"></i> Hadir (Otomatis) ✨</span>`;
+                } else if (studentStatus === 'Sakit') {
+                    statusBadge = `<span class="bg-yellow-100 text-yellow-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border border-yellow-200"><i class="fas fa-thermometer"></i> Sakit 🤒</span>`;
+                } else if (studentStatus === 'Izin') {
+                    statusBadge = `<span class="bg-blue-100 text-blue-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border border-blue-200"><i class="fas fa-envelope"></i> Izin 📩</span>`;
+                } else if (studentStatus === 'Alfa') {
+                    statusBadge = `<span class="bg-red-100 text-red-800 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 rounded-full border border-red-200"><i class="fas fa-times-circle"></i> Alfa ❌</span>`;
+                }
+
                 const card = document.createElement('div');
-                card.className = `cute-card p-4 flex flex-col`;
+                card.className = `cute-card p-3 sm:p-4 flex flex-col justify-between min-h-[160px] sm:min-h-[190px]`;
                 card.style.backgroundColor = bgCard;
                 
                 card.innerHTML = `
-                    <div class="flex-grow mb-3 text-center pt-2">
-                        <p class="text-xs text-gray-400 font-bold tracking-widest">NO. ${index + 1}</p>
-                        <p class="font-bold ${nameColor} text-xl leading-tight mt-1" style="font-family: 'Patrick Hand', cursive;">${student.name}</p>
-                        <div class="mt-1 text-gray-400 text-sm">${icon} ${student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</div>
+                    <div class="flex-grow mb-2 text-center pt-1 sm:pt-2">
+                        <p class="text-[10px] text-gray-400 font-bold tracking-widest">NO. ${index + 1}</p>
+                        <p class="font-bold ${nameColor} text-lg sm:text-xl leading-tight mt-0.5 sm:mt-1" style="font-family: 'Patrick Hand', cursive;">${student.name}</p>
+                        <div class="mt-0.5 text-gray-400 text-xs sm:text-sm mb-1.5 sm:mb-2">${icon} ${student.gender === 'L' ? 'Laki-laki' : 'Perempuan'}</div>
+                        <div class="mt-1.5 mb-1">${statusBadge}</div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button data-id="${student.id}" data-status="Hadir" class="status-btn btn-hadir py-1.5 text-sm bg-green-100 text-green-700 hover:bg-green-200 ${studentStatus === 'Hadir' ? 'selected' : ''}">Hadir</button>
-                        <button data-id="${student.id}" data-status="Sakit" class="status-btn btn-sakit py-1.5 text-sm bg-yellow-100 text-yellow-700 hover:bg-yellow-200 ${studentStatus === 'Sakit' ? 'selected' : ''}">Sakit</button>
-                        <button data-id="${student.id}" data-status="Izin" class="status-btn btn-izin py-1.5 text-sm bg-blue-100 text-blue-700 hover:bg-blue-200 ${studentStatus === 'Izin' ? 'selected' : ''}">Izin</button>
-                        <button data-id="${student.id}" data-status="Alfa" class="status-btn btn-alfa py-1.5 text-sm bg-red-100 text-red-700 hover:bg-red-200 ${studentStatus === 'Alfa' ? 'selected' : ''}">Alfa</button>
+                    <div class="grid grid-cols-3 gap-1 sm:gap-1.5">
+                        <button data-id="${student.id}" data-status="Sakit" class="status-btn btn-sakit py-1 sm:py-1.5 text-[11px] sm:text-xs bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200 ${studentStatus === 'Sakit' ? 'selected' : ''}">Sakit</button>
+                        <button data-id="${student.id}" data-status="Izin" class="status-btn btn-izin py-1 sm:py-1.5 text-[11px] sm:text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 ${studentStatus === 'Izin' ? 'selected' : ''}">Izin</button>
+                        <button data-id="${student.id}" data-status="Alfa" class="status-btn btn-alfa py-1 sm:py-1.5 text-[11px] sm:text-xs bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 ${studentStatus === 'Alfa' ? 'selected' : ''}">Alfa</button>
                     </div>
                 `;
                 studentListContainer.appendChild(card);
@@ -768,17 +790,20 @@
             const studentId = parseInt(button.dataset.id);
             const status = button.dataset.status;
             
-            playCuteSound(status);
+            const currentStatus = attendanceData[studentId] || 'Hadir';
 
-            if (status === 'Hadir') {
+            // Logika toggle: Jika status absen yang diklik sama dengan status sekarang, kembalikan ke Hadir
+            if (currentStatus === status) {
                 delete attendanceData[studentId];
+                playCuteSound('Hadir');
             } else {
                 attendanceData[studentId] = status;
+                playCuteSound(status);
             }
             
-            // Instantly render UI locally for buttery smoothness
+            // Instantly render UI secara lokal agar animasi terasa instan dan lancar
             renderStudents(); 
-            // Async background save
+            // Simpan perubahan secara asinkron di Firestore
             await saveAttendanceToFirestore();
         }
         
@@ -793,7 +818,7 @@
         }
         // Save to Firebase Database
         async function saveAttendanceToFirestore() {
-            if (!userId) return;
+            if (!db || !userId) return;
             try {
                 const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2c/${currentDate}`);
                 await setDoc(docRef, { records: attendanceData });
@@ -805,7 +830,7 @@
         }
 
         function loadAttendanceForDate(date) {
-            if (!userId) return;
+            if (!db || !userId) return;
             if (attendanceUnsubscribe) attendanceUnsubscribe();
             const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2c/${date}`);
             attendanceUnsubscribe = onSnapshot(docRef, (docSnap) => {
@@ -851,6 +876,7 @@
             students.sort((a, b) => a.name.localeCompare(b.name));
 
             try {
+                if (!db) throw new Error("Database belum siap");
                 const studentsDocRef = doc(db, `artifacts/${appId}/public/data/config/students`);
                 await setDoc(studentsDocRef, { list: students });
                 newStudentName.value = '';
@@ -863,7 +889,7 @@
         window.deleteStudent = async function(id, name) {
             const confirm = await showCustomModal({
                 title: "Hapus Siswa",
-                message: `Apakah Anda yakin ingin menghapus "${name}" dari daftar Kelas 2B?`,
+                message: `Apakah Anda yakin ingin menghapus "${name}" dari daftar Kelas 2C?`,
                 icon: "🗑️",
                 showCancel: true,
                 confirmText: "Hapus",
@@ -873,6 +899,7 @@
             if (confirm) {
                 students = students.filter(s => s.id !== id);
                 try {
+                    if (!db) throw new Error("Database belum siap");
                     const studentsDocRef = doc(db, `artifacts/${appId}/public/data/config/students`);
                     await setDoc(studentsDocRef, { list: students });
                     showToast(`Siswa "${name}" berhasil dihapus.`, "success");
@@ -905,7 +932,7 @@
         resetStudentsBtn.addEventListener('click', async () => {
             const confirm = await showCustomModal({
                 title: "Reset Daftar Siswa",
-                message: "Apakah Anda yakin ingin mengembalikan daftar siswa ke data bawaan Kelas 2B asli?",
+                message: "Apakah Anda yakin ingin mengembalikan daftar siswa ke data bawaan Kelas 2C asli?",
                 icon: "🔄",
                 showCancel: true,
                 confirmText: "Ya, Reset",
@@ -915,6 +942,7 @@
             if (confirm) {
                 students = [...defaultStudents];
                 try {
+                    if (!db) throw new Error("Database belum siap");
                     const studentsDocRef = doc(db, `artifacts/${appId}/public/data/config/students`);
                     await setDoc(studentsDocRef, { list: students });
                     showToast("Daftar siswa dikembalikan ke bawaan!", "success");
@@ -926,69 +954,95 @@
 
         function openPrintView(content, title) {
             const printWindow = window.open('', '_blank');
-            printWindow.document.write(content);
-            printWindow.document.close();
-            printWindow.document.title = title;
-            printWindow.focus();
-            setTimeout(() => {
-                 printWindow.print();
-                 printWindow.close();
-            }, 500);
+            if (printWindow) {
+                printWindow.document.write(content);
+                printWindow.document.close();
+                printWindow.document.title = title;
+                printWindow.focus();
+                setTimeout(() => {
+                     printWindow.print();
+                     printWindow.close();
+                }, 500);
+            } else {
+                showToast("Gagal membuka jendela cetak. Pastikan pop-up diizinkan oleh browser Anda.", "error");
+            }
         }
 
         function copyToWhatsApp() {
-            const dateFormatted = new Date(currentDate).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            
-            const sakit = students.filter(s => attendanceData[s.id] === 'Sakit').map(s => s.name);
-            const izin = students.filter(s => attendanceData[s.id] === 'Izin').map(s => s.name);
-            const alfa = students.filter(s => attendanceData[s.id] === 'Alfa').map(s => s.name);
-            
-            const totalHadir = students.length - (sakit.length + izin.length + alfa.length);
-            const totalSiswa = students.length;
-
-            let message = `*🌺 LAPORAN ABSENSI KELAS 2C 🌺*\n`;
-            message += `🏫 SDN RAWAENDAH\n`;
-            message += `🗓️ Hari/Tanggal: ${dateFormatted}\n\n`;
-            
-            message += `*Tidak Hadir:*\n`;
-            if (sakit.length > 0) message += `🤒 *Sakit:* \n- ${sakit.join('\n- ')}\n`;
-            if (izin.length > 0) message += `📝 *Izin:* \n- ${izin.join('\n- ')}\n`;
-            if (alfa.length > 0) message += `❌ *Alfa:* \n- ${alfa.join('\n- ')}\n`;
-            
-            if (sakit.length === 0 && izin.length === 0 && alfa.length === 0) {
-                message += "✨ Nihil (Semua Hadir) ✨\n";
-            }
-
-            message += `\n*Rekapitulasi:*\n`;
-            message += `✅ Hadir: ${totalHadir}\n`;
-            message += `🤒 Sakit: ${sakit.length}\n`;
-            message += `📝 Izin: ${izin.length}\n`;
-            message += `❌ Alfa: ${alfa.length}\n`;
-            message += `--------------------------\n`;
-            message += `Total Siswa: ${totalSiswa}\n\n`;
-            message += `Wali Kelas,\n`;
-            message += `*RISA AGUSTIAN, S.Pd*`;
-            
-            const textArea = document.createElement("textarea");
-            textArea.value = message;
-            document.body.appendChild(textArea);
-            textArea.select();
             try {
-                // Clipboard fallback as specified
-                document.execCommand('copy');
+                const dateFormatted = new Date(currentDate + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+                
+                const sakit = students.filter(s => attendanceData[s.id] === 'Sakit').map(s => s.name);
+                const izin = students.filter(s => attendanceData[s.id] === 'Izin').map(s => s.name);
+                const alfa = students.filter(s => attendanceData[s.id] === 'Alfa').map(s => s.name);
+                
+                const totalHadir = students.length - (sakit.length + izin.length + alfa.length);
+                const totalSiswa = students.length;
+
+                let message = `*🌺 LAPORAN ABSENSI KELAS 2C 🌺*\n`;
+                message += `🏫 SDN RAWAENDAH\n`;
+                message += `🗓️ Hari/Tanggal: ${dateFormatted}\n\n`;
+                
+                message += `*Tidak Hadir:*\n`;
+                if (sakit.length > 0) message += `🤒 *Sakit:* \n- ${sakit.join('\n- ')}\n`;
+                if (izin.length > 0) message += `📝 *Izin:* \n- ${izin.join('\n- ')}\n`;
+                if (alfa.length > 0) message += `❌ *Alfa:* \n- ${alfa.join('\n- ')}\n`;
+                
+                if (sakit.length === 0 && izin.length === 0 && alfa.length === 0) {
+                    message += "✨ Nihil (Semua Hadir) ✨\n";
+                }
+
+                message += `\n*Rekapitulasi:*\n`;
+                message += `✅ Hadir: ${totalHadir}\n`;
+                message += `🤒 Sakit: ${sakit.length}\n`;
+                message += `📝 Izin: ${izin.length}\n`;
+                message += `❌ Alfa: ${alfa.length}\n`;
+                message += `--------------------------\n`;
+                message += `Total Siswa: ${totalSiswa}\n\n`;
+                message += `Wali Kelas,\n`;
+                message += `*RISA AGUSTIAN, S.Pd*`;
+                
+                // Secure fallback clipboard copy
+                const textArea = document.createElement("textarea");
+                textArea.value = message;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                let copied = false;
+                try {
+                    copied = document.execCommand('copy');
+                } catch (err) {
+                    console.error('Sistem salin manual error:', err);
+                }
+                document.body.removeChild(textArea);
+
+                // Open WhatsApp Web or Mobile App
+                const waUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+                const waWindow = window.open(waUrl, '_blank');
+
                 const originalText = waBtn.innerHTML;
-                waBtn.innerHTML = '<i class="fas fa-check"></i> Disalin!';
-                waBtn.classList.replace('bg-green-500', 'bg-teal-600');
-                showToast("Format laporan berhasil disalin! Tinggal tempel di WA guru/wali murid.", "success");
-                setTimeout(() => {
-                    waBtn.innerHTML = originalText;
-                    waBtn.classList.replace('bg-teal-600', 'bg-green-500');
-                }, 2000);
-            } catch (err) {
-                console.error('Gagal menyalin:', err);
-                showToast("Gagal menyalin otomatis. Silakan salin manual.", "error");
+                if (copied) {
+                    waBtn.innerHTML = '<i class="fas fa-check"></i> Berhasil Disalin!';
+                    waBtn.classList.replace('bg-green-500', 'bg-teal-600');
+                    
+                    showToast("Format laporan berhasil disalin! Tinggal tempel di obrolan WA Anda.", "success");
+                    
+                    setTimeout(() => {
+                        waBtn.innerHTML = originalText;
+                        waBtn.classList.replace('bg-teal-600', 'bg-green-500');
+                    }, 2000);
+                } else {
+                    // Try to at least open the link if execCommand fails
+                    showToast("Membuka WhatsApp...", "info");
+                }
+            } catch (error) {
+                console.error("Gagal mengeksekusi bagikan WA:", error);
+                showToast("Gagal membagikan laporan.", "error");
             }
-            document.body.removeChild(textArea);
         }
 
         function printOfficialReport() {
@@ -1050,8 +1104,8 @@
                         ${keteranganHtml}
                         <table style="width: 100%; margin-top: 40px; font-size: 11pt; border: none;">
                             <tbody><tr>
-                                <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>HJ. LILIS SUKAESIH, S.Pd.SD.</u></strong><br>NIP. 196807151991032005</td>
-                                <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II C<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. -</td>
+                                <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>DIAN NUROHMAH, S.Pd</u></strong><br>NIP. 197606291999032003</td>
+                                <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II C<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. 198608112025212016</td>
                             </tr></tbody>
                         </table>
                     </div>
@@ -1061,6 +1115,7 @@
         
         // Helper function to fetch all attendance days within the target month
         async function fetchMonthlyData() {
+            if (!db) throw new Error("Database belum diinisialisasi");
             const year = parseInt(yearInput.value);
             const monthIndex = parseInt(monthSelect.value);
             const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
@@ -1085,6 +1140,10 @@
 
         // Preview Monthly data interactively on screen
         previewMonthlyBtn.addEventListener('click', async () => {
+            if (!db) {
+                showToast("Database belum siap", "error");
+                return;
+            }
             previewMonthlyBtn.disabled = true;
             previewMonthlyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
             
@@ -1209,8 +1268,8 @@
                         ${keteranganBulananHtml}
                         <table style="width: 100%; margin-top: 30px; font-size: 10pt; border: none;">
                             <tbody><tr>
-                                <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>HJ. LILIS SUKAESIH, S.Pd.SD.</u></strong><br>NIP. 196807151991032005</td>
-                                <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II C<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. -</td>
+                                <td style="text-align: center; width: 50%;">Mengetahui,<br>Kepala Sekolah SDN RAWAENDAH 01<br><br><br><br><strong><u>DIAN NUROHMAH, S.Pd</u></strong><br>NIP. 197606291999032003</td>
+                                <td style="text-align: center; width: 50%;">Cileungsi, ${todayFormatted}<br>Guru Kelas II C<br><br><br><br><strong><u>RISA AGUSTIAN, S.Pd</u></strong><br>NIP. 198608112025212016</td>
                             </tr></tbody>
                         </table>
                     </body></html>`;
