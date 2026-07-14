@@ -818,14 +818,22 @@
         }
         // Save to Firebase Database
         async function saveAttendanceToFirestore() {
-            if (!db || !userId) return;
+            if (!db || !userId) {
+                showToast("Gagal: Belum terhubung dengan sistem keamanan Firebase.", "error");
+                return;
+            }
             try {
                 const docRef = doc(db, `artifacts/${appId}/public/data/absensi-kelas-2c/${currentDate}`);
                 await setDoc(docRef, { records: attendanceData });
                 showSaveStatus();
             } catch (error) { 
                 console.error("Gagal menyimpan data ke Firestore:", error); 
-                showToast("Gagal menyimpan data absensi ke cloud", "error");
+                // Menampilkan pesan error spesifik agar pengguna tahu apa yang salah di Firebase Console
+                let errorMsg = error.code || error.message;
+                if (error.code === 'permission-denied') {
+                    errorMsg = "Akses Ditolak! Harap periksa tab 'Rules' di Firestore Anda.";
+                }
+                showToast("Gagal menyimpan ke cloud: " + errorMsg, "error");
             }
         }
 
@@ -838,6 +846,11 @@
                 renderStudents();
             }, (error) => {
                 console.error("Gagal memuat data dari Firestore:", error);
+                let errorMsg = error.code || error.message;
+                if (error.code === 'permission-denied') {
+                    errorMsg = "Akses memuat ditolak! Atur Rules Firestore Anda.";
+                }
+                showToast("Gagal memuat absensi: " + errorMsg, "error");
                 attendanceData = {};
                 renderStudents();
             });
