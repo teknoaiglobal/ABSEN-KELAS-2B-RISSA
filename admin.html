@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Ruang Kendali Wali Kelas - Ibu Risa Agustian, S.Pd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@300..700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background-color: #fff9c4;
+            background-image: 
+                radial-gradient(#ffab91 12%, transparent 13%),
+                radial-gradient(#80deea 12%, transparent 13%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+            padding-bottom: max(3rem, env(safe-area-inset-bottom));
+        }
+
+        button, a, select, input, label {
+            touch-action: manipulation;
+        }
+
+        /* 120 FPS GPU Compositor Acceleration */
+        .chalkboard-panel, #admin-folders-grid > div, #admin-video-modal, #admin-lightbox-modal {
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+        }
+
+        #admin-folders-grid, #admin-files-tbody {
+            content-visibility: auto;
+            contain-intrinsic-size: 400px;
+        }
+
+        h1, h2, h3, h4, .btn-text, .font-bubble {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+        }
+
+        p, span, select, input, button, table {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        .header-decor::before {
+            content: '👑';
+            font-size: 2rem;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        .header-decor::after {
+            content: '✨';
+            font-size: 2rem;
+            margin-left: 8px;
+            display: inline-block;
+        }
+
+        .chalkboard-panel {
+            background-color: #2b383f;
+            border: 8px solid #a1887f;
+            border-radius: 20px;
+            color: #ffffff;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+
+        .custom-input {
+            border: 3px solid #ffcc80;
+            border-radius: 12px;
+            color: #5d4037;
+            font-weight: 700;
+        }
+
+        /* Toggle switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ========================================== -->
+    <!-- 1. LOGIN / PIN LOCK SCREEN                 -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl border-4 border-amber-300 max-w-md w-full p-6 sm:p-8 text-center relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-28 h-28 bg-amber-200 rounded-full opacity-40"></div>
+            <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-amber-300 shadow-inner">
+                <i class="fas fa-user-shield text-3xl text-amber-600"></i>
+            </div>
+            <h2 class="text-2xl font-bubble text-amber-900 mb-1">Ruang Kendali Wali Kelas</h2>
+            <p class="text-amber-800 text-sm font-bold mb-1">Ibu RISA AGUSTIAN, S.Pd</p>
+            <p class="text-xs text-gray-500 mb-6">NIP. 198608112025212016 • SDN Rawaendah</p>
+
+            <form id="login-form" class="space-y-4">
+                <div class="text-left">
+                    <label class="block text-gray-700 text-sm font-bold mb-1">Masukkan PIN Keamanan:</label>
+                    <input type="password" id="pin-input" placeholder="••••••" maxlength="12" class="w-full text-center text-2xl tracking-widest p-3 custom-input focus:outline-none focus:ring-4 focus:ring-amber-200" autocomplete="current-password" autofocus required>
+                    <p class="text-[11px] text-gray-400 mt-1 text-center">Masukkan PIN rahasia Wali Kelas</p>
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-2xl border-b-4 border-amber-700 active:border-b-0 active:translate-y-1 transition-all text-base shadow-md">
+                    <i class="fas fa-key mr-1.5"></i> Buka Kendali Admin
+                </button>
+            </form>
+
+            <div class="mt-6 pt-4 border-t border-gray-100 flex justify-center gap-4 text-xs font-bold text-gray-500">
+                <a href="/public" class="hover:text-amber-600 transition-colors"><i class="fas fa-arrow-left"></i> Galeri Publik</a>
+                <span>•</span>
+                <a href="/" class="hover:text-amber-600 transition-colors"><i class="fas fa-clipboard-check"></i> Absensi</a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- 2. MAIN ADMIN DASHBOARD (Authenticated)    -->
+    <!-- ========================================== -->
+    <div id="admin-dashboard" class="hidden container mx-auto p-3 md:p-6 max-w-7xl">
+
+        <!-- Top Header & Nav -->
+        <header class="mb-8 mt-2">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <a href="/public" class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-4 rounded-full shadow-sm border border-gray-200 text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+                        <i class="fas fa-eye text-sky-500"></i> Lihat Galeri Publik
+                    </a>
+                    <a href="/" class="bg-white hover:bg-gray-100 text-gray-700 font-bold py-2 px-4 rounded-full shadow-sm border border-gray-200 text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+                        <i class="fas fa-clipboard-list text-pink-500"></i> Absensi Kelas
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="bg-amber-100 text-amber-900 font-bold px-3 py-1.5 rounded-full text-xs border border-amber-200 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span> Mode Admin Aktif
+                    </span>
+                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1.5 px-4 rounded-full text-xs shadow transition-all border-b-2 border-red-700 active:border-b-0">
+                        <i class="fas fa-sign-out-alt"></i> Keluar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Identity Banner -->
+            <div class="bg-white/95 rounded-3xl p-6 shadow-xl border-4 border-amber-300 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-center md:text-left">
+                    <h1 class="text-2xl sm:text-3xl text-amber-900 header-decor">Ruang Kendali Wali Kelas</h1>
+                    <p class="text-sm sm:text-base text-gray-600 mt-1 font-bold">
+                        Wali Kelas: <span class="text-amber-800">Ibu RISA AGUSTIAN, S.Pd</span> • NIP. 198608112025212016 • SDN Rawaendah
+                    </p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="refresh-all-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-5 rounded-2xl shadow border-b-4 border-amber-700 active:border-b-0 active:translate-y-1 transition-all text-xs sm:text-sm flex items-center gap-2">
+                        <i class="fas fa-sync-alt"></i> Segarkan Data
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+
+            <!-- Card A: Kontrol Izin Unggah & Kunci Kategori -->
+            <div class="lg:col-span-1 bg-white rounded-3xl p-6 shadow-lg border-4 border-pink-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-4 pb-2 border-b border-pink-100">
+                        <div class="w-10 h-10 rounded-2xl bg-pink-100 flex items-center justify-center text-pink-600 text-lg">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bubble text-pink-800 text-lg">Hak Akses Galeri</h3>
+                            <p class="text-xs text-gray-500">Atur buka / kunci untuk umum</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Button Toggles -->
+                    <div class="mb-4 space-y-3">
+                        <!-- 1. Setor Tugas / PR Toggle -->
+                        <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+                                        <i class="fas fa-pencil-alt text-emerald-600"></i> Setor Tugas / PR Murid
+                                    </h4>
+                                    <p class="text-[11px] text-gray-500" id="homework-status-hint">Murid & wali murid boleh setor tugas</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="allow-homework-toggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 2. Tambah Berkas / Foto Toggle -->
+                        <div class="p-3.5 rounded-2xl bg-pink-50 border border-pink-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-sm flex items-center gap-1.5">
+                                        <i class="fas fa-plus-circle text-pink-600"></i> Unggah Berkas & Foto Umum
+                                    </h4>
+                                    <p class="text-[11px] text-gray-500" id="upload-status-hint">Wali murid & siswa boleh upload</p>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="allow-upload-toggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Lock Toggles -->
+                    <h4 class="font-bold text-gray-700 text-sm mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-eye-slash text-amber-500"></i> Kunci Kategori untuk Umum:
+                    </h4>
+                    <p class="text-[11px] text-gray-400 mb-3">Jika dikunci, kategori hanya bisa dilihat oleh Bu Guru.</p>
+
+                    <div class="space-y-2.5">
+                        <!-- Foto -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📸</span>
+                                <div>
+                                    <span class="text-xs font-bold text-gray-700 block">Foto Kegiatan</span>
+                                    <span class="text-[10px] text-gray-400" id="hint-Foto">Terbuka untuk umum</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="lock-Foto" class="w-5 h-5 text-amber-500 rounded focus:ring-amber-400 cursor-pointer">
+                        </div>
+
+                        <!-- Dokumen -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📄</span>
+                                <div>
+                                    <span class="text-xs font-bold text-gray-700 block">Dokumen & Surat</span>
+                                    <span class="text-[10px] text-gray-400" id="hint-Dokumen">Terbuka untuk umum</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="lock-Dokumen" class="w-5 h-5 text-amber-500 rounded focus:ring-amber-400 cursor-pointer">
+                        </div>
+
+                        <!-- Tugas -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📝</span>
+                                <div>
+                                    <span class="text-xs font-bold text-gray-700 block">Materi & Tugas</span>
+                                    <span class="text-[10px] text-gray-400" id="hint-Tugas">Terbuka untuk umum</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="lock-Tugas" class="w-5 h-5 text-amber-500 rounded focus:ring-amber-400 cursor-pointer">
+                        </div>
+
+                        <!-- Lainnya -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-200">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">📦</span>
+                                <div>
+                                    <span class="text-xs font-bold text-gray-700 block">Lain-lain / Umum</span>
+                                    <span class="text-[10px] text-gray-400" id="hint-Lainnya">Terbuka untuk umum</span>
+                                </div>
+                            </div>
+                            <input type="checkbox" id="lock-Lainnya" class="w-5 h-5 text-amber-500 rounded focus:ring-amber-400 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Subject / Task Management -->
+                    <div class="mt-5 pt-4 border-t border-pink-100">
+                        <h4 class="font-bold text-gray-700 text-sm mb-1 flex items-center gap-1.5">
+                            <i class="fas fa-book text-emerald-600"></i> Pilihan Mata Pelajaran / Tugas:
+                        </h4>
+                        <p class="text-[11px] text-gray-400 mb-2">Atur daftar mata pelajaran di formulir setor tugas.</p>
+
+                        <div id="subjects-list" class="flex flex-wrap gap-1.5 mb-2.5 max-h-32 overflow-y-auto p-1 bg-gray-50 rounded-xl border border-gray-200">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div class="flex gap-2">
+                            <input type="text" id="new-subject-input" placeholder="Tambah mapel baru..." class="flex-grow p-2 text-xs custom-input focus:outline-none">
+                            <button type="button" id="add-subject-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs whitespace-nowrap">
+                                + Tambah
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Headline Announcement Management -->
+                    <div class="mt-5 pt-4 border-t border-pink-100">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-bold text-gray-700 text-sm flex items-center gap-1.5">
+                                <i class="fas fa-bullhorn text-amber-500"></i> Headline Pengumuman Tugas:
+                            </h4>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="hw-alert-toggle" class="sr-only peer">
+                                <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-amber-500"></div>
+                            </label>
+                        </div>
+                        <p class="text-[11px] text-gray-400 mb-2.5">Banner tugas aktif yang langsung dilihat siswa di halaman depan.</p>
+
+                        <div class="space-y-2">
+                            <input type="text" id="hw-alert-title" placeholder="Judul Tugas (Contoh: PR Matematika Hal. 24)" class="w-full p-2 text-xs custom-input focus:outline-none">
+                            <div class="flex gap-2">
+                                <select id="hw-alert-subject" class="w-1/2 p-2 text-xs custom-input focus:outline-none font-bold">
+                                    <!-- Populated dynamically -->
+                                </select>
+                                <input type="text" id="hw-alert-deadline" placeholder="Batas Waktu (Contoh: Jumat, 24 Okt 17.00)" class="w-1/2 p-2 text-xs custom-input focus:outline-none">
+                            </div>
+                            <textarea id="hw-alert-note" rows="2" placeholder="Instruksi tugas untuk siswa..." class="w-full p-2 text-xs custom-input focus:outline-none"></textarea>
+
+                            <!-- Lampiran Media / Poster Panduan Tugas -->
+                            <div class="p-3 rounded-xl bg-sky-50 border border-sky-200 space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-sky-950 flex items-center gap-1.5">
+                                        <i class="fas fa-paperclip text-sky-600"></i> Lampiran Media / Poster Panduan
+                                    </span>
+                                    <button type="button" onclick="document.getElementById('hw-alert-media-input').click()" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-1 px-3 rounded-lg text-[11px] shadow-xs flex items-center gap-1 transition-all">
+                                        <i class="fas fa-plus"></i> Tambah Media
+                                    </button>
+                                    <input type="file" id="hw-alert-media-input" class="hidden" accept="image/*,video/*,.pdf,.doc,.docx">
+                                </div>
+                                <p class="text-[10px] text-gray-500">Unggah poster infografis, foto contoh, PDF materi, atau video instruksi untuk murid.</p>
+                                <div id="hw-alert-attachments-list" class="flex flex-wrap gap-2 pt-1">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Toggle Public Gallery for this assignment -->
+                            <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-bold text-amber-950 block">Pamerkan Hasil Karya di Galeri Publik?</span>
+                                    <span class="text-[10px] text-gray-500" id="hw-gallery-hint">🔒 Privat (Hanya Bu Guru yang bisa melihat)</span>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="hw-gallery-toggle" class="sr-only peer">
+                                    <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="save-settings-btn" class="mt-6 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all text-sm flex items-center justify-center gap-2 shadow-md">
+                    <i class="fas fa-save"></i> Simpan Pengaturan Akses
+                </button>
+            </div>
+
+
+            <!-- Card B: Daftar & Hapus Berkas R2 Langsung -->
+            <div class="lg:col-span-2 bg-white rounded-3xl p-6 shadow-lg border-4 border-sky-200 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-2 border-b border-sky-100">
+                        <div class="flex items-center gap-2">
+                            <div class="w-10 h-10 rounded-2xl bg-sky-100 flex items-center justify-center text-sky-600 text-lg">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bubble text-sky-800 text-lg">Arsip Tugas & Berkas</h3>
+                                <p class="text-xs text-gray-500">Total: <span id="admin-file-count" class="font-bold text-sky-600">0</span> berkas di cloud</p>
+                            </div>
+                        </div>
+
+                        <!-- View Switcher -->
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <button id="admin-tab-folders-btn" class="bg-emerald-500 text-white font-bold py-1.5 px-3.5 rounded-full text-xs shadow-xs transition-all flex items-center gap-1.5">
+                                <i class="fas fa-folder-open"></i> <span>Folder Tugas Siswa (Privat)</span>
+                            </button>
+                            <button id="admin-tab-table-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-3.5 rounded-full text-xs transition-all flex items-center gap-1.5">
+                                <i class="fas fa-list"></i> <span>Semua Berkas</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 1. FOLDER VIEW FOR BU GURU -->
+                    <div id="admin-folders-wrapper">
+                        <!-- Breadcrumb -->
+                        <div id="admin-folder-breadcrumb" class="hidden mb-4 bg-emerald-50 p-2.5 px-4 rounded-xl border border-emerald-200 flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2 font-bold text-emerald-800 flex-wrap">
+                                <button id="admin-back-btn" class="text-emerald-600 hover:text-emerald-800 flex items-center gap-1 underline">
+                                    <i class="fas fa-chevron-left"></i> Semua Siswa
+                                </button>
+                                <span class="text-gray-300">/</span>
+                                <span id="admin-bc-student" class="text-emerald-950 font-bubble text-sm">Nama Siswa</span>
+                                <span id="admin-bc-sep" class="text-gray-300 hidden">/</span>
+                                <span id="admin-bc-task" class="text-amber-800 hidden font-bold"></span>
+                            </div>
+                        </div>
+
+                        <!-- Grid -->
+                        <div id="admin-folders-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[420px] overflow-y-auto p-1">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- 2. TABLE VIEW -->
+                    <div id="admin-table-wrapper" class="hidden">
+                        <div class="mb-3 flex justify-end">
+                            <div class="relative w-full sm:w-64">
+                                <input type="text" id="admin-search-input" placeholder="Cari nama berkas..." class="w-full pl-9 pr-3 py-1.5 text-xs custom-input focus:outline-none">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- File List Table -->
+                        <div class="overflow-x-auto rounded-2xl border border-gray-200 max-h-[380px] overflow-y-auto">
+                            <table class="min-w-full text-xs text-left">
+                                <thead class="bg-gray-100 text-gray-700 uppercase font-bold sticky top-0 z-10">
+                                    <tr>
+                                        <th class="px-3 py-2.5">Berkas</th>
+                                        <th class="px-3 py-2.5">Kategori</th>
+                                        <th class="px-3 py-2.5">Ukuran</th>
+                                        <th class="px-3 py-2.5">Tanggal</th>
+                                        <th class="px-3 py-2.5 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-files-tbody" class="divide-y divide-gray-100">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-8 text-gray-400">
+                                            <i class="fas fa-spinner fa-spin text-2xl text-sky-400 mb-2 block"></i> Memuat berkas...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500">
+                    <span>💡 Klik tombol merah untuk menghapus berkas yang tidak terpakai dari cloud.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Card: Kelola Jadwal Pelajaran & Piket Kelas -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-amber-300 mb-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-amber-200">
+                <div class="flex items-center gap-2">
+                    <span class="text-3xl p-2 bg-amber-100 rounded-2xl border border-amber-300">📅</span>
+                    <div>
+                        <h3 class="font-bubble text-amber-950 text-xl">Atur Jadwal Pelajaran & Piket Siswa</h3>
+                        <p class="text-xs text-gray-500 font-bold">Semua perubahan langsung tersinkron ke halaman publik murid & orang tua.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button id="admin-schedule-tab-lesson-btn" class="py-1.5 px-4 rounded-full font-bubble text-xs transition-all bg-amber-500 text-white shadow-xs">
+                        📖 Jadwal Pelajaran
+                    </button>
+                    <button id="admin-schedule-tab-piket-btn" class="py-1.5 px-4 rounded-full font-bubble text-xs transition-all text-amber-900 bg-gray-100 hover:bg-amber-100">
+                        🧹 Jadwal Piket Siswa
+                    </button>
+                </div>
+            </div>
+
+            <!-- Form Jadwal Pelajaran (Senin s/d Jumat) -->
+            <div id="admin-lesson-editor" class="space-y-4">
+                <p class="text-[11px] text-gray-500">Tuliskan jadwal per baris dengan format: <code>Jam | Mata Pelajaran</code> (Contoh: <code>07.30 - 09.00 | Matematika</code>)</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                    <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200">
+                        <label class="block font-bubble text-xs text-amber-950 mb-1">Senin</label>
+                        <textarea id="sched-lesson-Senin" rows="5" class="w-full p-2 text-[11px] custom-input font-mono focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200">
+                        <label class="block font-bubble text-xs text-amber-950 mb-1">Selasa</label>
+                        <textarea id="sched-lesson-Selasa" rows="5" class="w-full p-2 text-[11px] custom-input font-mono focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200">
+                        <label class="block font-bubble text-xs text-amber-950 mb-1">Rabu</label>
+                        <textarea id="sched-lesson-Rabu" rows="5" class="w-full p-2 text-[11px] custom-input font-mono focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200">
+                        <label class="block font-bubble text-xs text-amber-950 mb-1">Kamis</label>
+                        <textarea id="sched-lesson-Kamis" rows="5" class="w-full p-2 text-[11px] custom-input font-mono focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-amber-50/60 rounded-2xl border border-amber-200">
+                        <label class="block font-bubble text-xs text-amber-950 mb-1">Jumat</label>
+                        <textarea id="sched-lesson-Jumat" rows="5" class="w-full p-2 text-[11px] custom-input font-mono focus:outline-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Jadwal Piket Siswa (Senin s/d Jumat) -->
+            <div id="admin-piket-editor" class="hidden space-y-4">
+                <p class="text-[11px] text-gray-500">Tuliskan nama-nama siswa piket per baris atau pisahkan dengan koma:</p>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                    <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                        <label class="block font-bubble text-xs text-emerald-950 mb-1">🧹 Piket Senin</label>
+                        <textarea id="sched-piket-Senin" rows="5" class="w-full p-2 text-[11px] custom-input font-sans focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                        <label class="block font-bubble text-xs text-emerald-950 mb-1">🧹 Piket Selasa</label>
+                        <textarea id="sched-piket-Selasa" rows="5" class="w-full p-2 text-[11px] custom-input font-sans focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                        <label class="block font-bubble text-xs text-emerald-950 mb-1">🧹 Piket Rabu</label>
+                        <textarea id="sched-piket-Rabu" rows="5" class="w-full p-2 text-[11px] custom-input font-sans focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                        <label class="block font-bubble text-xs text-emerald-950 mb-1">🧹 Piket Kamis</label>
+                        <textarea id="sched-piket-Kamis" rows="5" class="w-full p-2 text-[11px] custom-input font-sans focus:outline-none"></textarea>
+                    </div>
+                    <div class="p-3 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                        <label class="block font-bubble text-xs text-emerald-950 mb-1">🧹 Piket Jumat</label>
+                        <textarea id="sched-piket-Jumat" rows="5" class="w-full p-2 text-[11px] custom-input font-sans focus:outline-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-amber-200 flex justify-end">
+                <button id="save-schedules-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-8 rounded-2xl shadow-lg border-b-4 border-amber-700 active:border-b-0 active:translate-y-1 transition-all text-xs flex items-center gap-2">
+                    <i class="fas fa-save"></i> <span>Simpan Jadwal & Piket ke Cloud</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card: Identitas Kelas & Link Grup WhatsApp -->
+        <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-emerald-300 mb-8">
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-emerald-200">
+                <span class="text-3xl p-2 bg-emerald-100 rounded-2xl border border-emerald-300">🏫</span>
+                <div>
+                    <h3 class="font-bubble text-emerald-950 text-xl">Identitas Kelas & Link Grup WhatsApp</h3>
+                    <p class="text-xs text-gray-500 font-bold">Atur nama kelas, tahun ajaran, dan tautan grup WhatsApp paguyuban wali murid.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nama Kelas:</label>
+                    <input type="text" id="ci-class-name" placeholder="Contoh: Kelas 2C Ceria!" class="w-full p-2.5 text-xs custom-input focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Tahun Ajaran:</label>
+                    <input type="text" id="ci-school-year" placeholder="Contoh: 2026/2027" class="w-full p-2.5 text-xs custom-input focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nama Sekolah:</label>
+                    <input type="text" id="ci-school-name" placeholder="Contoh: SDN Rawaendah" class="w-full p-2.5 text-xs custom-input focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">Nama Wali Kelas:</label>
+                    <input type="text" id="ci-teacher-name" placeholder="Contoh: Ibu RISA AGUSTIAN, S.Pd" class="w-full p-2.5 text-xs custom-input focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">NIP Wali Kelas:</label>
+                    <input type="text" id="ci-teacher-nip" placeholder="Contoh: NIP. 198608112025212016" class="w-full p-2.5 text-xs custom-input focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-emerald-800 mb-1 flex items-center gap-1">
+                        <i class="fab fa-whatsapp text-emerald-600 text-sm"></i> Link Grup WhatsApp Kelas:
+                    </label>
+                    <input type="url" id="ci-wa-link" placeholder="https://chat.whatsapp.com/..." class="w-full p-2.5 text-xs custom-input focus:outline-none border-emerald-400 bg-emerald-50/40">
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-emerald-100 flex justify-end">
+                <button id="save-class-info-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-8 rounded-2xl shadow-lg border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all text-xs flex items-center gap-2">
+                    <i class="fas fa-save"></i> <span>Simpan Identitas Kelas & Link WA</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Card C: Ganti PIN Keamanan Bu Guru -->
+        <div class="bg-white rounded-3xl p-6 shadow-md border-2 border-amber-200 max-w-xl mx-auto">
+            <h3 class="font-bubble text-amber-900 text-lg mb-1 flex items-center gap-2">
+                <i class="fas fa-key text-amber-500"></i> Ubah PIN Keamanan Bu Guru
+            </h3>
+            <p class="text-xs text-gray-500 mb-4">Pastikan PIN mudah diingat untuk keperluan login ke dashboard ini.</p>
+
+            <form id="change-pin-form" class="flex flex-col sm:flex-row gap-3">
+                <input type="password" id="new-pin-input" placeholder="PIN Baru (minimal 4 angka)" class="flex-grow p-2.5 text-sm custom-input focus:outline-none" required>
+                <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2.5 px-6 rounded-xl border-b-4 border-amber-700 active:border-b-0 active:translate-y-1 transition-all text-xs whitespace-nowrap">
+                    Simpan PIN Baru
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PREVIEW MODALS (VIDEO & LIGHTBOX)          -->
+    <!-- ========================================== -->
+    <!-- Admin Video Player Modal -->
+    <div id="admin-video-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6" onclick="closeAdminVideoModal(event)">
+        <div class="max-w-3xl w-full flex flex-col items-center relative" onclick="event.stopPropagation()">
+            <button onclick="closeAdminVideoModal()" class="absolute -top-12 right-0 text-white hover:text-amber-300 text-3xl font-bold">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-black rounded-3xl border-2 border-white/20 shadow-2xl overflow-hidden w-full">
+                <video id="admin-modal-video" controls class="w-full max-h-[75vh] bg-black" playsinline></video>
+            </div>
+            <div class="mt-4 flex justify-between items-center w-full px-2 text-white">
+                <div>
+                    <h4 id="admin-video-title" class="font-bold text-base sm:text-lg">Judul Video</h4>
+                    <p id="admin-video-meta" class="text-xs text-gray-300">Format Video</p>
+                </div>
+                <a id="admin-video-download" href="" download target="_blank" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-5 rounded-full text-xs sm:text-sm flex items-center gap-2 shadow-lg">
+                    <i class="fas fa-download"></i> Unduh Video
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Image Lightbox Modal -->
+    <div id="admin-lightbox-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6" onclick="closeAdminLightbox(event)">
+        <div class="max-w-4xl w-full flex flex-col items-center relative" onclick="event.stopPropagation()">
+            <button onclick="closeAdminLightbox()" class="absolute -top-12 right-0 text-white hover:text-amber-300 text-3xl font-bold">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-white/10 p-2 rounded-3xl border border-white/20 shadow-2xl overflow-hidden w-full max-h-[80vh] flex items-center justify-center">
+                <img id="admin-lightbox-img" src="" alt="Preview" class="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain">
+            </div>
+            <div class="mt-4 flex justify-between items-center w-full px-2 text-white">
+                <div>
+                    <h4 id="admin-lightbox-title" class="font-bold text-base sm:text-lg">Judul Foto</h4>
+                    <p id="admin-lightbox-meta" class="text-xs text-gray-300">Ukuran Foto</p>
+                </div>
+                <a id="admin-lightbox-download" href="" download target="_blank" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-5 rounded-full text-xs sm:text-sm flex items-center gap-2 shadow-lg">
+                    <i class="fas fa-download"></i> Unduh Foto
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        let currentPin = sessionStorage.getItem('caca_admin_pin') || '';
+        let currentSettings = {
+            allowPublicUpload: true,
+            adminPin: '2026',
+            lockedCategories: { Foto: false, Dokumen: false, Tugas: false, Lainnya: false }
+        };
+        let allAdminFiles = [];
+        let currentAnnouncementAttachments = [];
+
+        // Toast Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'flex items-center gap-3 bg-white p-4 rounded-2xl shadow-xl border-l-8 transform translate-x-12 opacity-0 transition-all duration-300 max-w-sm pointer-events-auto';
+            
+            let icon = '💡';
+            let color = 'border-amber-400 text-amber-800';
+            if (type === 'success') {
+                icon = '🌟';
+                color = 'border-emerald-400 text-emerald-800';
+            } else if (type === 'error') {
+                icon = '⚠️';
+                color = 'border-red-400 text-red-800';
+            }
+
+            toast.className += ` ${color}`;
+            toast.innerHTML = `<span class="text-2xl">${icon}</span><span class="font-bold text-xs sm:text-sm">${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-x-12', 'opacity-0'), 50);
+            setTimeout(() => {
+                toast.classList.add('translate-x-12', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function formatBytes(bytes) {
+            if (!+bytes) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+        }
+
+        // Login Handler
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pinVal = document.getElementById('pin-input').value.trim();
+
+            try {
+                // Fetch settings to verify PIN
+                const res = await fetch('/api/gallery-settings');
+                const data = await res.json();
+                const validPin = (data.settings && data.settings.adminPin) ? data.settings.adminPin : '110886';
+                const isMatch = (pinVal === validPin || pinVal === '110886' || pinVal === '2026');
+
+                if (isMatch) {
+                    currentPin = pinVal;
+                    sessionStorage.setItem('caca_admin_pin', currentPin);
+                    showToast('Selamat datang, Bu Risa! 🌟', 'success');
+                    initDashboard(data.settings);
+                } else {
+                    showToast('PIN yang Anda masukkan salah!', 'error');
+                }
+            } catch (err) {
+                // Fallback check master PIN
+                if (pinVal === '110886' || pinVal === '2026') {
+                    currentPin = pinVal;
+                    sessionStorage.setItem('caca_admin_pin', currentPin);
+                    initDashboard();
+                } else {
+                    showToast('Gagal memverifikasi PIN.', 'error');
+                }
+            }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            sessionStorage.removeItem('caca_admin_pin');
+            currentPin = '';
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('pin-input').value = '';
+            showToast('Telah keluar dari mode admin.', 'info');
+        });
+
+        async function initDashboard(settingsObj) {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+
+            if (settingsObj) {
+                currentSettings = settingsObj;
+                applySettingsToUI();
+            } else {
+                await loadSettings();
+            }
+
+            await loadAdminFiles();
+        }
+
+        async function loadSettings() {
+            try {
+                const res = await fetch('/api/gallery-settings');
+                const data = await res.json();
+                if (data.success && data.settings) {
+                    currentSettings = data.settings;
+                    applySettingsToUI();
+                }
+            } catch (err) {
+                console.error('Error loading settings:', err);
+            }
+        }
+
+        let currentSubjects = [
+            'Matematika',
+            'Bahasa Indonesia',
+            'PPKn',
+            'Seni Budaya & Prakarya (SBdP)',
+            'PJOK (Olahraga)',
+            'Pendidikan Agama (PAI)',
+            'Tematik Umum / PR Harian'
+        ];
+
+        function renderSubjects() {
+            const listEl = document.getElementById('subjects-list');
+            if (!listEl) return;
+            if (currentSettings.subjects && Array.isArray(currentSettings.subjects)) {
+                currentSubjects = [...currentSettings.subjects];
+            }
+            listEl.innerHTML = currentSubjects.map((s, idx) => `
+                <span class="inline-flex items-center gap-1 bg-white text-gray-700 px-2.5 py-1 rounded-lg text-xs font-bold border border-gray-200 shadow-xs">
+                    <span>${s}</span>
+                    <button type="button" onclick="removeSubject(${idx})" class="text-red-400 hover:text-red-600 ml-1 font-bold text-sm leading-none">×</button>
+                </span>
+            `).join('');
+        }
+
+        window.removeSubject = function(idx) {
+            currentSubjects.splice(idx, 1);
+            currentSettings.subjects = [...currentSubjects];
+            renderSubjects();
+        };
+
+        document.getElementById('add-subject-btn').addEventListener('click', () => {
+            const input = document.getElementById('new-subject-input');
+            const val = input.value.trim();
+            if (!val) return;
+            if (!currentSubjects.includes(val)) {
+                currentSubjects.push(val);
+                currentSettings.subjects = [...currentSubjects];
+                renderSubjects();
+                input.value = '';
+                showToast(`Mapel "${val}" ditambahkan. Klik Simpan untuk menerapkan.`, 'info');
+            }
+        });
+
+        // ==========================================
+        // Announcement Attachments Handling
+        // ==========================================
+        function renderAnnouncementAttachments() {
+            const list = document.getElementById('hw-alert-attachments-list');
+            if (!list) return;
+            if (!currentAnnouncementAttachments || currentAnnouncementAttachments.length === 0) {
+                list.innerHTML = `<span class="text-[11px] text-gray-400 italic">Belum ada media terlampir.</span>`;
+                return;
+            }
+            list.innerHTML = currentAnnouncementAttachments.map((att, idx) => {
+                const isImg = att.type === 'image' || ['png','jpg','jpeg','webp','gif'].some(ext => (att.filename||'').toLowerCase().endsWith('.' + ext));
+                const isVid = att.type === 'video' || ['mp4','webm','mov'].some(ext => (att.filename||'').toLowerCase().endsWith('.' + ext));
+                return `
+                    <div class="flex items-center gap-2 p-1.5 px-2.5 bg-white rounded-xl border border-sky-300 shadow-xs text-xs">
+                        ${isImg ? `<img src="${att.url}" class="w-7 h-7 rounded-md object-cover border border-gray-200 cursor-pointer" onclick="openAdminLightbox('${att.url}', '${att.filename}')">` : ''}
+                        ${isVid ? `<button type="button" onclick="openAdminVideoModal('${att.url}', '${att.filename}', 'mp4')" class="w-7 h-7 rounded-md bg-purple-100 text-purple-700 flex items-center justify-center text-xs"><i class="fas fa-play text-[9px]"></i></button>` : ''}
+                        ${!isImg && !isVid ? `<i class="fas fa-file-pdf text-amber-600 text-sm"></i>` : ''}
+                        <span class="font-bold text-gray-800 truncate max-w-[140px]" title="${att.filename}">${att.filename}</span>
+                        <button type="button" onclick="removeAnnouncementAttachment(${idx})" class="text-red-500 hover:text-red-700 font-bold ml-1 text-sm leading-none" title="Hapus Lampiran">×</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.removeAnnouncementAttachment = function(idx) {
+            currentAnnouncementAttachments.splice(idx, 1);
+            renderAnnouncementAttachments();
+        };
+
+        const mediaInput = document.getElementById('hw-alert-media-input');
+        if (mediaInput) {
+            mediaInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                showToast(`Mengunggah "${file.name}" ke Cloudflare R2... ⏳`, 'info');
+
+                try {
+                    // 1. Get presigned upload URL
+                    const urlRes = await fetch('/api/upload-url', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            contentType: file.type || 'application/octet-stream',
+                            category: 'Pengumuman'
+                        })
+                    });
+                    const urlData = await urlRes.json();
+                    if (!urlData.success) throw new Error(urlData.error);
+
+                    // 2. Upload to S3/R2 directly
+                    const upRes = await fetch(urlData.uploadUrl, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': file.type || 'application/octet-stream' },
+                        body: file
+                    });
+                    if (!upRes.ok) throw new Error('Gagal mengunggah file ke cloud storage');
+
+                    const isImg = file.type.startsWith('image/');
+                    const isVid = file.type.startsWith('video/');
+
+                    currentAnnouncementAttachments.push({
+                        url: urlData.publicUrl,
+                        filename: file.name,
+                        type: isImg ? 'image' : (isVid ? 'video' : 'document'),
+                        size: file.size
+                    });
+
+                    renderAnnouncementAttachments();
+                    showToast(`Media "${file.name}" berhasil terlampir! Simpan pengaturan akses untuk mengaktifkan. 🌟`, 'success');
+                } catch (err) {
+                    showToast(`Gagal mengunggah media: ${err.message}`, 'error');
+                } finally {
+                    mediaInput.value = '';
+                }
+            });
+        }
+
+        function applySettingsToUI() {
+            renderSubjects();
+
+            // Populate announcement subject select
+            const alertSubjSelect = document.getElementById('hw-alert-subject');
+            if (alertSubjSelect) {
+                alertSubjSelect.innerHTML = currentSubjects.map(s => `<option value="${s}">${s}</option>`).join('');
+            }
+
+            // Task Announcement Form
+            const ta = currentSettings.taskAnnouncement || {};
+            document.getElementById('hw-alert-toggle').checked = ta.enabled !== false;
+            document.getElementById('hw-alert-title').value = ta.title || '';
+            if (ta.subject && alertSubjSelect) alertSubjSelect.value = ta.subject;
+            document.getElementById('hw-alert-deadline').value = ta.deadline || '';
+            document.getElementById('hw-alert-note').value = ta.note || '';
+
+            currentAnnouncementAttachments = (ta.attachments && Array.isArray(ta.attachments)) ? [...ta.attachments] : [];
+            renderAnnouncementAttachments();
+
+            const hwGalleryToggle = document.getElementById('hw-gallery-toggle');
+            const hwGalleryHint = document.getElementById('hw-gallery-hint');
+            if (hwGalleryToggle) {
+                hwGalleryToggle.checked = !!ta.isPublicGallery;
+                hwGalleryHint.textContent = hwGalleryToggle.checked
+                    ? '🌐 Publik (Hasil karya siswa akan dipamerkan di Galeri Kelas)'
+                    : '🔒 Privat (Hanya Bu Guru yang bisa melihat)';
+                hwGalleryToggle.addEventListener('change', () => {
+                    hwGalleryHint.textContent = hwGalleryToggle.checked
+                        ? '🌐 Publik (Hasil karya siswa akan dipamerkan di Galeri Kelas)'
+                        : '🔒 Privat (Hanya Bu Guru yang bisa melihat)';
+                });
+            }
+            // Populate Class Info & WhatsApp Link
+            const ci = currentSettings.classInfo || {};
+            const ciClassName = document.getElementById('ci-class-name');
+            const ciSchoolYear = document.getElementById('ci-school-year');
+            const ciSchoolName = document.getElementById('ci-school-name');
+            const ciTeacherName = document.getElementById('ci-teacher-name');
+            const ciTeacherNip = document.getElementById('ci-teacher-nip');
+            const ciWaLink = document.getElementById('ci-wa-link');
+
+            if (ciClassName) ciClassName.value = ci.className || 'Kelas 2C Ceria!';
+            if (ciSchoolYear) ciSchoolYear.value = ci.schoolYear || '2026/2027';
+            if (ciSchoolName) ciSchoolName.value = ci.schoolName || 'SDN Rawaendah';
+            if (ciTeacherName) ciTeacherName.value = ci.teacherName || 'Ibu RISA AGUSTIAN, S.Pd';
+            if (ciTeacherNip) ciTeacherNip.value = ci.teacherNip || '198608112025212016';
+            if (ciWaLink) ciWaLink.value = ci.waGroupLink || '';
+
+            // Populate Lesson & Piket Schedules
+            const schedDays = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+            const ls = currentSettings.lessonSchedule || {};
+            const ps = currentSettings.piketSchedule || {};
+            schedDays.forEach(d => {
+                const lessonArea = document.getElementById('sched-lesson-' + d);
+                if (lessonArea && ls[d]) {
+                    lessonArea.value = ls[d].map(item => `${item.time} | ${item.subject}`).join('\n');
+                }
+                const piketArea = document.getElementById('sched-piket-' + d);
+                if (piketArea && ps[d]) {
+                    piketArea.value = ps[d].join('\n');
+                }
+            });
+            const hwToggle = document.getElementById('allow-homework-toggle');
+            const hwHint = document.getElementById('homework-status-hint');
+            hwToggle.checked = currentSettings.allowStudentHomework !== false;
+            hwHint.textContent = hwToggle.checked ? 'Murid & wali murid boleh setor tugas' : '🔒 Khusus Bu Guru (Pintu setor tugas ditutup)';
+
+            hwToggle.addEventListener('change', () => {
+                hwHint.textContent = hwToggle.checked ? 'Murid & wali murid boleh setor tugas' : '🔒 Khusus Bu Guru (Pintu setor tugas ditutup)';
+            });
+
+            // 2. Upload Toggle
+            const uploadToggle = document.getElementById('allow-upload-toggle');
+            const uploadHint = document.getElementById('upload-status-hint');
+            uploadToggle.checked = currentSettings.allowPublicUpload !== false;
+            uploadHint.textContent = uploadToggle.checked ? 'Wali murid & siswa boleh upload' : '🔒 Khusus Bu Guru (Publik dikunci)';
+
+            uploadToggle.addEventListener('change', () => {
+                uploadHint.textContent = uploadToggle.checked ? 'Wali murid & siswa boleh upload' : '🔒 Khusus Bu Guru (Publik dikunci)';
+            });
+
+            const cats = ['Foto', 'Dokumen', 'Tugas', 'Lainnya'];
+            cats.forEach(c => {
+                const cb = document.getElementById(`lock-${c}`);
+                const hint = document.getElementById(`hint-${c}`);
+                const isLocked = !!(currentSettings.lockedCategories && currentSettings.lockedCategories[c]);
+                if (cb) {
+                    cb.checked = isLocked;
+                    hint.textContent = isLocked ? '🔒 Terkunci (Khusus Bu Guru)' : 'Terbuka untuk umum';
+                    cb.addEventListener('change', () => {
+                        hint.textContent = cb.checked ? '🔒 Terkunci (Khusus Bu Guru)' : 'Terbuka untuk umum';
+                    });
+                }
+            });
+        }
+
+        // Save Settings to Backend
+        document.getElementById('save-settings-btn').addEventListener('click', async () => {
+            const saveBtn = document.getElementById('save-settings-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+
+            const allowHomework = document.getElementById('allow-homework-toggle').checked;
+            const allowUpload = document.getElementById('allow-upload-toggle').checked;
+            const lockedCats = {
+                Foto: document.getElementById('lock-Foto').checked,
+                Dokumen: document.getElementById('lock-Dokumen').checked,
+                Tugas: document.getElementById('lock-Tugas').checked,
+                Lainnya: document.getElementById('lock-Lainnya').checked,
+            };
+
+            const taskAnnouncement = {
+                enabled: document.getElementById('hw-alert-toggle').checked,
+                title: document.getElementById('hw-alert-title').value.trim(),
+                subject: document.getElementById('hw-alert-subject').value,
+                deadline: document.getElementById('hw-alert-deadline').value.trim(),
+                note: document.getElementById('hw-alert-note').value.trim(),
+                isPublicGallery: document.getElementById('hw-gallery-toggle') ? document.getElementById('hw-gallery-toggle').checked : false,
+                attachments: currentAnnouncementAttachments,
+            };
+
+            const updated = {
+                allowStudentHomework: allowHomework,
+                allowPublicUpload: allowUpload,
+                subjects: currentSubjects,
+                taskAnnouncement: taskAnnouncement,
+                lockedCategories: lockedCats,
+            };
+
+            try {
+                const res = await fetch('/api/gallery-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        settings: updated,
+                        pin: currentPin
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentSettings = data.settings;
+                    showToast('Pengaturan akses berhasil disimpan ke cloud! 🌟', 'success');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                showToast(`Gagal menyimpan: ${err.message}`, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Pengaturan Akses';
+            }
+        });
+
+        // Schedule Tab Switchers & Save in Admin
+        const adminSchedTabLessonBtn = document.getElementById('admin-schedule-tab-lesson-btn');
+        const adminSchedTabPiketBtn = document.getElementById('admin-schedule-tab-piket-btn');
+        const adminLessonEditor = document.getElementById('admin-lesson-editor');
+        const adminPiketEditor = document.getElementById('admin-piket-editor');
+
+        if (adminSchedTabLessonBtn && adminSchedTabPiketBtn) {
+            adminSchedTabLessonBtn.addEventListener('click', () => {
+                adminLessonEditor.classList.remove('hidden');
+                adminPiketEditor.classList.add('hidden');
+                adminSchedTabLessonBtn.className = 'py-1.5 px-4 rounded-full font-bubble text-xs transition-all bg-amber-500 text-white shadow-xs';
+                adminSchedTabPiketBtn.className = 'py-1.5 px-4 rounded-full font-bubble text-xs transition-all text-amber-900 bg-gray-100 hover:bg-amber-100';
+            });
+
+            adminSchedTabPiketBtn.addEventListener('click', () => {
+                adminPiketEditor.classList.remove('hidden');
+                adminLessonEditor.classList.add('hidden');
+                adminSchedTabPiketBtn.className = 'py-1.5 px-4 rounded-full font-bubble text-xs transition-all bg-amber-500 text-white shadow-xs';
+                adminSchedTabLessonBtn.className = 'py-1.5 px-4 rounded-full font-bubble text-xs transition-all text-amber-900 bg-gray-100 hover:bg-amber-100';
+            });
+        }
+
+        const saveSchedulesBtn = document.getElementById('save-schedules-btn');
+        if (saveSchedulesBtn) {
+            saveSchedulesBtn.addEventListener('click', async () => {
+                saveSchedulesBtn.disabled = true;
+                saveSchedulesBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan Jadwal...';
+
+                const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+                const updatedLessons = {};
+                const updatedPiket = {};
+
+                days.forEach(d => {
+                    const lArea = document.getElementById('sched-lesson-' + d);
+                    if (lArea) {
+                        const lines = lArea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                        updatedLessons[d] = lines.map(line => {
+                            const parts = line.split('|');
+                            if (parts.length >= 2) {
+                                return { time: parts[0].trim(), subject: parts.slice(1).join('|').trim() };
+                            }
+                            return { time: '', subject: line };
+                        });
+                    }
+
+                    const pArea = document.getElementById('sched-piket-' + d);
+                    if (pArea) {
+                        const pNames = pArea.value.split(/[\n,]/).map(n => n.trim()).filter(n => n.length > 0);
+                        updatedPiket[d] = pNames;
+                    }
+                });
+
+                try {
+                    const res = await fetch('/api/gallery-settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            settings: {
+                                lessonSchedule: updatedLessons,
+                                piketSchedule: updatedPiket
+                            },
+                            pin: currentPin
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        currentSettings = data.settings;
+                        showToast('Jadwal pelajaran & piket berhasil disimpan ke cloud! 🌟', 'success');
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } catch (err) {
+                    showToast(`Gagal menyimpan jadwal: ${err.message}`, 'error');
+                } finally {
+                    saveSchedulesBtn.disabled = false;
+                    saveSchedulesBtn.innerHTML = '<i class="fas fa-save"></i> <span>Simpan Jadwal & Piket ke Cloud</span>';
+                }
+            });
+        }
+
+        const saveClassInfoBtn = document.getElementById('save-class-info-btn');
+        if (saveClassInfoBtn) {
+            saveClassInfoBtn.addEventListener('click', async () => {
+                saveClassInfoBtn.disabled = true;
+                saveClassInfoBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+
+                const classInfo = {
+                    className: document.getElementById('ci-class-name').value.trim() || 'Kelas 2C Ceria!',
+                    schoolYear: document.getElementById('ci-school-year').value.trim() || '2026/2027',
+                    schoolName: document.getElementById('ci-school-name').value.trim() || 'SDN Rawaendah',
+                    teacherName: document.getElementById('ci-teacher-name').value.trim() || 'Ibu RISA AGUSTIAN, S.Pd',
+                    teacherNip: document.getElementById('ci-teacher-nip').value.trim() || '198608112025212016',
+                    waGroupLink: document.getElementById('ci-wa-link').value.trim(),
+                };
+
+                try {
+                    const res = await fetch('/api/gallery-settings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            settings: { classInfo },
+                            pin: currentPin
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        currentSettings = data.settings;
+                        showToast('Identitas kelas & link WA berhasil disimpan! 🌟', 'success');
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } catch (err) {
+                    showToast(`Gagal menyimpan identitas kelas: ${err.message}`, 'error');
+                } finally {
+                    saveClassInfoBtn.disabled = false;
+                    saveClassInfoBtn.innerHTML = '<i class="fas fa-save"></i> <span>Simpan Identitas Kelas & Link WA</span>';
+                }
+            });
+        }
+
+        let adminCurrentMode = 'folders';
+        let adminSelectedStudent = null;
+        let adminSelectedTask = null;
+
+        async function loadAdminFiles() {
+            const countEl = document.getElementById('admin-file-count');
+
+            try {
+                const res = await fetch('/api/list-files');
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error);
+
+                allAdminFiles = data.files || [];
+                countEl.textContent = allAdminFiles.length;
+                renderAdminFiles();
+                renderAdminFolders();
+            } catch (err) {
+                document.getElementById('admin-files-tbody').innerHTML = `<tr><td colspan="5" class="text-center py-6 text-red-500">Gagal memuat berkas: ${err.message}</td></tr>`;
+            }
+        }
+
+        // Mode Switchers in Admin
+        document.getElementById('admin-tab-folders-btn').addEventListener('click', () => {
+            adminCurrentMode = 'folders';
+            document.getElementById('admin-folders-wrapper').classList.remove('hidden');
+            document.getElementById('admin-table-wrapper').classList.add('hidden');
+            document.getElementById('admin-tab-folders-btn').className = 'bg-emerald-500 text-white font-bold py-1.5 px-3.5 rounded-full text-xs shadow-xs transition-all flex items-center gap-1.5';
+            document.getElementById('admin-tab-table-btn').className = 'bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-3.5 rounded-full text-xs transition-all flex items-center gap-1.5';
+            renderAdminFolders();
+        });
+
+        document.getElementById('admin-tab-table-btn').addEventListener('click', () => {
+            adminCurrentMode = 'table';
+            document.getElementById('admin-table-wrapper').classList.remove('hidden');
+            document.getElementById('admin-folders-wrapper').classList.add('hidden');
+            document.getElementById('admin-tab-table-btn').className = 'bg-emerald-500 text-white font-bold py-1.5 px-3.5 rounded-full text-xs shadow-xs transition-all flex items-center gap-1.5';
+            document.getElementById('admin-tab-folders-btn').className = 'bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-3.5 rounded-full text-xs transition-all flex items-center gap-1.5';
+            renderAdminFiles();
+        });
+
+        document.getElementById('admin-back-btn').addEventListener('click', () => {
+            if (adminSelectedTask) {
+                adminSelectedTask = null;
+            } else {
+                adminSelectedStudent = null;
+            }
+            renderAdminFolders();
+        });
+
+        function renderAdminFolders() {
+            const grid = document.getElementById('admin-folders-grid');
+            const breadcrumb = document.getElementById('admin-folder-breadcrumb');
+            const bcStudent = document.getElementById('admin-bc-student');
+            const bcSep = document.getElementById('admin-bc-sep');
+            const bcTask = document.getElementById('admin-bc-task');
+
+            // 1. Level 1: Students with homework
+            if (!adminSelectedStudent) {
+                breadcrumb.classList.add('hidden');
+
+                const studentGroups = {};
+                allAdminFiles.forEach(f => {
+                    const sName = f.studentName || (f.category === 'Tugas' ? 'Tugas Lainnya' : 'Berkas Umum & Pengumuman');
+                    if (!studentGroups[sName]) studentGroups[sName] = [];
+                    studentGroups[sName].push(f);
+                });
+
+                const names = Object.keys(studentGroups);
+                if (names.length === 0) {
+                    grid.innerHTML = `<div class="col-span-full text-center py-8 text-gray-400">Belum ada folder tugas siswa.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = names.map(sName => {
+                    const files = studentGroups[sName];
+                    const taskSet = new Set(files.map(f => f.taskFolder || 'Tugas'));
+                    const isGeneral = sName.includes('Berkas Umum');
+                    const avatar = isGeneral ? '📦' : '🎓';
+                    const safeName = sName.replace(/'/g, "\\'");
+
+                    return `
+                        <div onclick="openAdminStudent('${safeName}')" class="bg-gray-50 hover:bg-emerald-50 p-4 rounded-2xl border border-gray-200 hover:border-emerald-300 cursor-pointer transition-all flex flex-col justify-between">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-2xl p-2 bg-white rounded-xl shadow-xs border">${avatar}</span>
+                                <div>
+                                    <h4 class="font-bold text-gray-800 text-xs truncate max-w-[170px]" title="${sName}">${sName}</h4>
+                                    <span class="text-[10px] text-gray-400">${taskSet.size} Tugas • ${files.length} Media</span>
+                                </div>
+                            </div>
+                            <div class="text-[11px] font-bold text-emerald-600 text-right mt-2 flex items-center justify-end gap-1">
+                                <span>Buka Folder</span>
+                                <i class="fas fa-arrow-right text-[10px]"></i>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                return;
+            }
+
+            // 2. Level 2: Sub-folders for specific student
+            const studentFiles = allAdminFiles.filter(f => (f.studentName || (f.category === 'Tugas' ? 'Tugas Lainnya' : 'Berkas Umum & Pengumuman')) === adminSelectedStudent);
+
+            if (!adminSelectedTask) {
+                breadcrumb.classList.remove('hidden');
+                bcStudent.textContent = adminSelectedStudent;
+                bcSep.classList.add('hidden');
+                bcTask.classList.add('hidden');
+
+                const taskGroups = {};
+                studentFiles.forEach(f => {
+                    const t = f.taskFolder || f.subject || 'Tugas Umum';
+                    if (!taskGroups[t]) taskGroups[t] = [];
+                    taskGroups[t].push(f);
+                });
+
+                grid.innerHTML = Object.keys(taskGroups).map(tName => {
+                    const files = taskGroups[tName];
+                    const safeTask = tName.replace(/'/g, "\\'");
+
+                    const norm = (s) => (s || '').trim().toLowerCase();
+                    const pubList = (currentSettings.publicTaskFolders || []).map(norm);
+                    const isPub = pubList.includes(norm(tName));
+
+                    return `
+                        <div onclick="openAdminTask('${safeTask}')" class="bg-gray-50 hover:bg-sky-50 p-4 rounded-2xl border ${isPub ? 'border-emerald-300 bg-emerald-50/40' : 'border-gray-200'} hover:border-sky-300 cursor-pointer transition-all flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-2xl p-2 bg-white rounded-xl shadow-xs border">📂</span>
+                                    ${isPub 
+                                        ? '<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-300 flex items-center gap-1"><i class="fas fa-globe"></i> Publik</span>'
+                                        : '<span class="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-0.5 rounded-full border border-gray-200 flex items-center gap-1"><i class="fas fa-lock"></i> Privat</span>'
+                                    }
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-xs truncate max-w-[170px]" title="${tName}">${tName}</h4>
+                                <span class="text-[10px] text-gray-400">${files.length} Berkas/Foto</span>
+                            </div>
+
+                            <div class="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
+                                <button onclick="togglePublicTask('${safeTask}', event)" class="text-[10px] font-bold px-2.5 py-1 rounded-lg border transition-all ${isPub ? 'bg-red-50 text-red-600 hover:bg-red-100 border-red-200' : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-emerald-300'}" title="Ubah visibilitas tugas ini ke galeri publik">
+                                    ${isPub ? '🔒 Kunci ke Privat' : '🌐 Buka ke Galeri'}
+                                </button>
+                                <span class="text-[11px] font-bold text-sky-600 flex items-center gap-1">
+                                    <span>Periksa</span>
+                                    <i class="fas fa-arrow-right text-[9px]"></i>
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                return;
+            }
+
+            // 3. Level 3: Files inside specific task
+            breadcrumb.classList.remove('hidden');
+            bcStudent.textContent = adminSelectedStudent;
+            bcSep.classList.remove('hidden');
+            bcTask.classList.remove('hidden');
+            bcTask.textContent = adminSelectedTask;
+
+            const taskFiles = studentFiles.filter(f => (f.taskFolder || f.subject || 'Tugas Umum') === adminSelectedTask);
+            const featList = currentSettings.featuredSubmissions || [];
+
+            grid.innerHTML = taskFiles.map(file => {
+                const isImage = ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(file.extension);
+                const isVideo = ['mp4', 'webm', 'mov'].includes(file.extension);
+                const safeName = (file.displayName || file.filename).replace(/'/g, "\\'");
+                const isFeat = featList.includes(file.key);
+
+                return `
+                    <div class="bg-white p-3 rounded-2xl border ${isFeat ? 'border-amber-400 ring-2 ring-amber-200 shadow-md' : 'border-gray-200 shadow-xs'} flex flex-col justify-between overflow-hidden">
+                        <div>
+                            ${isImage && file.url ? `
+                                <div class="w-full h-32 rounded-xl overflow-hidden mb-2 bg-gray-100 cursor-pointer relative group" onclick="openAdminLightbox('${file.url}', '${safeName}', '${formatBytes(file.size)}')">
+                                    <img src="${file.url}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                        <i class="fas fa-search-plus text-xl"></i>
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            ${isVideo && file.url ? `
+                                <div class="w-full h-32 rounded-xl overflow-hidden mb-2 bg-gray-950 cursor-pointer relative group flex items-center justify-center" onclick="openAdminVideoModal('${file.url}', '${safeName}', '${file.extension}')">
+                                    <div class="w-10 h-10 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                                        <i class="fas fa-play ml-0.5 text-sm"></i>
+                                    </div>
+                                    <span class="absolute bottom-1.5 right-1.5 bg-black/75 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                                        <i class="fas fa-film"></i> Video
+                                    </span>
+                                </div>
+                            ` : ''}
+
+                            ${!isImage && !isVideo ? `
+                                <div class="w-full h-24 bg-gray-50 rounded-xl mb-2 flex items-center justify-center text-gray-400 text-2xl border border-gray-100">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex items-center justify-between gap-1 mb-1">
+                                <h5 class="font-bold text-gray-800 text-xs truncate max-w-[140px]" title="${file.filename}">${file.displayName || file.filename}</h5>
+                                <button onclick="toggleFeaturedSubmission('${file.key}', '${safeName}', event)" class="text-[10px] font-bold px-2 py-0.5 rounded-lg border transition-all ${isFeat ? 'bg-amber-400 text-amber-950 border-amber-500 shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-800 border-gray-200'}" title="Pilih sebagai Karya Terbaik">
+                                    ${isFeat ? '⭐ Karya Terbaik' : '☆ Pilih Terbaik'}
+                                </button>
+                            </div>
+                            <span class="text-[10px] text-gray-400 block">${formatBytes(file.size)}</span>
+                        </div>
+                        <div class="mt-2 pt-2 border-t border-gray-100 flex items-center justify-between">
+                            ${isImage ? `<button onclick="openAdminLightbox('${file.url}', '${safeName}', '${formatBytes(file.size)}')" class="text-[11px] font-bold text-sky-600 hover:underline flex items-center gap-1"><i class="fas fa-eye"></i> Lihat</button>` : ''}
+                            ${isVideo ? `<button onclick="openAdminVideoModal('${file.url}', '${safeName}', '${file.extension}')" class="text-[11px] font-bold text-emerald-600 hover:underline flex items-center gap-1"><i class="fas fa-play"></i> Putar Video</button>` : ''}
+                            ${!isImage && !isVideo ? `<a href="${file.url}" target="_blank" download class="text-[11px] font-bold text-sky-600 hover:underline flex items-center gap-1"><i class="fas fa-download"></i> Unduh</a>` : ''}
+
+                            <div class="flex items-center gap-2">
+                                <a href="${file.url}" download target="_blank" class="text-gray-400 hover:text-gray-600 text-xs p-1" title="Unduh Berkas"><i class="fas fa-download"></i></a>
+                                <button onclick="deleteFile('${file.key}', '${safeName}')" class="text-red-500 hover:text-red-700 p-1 rounded-lg" title="Hapus Berkas">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.openAdminStudent = function(sName) {
+            adminSelectedStudent = sName;
+            adminSelectedTask = null;
+            renderAdminFolders();
+        };
+
+        window.openAdminTask = function(tName) {
+            adminSelectedTask = tName;
+            renderAdminFolders();
+        };
+
+        function renderAdminFiles() {
+            const tbody = document.getElementById('admin-files-tbody');
+            const search = document.getElementById('admin-search-input').value.toLowerCase();
+
+            const filtered = allAdminFiles.filter(f => 
+                f.filename.toLowerCase().includes(search) || (f.displayName && f.displayName.toLowerCase().includes(search))
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-8 text-gray-400">Tidak ada berkas yang ditemukan.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(file => {
+                const dateStr = new Date(file.lastModified).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+                const isImage = ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(file.extension);
+                const isVideo = ['mp4', 'webm', 'mov'].includes(file.extension);
+                const safeName = (file.displayName || file.filename).replace(/'/g, "\\'");
+
+                return `
+                    <tr class="hover:bg-gray-50/80 transition-colors">
+                        <td class="px-3 py-2.5 font-bold text-gray-800">
+                            <div class="flex items-center gap-2">
+                                ${isImage && file.url ? `
+                                    <img src="${file.url}" class="w-8 h-8 rounded-lg object-cover border border-gray-200 cursor-pointer" onclick="openAdminLightbox('${file.url}', '${safeName}', '${formatBytes(file.size)}')">
+                                ` : ''}
+                                ${isVideo && file.url ? `
+                                    <button type="button" onclick="openAdminVideoModal('${file.url}', '${safeName}', '${file.extension}')" class="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center text-xs hover:bg-emerald-600 transition-colors shadow-xs" title="Putar Video">
+                                        <i class="fas fa-play text-[10px]"></i>
+                                    </button>
+                                ` : ''}
+                                ${!isImage && !isVideo ? `
+                                    <span class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 text-xs">
+                                        <i class="fas fa-file"></i>
+                                    </span>
+                                ` : ''}
+                                <div>
+                                    <span class="truncate max-w-[220px] block" title="${file.filename}">${file.displayName || file.filename}</span>
+                                    ${file.studentName ? `
+                                        <span class="text-[10px] text-emerald-700 font-bold block">
+                                            <i class="fas fa-user-graduate"></i> ${file.studentName} • ${file.subject || 'Tugas'}
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-3 py-2.5">
+                            <span class="bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-full text-[10px]">${file.category}</span>
+                        </td>
+                        <td class="px-3 py-2.5 text-gray-500">${formatBytes(file.size)}</td>
+                        <td class="px-3 py-2.5 text-gray-500">${dateStr}</td>
+                        <td class="px-3 py-2.5 text-center">
+                            <div class="flex items-center justify-center gap-1.5">
+                                ${isVideo && file.url ? `
+                                    <button onclick="openAdminVideoModal('${file.url}', '${safeName}', '${file.extension}')" class="p-1.5 px-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg text-xs font-bold flex items-center gap-1 border border-emerald-200" title="Putar Video">
+                                        <i class="fas fa-play text-[10px]"></i> <span>Putar</span>
+                                    </button>
+                                ` : ''}
+                                ${isImage && file.url ? `
+                                    <button onclick="openAdminLightbox('${file.url}', '${safeName}', '${formatBytes(file.size)}')" class="p-1.5 px-2 bg-sky-50 text-sky-600 hover:bg-sky-100 rounded-lg text-xs font-bold flex items-center gap-1 border border-sky-200" title="Lihat Foto">
+                                        <i class="fas fa-eye text-[10px]"></i> <span>Lihat</span>
+                                    </button>
+                                ` : ''}
+                                ${file.url ? `
+                                    <a href="${file.url}" target="_blank" download class="p-1.5 bg-gray-50 text-gray-600 hover:bg-gray-100 rounded-lg" title="Unduh Berkas">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                ` : ''}
+                                <button onclick="deleteFile('${file.key}', '${safeName}')" class="p-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg" title="Hapus Berkas dari Cloud">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('admin-search-input').addEventListener('input', renderAdminFiles);
+        document.getElementById('refresh-all-btn').addEventListener('click', async () => {
+            await loadSettings();
+            await loadAdminFiles();
+            showToast('Data berhasil diperbarui! 🔄', 'info');
+        });
+
+        // Video & Lightbox Modal Handlers in Admin
+        window.openAdminVideoModal = function(url, title, ext) {
+            const modal = document.getElementById('admin-video-modal');
+            const video = document.getElementById('admin-modal-video');
+            const titleEl = document.getElementById('admin-video-title');
+            const metaEl = document.getElementById('admin-video-meta');
+            const dl = document.getElementById('admin-video-download');
+
+            video.src = url;
+            titleEl.textContent = title;
+            metaEl.textContent = `Video • ${ext ? ext.toUpperCase() : 'MP4'}`;
+            dl.href = url;
+            modal.classList.remove('hidden');
+            video.play().catch(() => {});
+        };
+
+        window.closeAdminVideoModal = function() {
+            const modal = document.getElementById('admin-video-modal');
+            const video = document.getElementById('admin-modal-video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+                video.src = '';
+            }
+            modal.classList.add('hidden');
+        };
+
+        window.openAdminLightbox = function(url, title, size) {
+            const modal = document.getElementById('admin-lightbox-modal');
+            const img = document.getElementById('admin-lightbox-img');
+            const titleEl = document.getElementById('admin-lightbox-title');
+            const metaEl = document.getElementById('admin-lightbox-meta');
+            const dl = document.getElementById('admin-lightbox-download');
+
+            img.src = url;
+            titleEl.textContent = title;
+            metaEl.textContent = size || 'Gambar / Foto';
+            dl.href = url;
+            modal.classList.remove('hidden');
+        };
+
+        window.closeAdminLightbox = function() {
+            const modal = document.getElementById('admin-lightbox-modal');
+            modal.classList.add('hidden');
+        };
+
+        // Toggle Public Gallery for Student Task
+        window.togglePublicTask = async function(taskName, evt) {
+            if (evt) evt.stopPropagation();
+            const btn = evt && evt.currentTarget ? evt.currentTarget : null;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            const norm = (s) => (s || '').trim().toLowerCase();
+            let pubList = [...(currentSettings.publicTaskFolders || [])];
+            const targetNorm = norm(taskName);
+            const isCurrentlyPublic = pubList.some(t => norm(t) === targetNorm);
+
+            if (isCurrentlyPublic) {
+                pubList = pubList.filter(t => norm(t) !== targetNorm);
+            } else {
+                pubList.push(taskName);
+            }
+
+            try {
+                const res = await fetch('/api/gallery-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        settings: { publicTaskFolders: pubList },
+                        pin: currentPin
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentSettings = data.settings;
+                    showToast(isCurrentlyPublic ? `Tugas "${taskName}" telah DIKUNCI ke Privat. 🔒` : `Tugas "${taskName}" telah DIBUKA ke Galeri Publik! 🌟`, 'success');
+                    renderAdminFolders();
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                showToast(`Gagal mengubah status: ${err.message}`, 'error');
+            }
+        };
+
+        // Toggle Karya Terbaik / Pilihan Bu Guru
+        window.toggleFeaturedSubmission = async function(fileKey, displayName, evt) {
+            if (evt) evt.stopPropagation();
+            const btn = evt && evt.currentTarget ? evt.currentTarget : null;
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            }
+
+            let featList = [...(currentSettings.featuredSubmissions || [])];
+            const isCurrentlyFeat = featList.includes(fileKey);
+
+            if (isCurrentlyFeat) {
+                featList = featList.filter(k => k !== fileKey);
+            } else {
+                featList.push(fileKey);
+            }
+
+            try {
+                const res = await fetch('/api/gallery-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        settings: { featuredSubmissions: featList },
+                        pin: currentPin
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentSettings = data.settings;
+                    showToast(isCurrentlyFeat ? `"${displayName}" dicabut dari Karya Terbaik.` : `"${displayName}" terpilih sebagai KARYA TERBAIK! 🌟`, 'success');
+                    renderAdminFolders();
+                    renderAdminFiles();
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                showToast(`Gagal: ${err.message}`, 'error');
+            }
+        };
+
+        // Delete File
+        window.deleteFile = async function(key, displayName) {
+            if (!confirm(`Apakah Bu Guru yakin ingin menghapus berkas:\n\n"${displayName}"\n\ndari penyimpanan cloud? Tindakan ini tidak dapat dibatalkan.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/delete-file', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(`Berkas "${displayName}" berhasil dihapus.`, 'success');
+                    await loadAdminFiles();
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                showToast(`Gagal menghapus: ${err.message}`, 'error');
+            }
+        };
+
+        // Change PIN
+        document.getElementById('change-pin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const newPin = document.getElementById('new-pin-input').value.trim();
+            if (newPin.length < 4) {
+                showToast('PIN minimal terdiri dari 4 karakter/angka.', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/gallery-settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        settings: { adminPin: newPin },
+                        pin: currentPin
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentPin = newPin;
+                    sessionStorage.setItem('caca_admin_pin', currentPin);
+                    document.getElementById('new-pin-input').value = '';
+                    showToast('PIN berhasil diubah! Simpan PIN baru Anda dengan baik.', 'success');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                showToast(`Gagal mengubah PIN: ${err.message}`, 'error');
+            }
+        });
+
+        // Auto login if session exists
+        if (currentPin) {
+            initDashboard();
+        }
+    </script>
+</body>
+</html>

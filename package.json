@@ -1,0 +1,13 @@
+{
+  "name": "absen-kelas-2b-rissa",
+  "version": "1.0.0",
+  "description": "Aplikasi Absensi Ceria Kelas & Public File Storage Cloudflare R2",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/s3-request-presigner": "^3.758.0"
+  }
+}

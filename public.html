@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>Galeri & Berkas Ceria Kelas - SDN Rawaendah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Quicksand:wght@300..700&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background-color: #fffde7;
+            background-image: 
+                radial-gradient(#ffab91 12%, transparent 13%),
+                radial-gradient(#80deea 12%, transparent 13%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
+            padding-bottom: max(5rem, env(safe-area-inset-bottom));
+        }
+
+        button, a, select, input, label {
+            touch-action: manipulation;
+        }
+
+        h1, h2, h3, h4, .btn-text, .font-bubble {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+        }
+
+        p, span, select, input, button, table {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+        }
+
+        /* 120 FPS Hardware GPU Compositor Layer Acceleration */
+        .cute-card, .floating-char, .floating-balloon, .twinkle-star, #hw-banner-card {
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+        }
+
+        /* Content Virtualization for Heavy Lists on Low-Spec Mobile */
+        #showcase-grid, #files-grid, #student-sub-grid {
+            content-visibility: auto;
+            contain-intrinsic-size: 380px;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+            50% { transform: translate3d(0, -6px, 0) rotate(0.6deg); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+            50% { transform: translate3d(0, 6px, 0) rotate(-0.6deg); }
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.25; transform: scale(0.9); }
+            50% { opacity: 0.95; transform: scale(1.1); }
+        }
+        .floating-char {
+            animation: floatGentle 4s ease-in-out infinite;
+        }
+        .floating-balloon {
+            animation: floatReverse 5s ease-in-out infinite;
+        }
+        .twinkle-star {
+            animation: twinkle 2.8s ease-in-out infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            transform: translateZ(0);
+        }
+
+        .header-decor::before {
+            content: '🌸';
+            font-size: 2rem;
+            margin-right: 8px;
+            display: inline-block;
+            animation: spin 10s linear infinite;
+        }
+        .header-decor::after {
+            content: '🌼';
+            font-size: 2rem;
+            margin-left: 8px;
+            display: inline-block;
+            animation: spin 10s linear infinite reverse;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* Custom Sticky Note File Card */
+        .cute-card {
+            background: #ffffff;
+            position: relative;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 20px;
+        }
+
+        .cute-card::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-left: 1px dashed rgba(0,0,0,0.1);
+            border-right: 1px dashed rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .cute-card:nth-child(4n+1)::before { background-color: #ffe082; transform: translateX(-50%) rotate(-3deg); }
+        .cute-card:nth-child(4n+2)::before { background-color: #80cbc4; transform: translateX(-50%) rotate(2deg); }
+        .cute-card:nth-child(4n+3)::before { background-color: #f8bbd0; transform: translateX(-50%) rotate(-1deg); }
+        .cute-card:nth-child(4n+4)::before { background-color: #b2dfdb; transform: translateX(-50%) rotate(3deg); }
+
+        .cute-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            z-index: 10;
+            box-shadow: 0 16px 28px rgba(0,0,0,0.12);
+        }
+
+        .custom-input {
+            border: 3px solid #ffe082;
+            border-radius: 14px;
+            color: #5d4037;
+            font-weight: 700;
+        }
+
+        .dropzone-active {
+            border-color: #ec4899 !important;
+            background-color: #fdf2f8 !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20 relative overflow-x-hidden">
+
+    <!-- Floating Background Decorative Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-35">
+        <span class="absolute top-10 left-6 text-3xl floating-balloon">🎈</span>
+        <span class="absolute top-28 right-8 text-2xl twinkle-star">⭐</span>
+        <span class="absolute top-80 left-4 text-2xl floating-char">🌸</span>
+        <span class="absolute top-96 right-10 text-3xl floating-balloon">✨</span>
+        <span class="absolute bottom-32 left-10 text-2xl twinkle-star">🎨</span>
+        <span class="absolute bottom-20 right-6 text-3xl floating-char">✏️</span>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <div id="app" class="container mx-auto p-3 md:p-6 max-w-7xl relative z-10">
+
+        <!-- Top Navigation (Clean & Minimal) -->
+        <header class="text-center mb-6 mt-2 relative">
+            <div class="flex justify-between items-center mb-4 flex-wrap gap-3">
+                <a href="/" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-2 px-4 rounded-full shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-amber-600 active:border-b-0 flex items-center gap-2 text-xs sm:text-sm">
+                    <i class="fas fa-arrow-left"></i> <span>Absensi Kelas</span>
+                </a>
+                <button id="open-schedule-btn" class="relative group bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 hover:from-amber-500 hover:to-yellow-400 text-amber-950 font-bold py-2.5 px-5 rounded-full shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all border-b-4 border-amber-700 active:border-b-0 flex items-center gap-2 text-xs sm:text-sm animate-pulse hover:animate-none">
+                    <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500 border border-white"></span>
+                    </span>
+                    <i class="fas fa-calendar-check text-amber-900 text-sm"></i>
+                    <span class="tracking-wide">Jadwal Pelajaran & Piket</span>
+                    <span class="text-xs">✨</span>
+                </button>
+            </div>
+
+            <!-- Mascot Illustration of 6 Indonesian Elementary Students with Speech Bubble -->
+            <div class="relative max-w-lg mx-auto mb-2 text-center floating-char">
+                <div class="inline-block bg-white/95 px-4 py-1.5 rounded-full shadow-md border-2 border-emerald-300 text-xs sm:text-sm font-bold text-emerald-900 mb-1 transform -rotate-1">
+                    <span class="text-sm mr-1">👋</span> "Halo teman-teman! Yuk belajar ceria bersama Bu Guru Risa!" ✨
+                </div>
+                <img src="/murid-sd-transparan.png" alt="Siswa Siswi SD Ceria" class="w-full max-w-xs sm:max-w-md mx-auto h-auto drop-shadow-xl select-none pointer-events-none">
+            </div>
+
+            <!-- Title & Homeroom Teacher Card -->
+            <div class="bg-white/95 backdrop-blur-sm inline-block px-6 sm:px-10 py-5 rounded-3xl shadow-xl border-4 border-pink-300 transform -rotate-0.5 mt-1 w-full max-w-2xl mx-auto">
+                <h1 class="text-2xl sm:text-4xl md:text-5xl text-pink-500 mb-1 header-decor" style="text-shadow: 2px 2px 0px #fff;">Galeri & Berkas Ceria</h1>
+                <p class="text-lg sm:text-xl text-blue-500 font-bold">SDN Rawaendah • Tahun Ajaran 2026/2027</p>
+
+                <!-- Homeroom Teacher Badge -->
+                <div class="mt-3 bg-yellow-200 text-yellow-900 px-5 py-2 rounded-2xl inline-block text-sm sm:text-base font-bold transform -rotate-1 shadow-sm border-2 border-yellow-400 max-w-full">
+                    <i class="fas fa-chalkboard-teacher text-lg mr-1 text-amber-800"></i> Wali Kelas: <strong>Ibu RISA AGUSTIAN, S.Pd</strong>
+                    <span class="text-xs sm:text-sm block opacity-85 font-semibold mt-0.5">NIP. 198608112025212016</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========================================== -->
+        <!-- 2 MENU UTAMA (MAIN NAVIGATION TABS)        -->
+        <!-- ========================================== -->
+        <div class="mb-6 flex justify-center">
+            <div class="bg-white/95 p-1.5 rounded-3xl border-4 border-pink-200 shadow-lg flex gap-2 w-full max-w-2xl">
+                <button id="main-tab-tugas-btn" class="flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 bg-emerald-500 text-white shadow-md">
+                    <span class="text-lg">📚</span> <span>Ruang Tugas & PR Murid</span>
+                </button>
+                <button id="main-tab-galeri-btn" class="flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50">
+                    <span class="text-lg">🖼️</span> <span>Galeri & Dokumen Publik</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 1: RUANG TUGAS & PR MURID          -->
+        <!-- ========================================== -->
+        <div id="section-tugas" class="space-y-6">
+
+            <!-- SATU KARTU PENGUMUMAN & SETOR TUGAS UTAMA (UNIFIED & HERO POSTER) -->
+            <div id="hw-banner-card" class="bg-white/95 rounded-3xl p-5 sm:p-7 border-4 border-emerald-300 shadow-xl relative overflow-hidden transition-all">
+                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6">
+
+                    <!-- HERO POSTER PREVIEW (MENCOLOK, BESAR & JELAS JIKA ADA POSTER/MEDIA) -->
+                    <div id="hw-banner-hero-media" class="w-full lg:w-72 xl:w-80 shrink-0 hidden">
+                        <!-- Populated dynamically with large poster -->
+                    </div>
+
+                    <!-- TEXT & DETAILS AREA -->
+                    <div class="flex-grow space-y-3 text-left w-full">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="w-9 h-9 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-600 flex items-center justify-center text-xl shrink-0 shadow-inner">
+                                📢
+                            </span>
+                            <span class="bg-red-500 text-white text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider animate-pulse shadow-xs">
+                                Tugas Aktif
+                            </span>
+                            <span id="hw-banner-subject" class="bg-amber-100 text-amber-900 text-xs font-bold px-3 py-1 rounded-full border border-amber-200">
+                                Kegiatan Di rumah
+                            </span>
+                            <span id="hw-banner-deadline" class="text-xs text-red-600 font-extrabold flex items-center gap-1 bg-red-50 px-2.5 py-1 rounded-full border border-red-100">
+                                <i class="far fa-clock"></i> Batas: Jumat, 24 Okt 17.00
+                            </span>
+                        </div>
+
+                        <h2 id="hw-banner-title" class="text-xl sm:text-2xl lg:text-3xl font-bubble text-emerald-950 leading-tight">
+                            7 Kebiasaan Anak Indonesia Hebat (Pembiasaan Karakter di Rumah)
+                        </h2>
+
+                        <div class="p-3.5 bg-emerald-50/80 rounded-2xl border border-emerald-200">
+                            <p class="text-xs font-bold text-emerald-900 mb-1 flex items-center gap-1.5">
+                                <i class="fas fa-comment-dots text-emerald-600"></i> Petunjuk dari Bu Guru Risa:
+                            </p>
+                            <p id="hw-banner-note" class="text-xs sm:text-sm text-gray-700 font-semibold leading-relaxed">
+                                Kirimkan foto dokumentasi kegiatan putra-putri saat bangun pagi, beribadah, atau tidur cepat sesuai poster panduan Bu Guru ya! 🌟
+                            </p>
+                        </div>
+
+                        <!-- OTHER ATTACHMENTS (DOCS/VIDEOS) IF ANY -->
+                        <div id="hw-banner-other-attachments" class="pt-1 flex flex-wrap gap-2 items-center"></div>
+
+                        <!-- Action Buttons: Setor & Share ke WA Grup -->
+                        <div class="pt-2 flex flex-col sm:flex-row items-center gap-3">
+                            <button id="single-tugas-btn" onclick="openTugasModal()" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-8 rounded-2xl shadow-xl border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap">
+                                <i class="fas fa-pencil-alt text-lg"></i> <span>Setor Tugas Sekarang</span>
+                            </button>
+                            <button id="share-hw-wa-btn" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-xl border-b-4 border-emerald-800 active:border-b-0 active:translate-y-1 transition-all text-xs sm:text-sm flex items-center justify-center gap-2 whitespace-nowrap" title="Bagikan tugas ini ke Grup WhatsApp Paguyuban Kelas">
+                                <i class="fab fa-whatsapp text-lg text-emerald-200"></i> <span>Bagikan ke WA Grup</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LIVE PREVIEW: PAPAN SISWA YANG SUDAH SETOR -->
+            <!-- ========================================== -->
+            <div class="bg-white/95 rounded-3xl p-6 border-4 border-emerald-300 shadow-xl relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-emerald-100">
+                    <div class="flex items-center gap-3">
+                        <span class="w-10 h-10 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-600 flex items-center justify-center text-xl shrink-0 shadow-xs">
+                            ⭐
+                        </span>
+                        <div>
+                            <h3 class="font-bubble text-emerald-950 text-lg sm:text-xl flex items-center gap-2">
+                                <span>Papan Siswa Hebat</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Live Terkini</span>
+                            </h3>
+                            <p class="text-xs text-gray-500 font-bold" id="live-board-subtitle">Daftar siswa yang sudah mengumpulkan tugas hari ini</p>
+                        </div>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="w-full sm:w-64 bg-gray-50 p-2.5 rounded-2xl border border-gray-200">
+                        <div class="flex justify-between text-[11px] font-bold text-gray-700 mb-1">
+                            <span id="live-progress-label">Progres Kelas: 0/33 Siswa</span>
+                            <span id="live-progress-percent" class="text-emerald-600 font-extrabold">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                            <div id="live-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Submissions List / Grid -->
+                <div id="live-submissions-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div class="col-span-full text-center py-6 text-gray-400 text-xs font-bold">
+                        <i class="fas fa-spinner fa-spin text-lg text-emerald-400 mb-2 block"></i> Memuat daftar siswa rajin...
+                    </div>
+                </div>
+
+                <!-- Toggle to see who hasn't submitted yet -->
+                <div class="mt-4 pt-3 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+                    <span class="text-[11px] text-gray-400">💡 Menampilkan nama dan waktu setor. Berkas tugas disimpan privat demi kejujuran belajar.</span>
+                    <button id="toggle-unsubmitted-btn" class="text-emerald-700 hover:text-emerald-900 font-bold underline whitespace-nowrap text-xs">
+                        Lihat Siswa yang Belum Setor (<span id="unsubmitted-count">0</span>)
+                    </button>
+                </div>
+
+                <!-- Unsubmitted list (Collapsible) -->
+                <div id="unsubmitted-box" class="hidden mt-3 p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs">
+                    <h5 class="font-bold text-amber-900 mb-2 flex items-center gap-1.5">
+                        <i class="fas fa-user-clock text-amber-600"></i> Siswa yang Belum Mengumpulkan Tugas:
+                    </h5>
+                    <div id="unsubmitted-names-list" class="flex flex-wrap gap-1.5">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cek Status Pengumpulan Mandiri (Privat & Nyaman) -->
+            <div class="bg-white/95 rounded-3xl p-6 border-4 border-amber-200 shadow-md">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-amber-100">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🔍</span>
+                        <div>
+                            <h3 class="font-bubble text-amber-900 text-lg">Cek Status Setor Tugas Saya</h3>
+                            <p class="text-xs text-gray-500">Pilih nama untuk mengecek apakah tugas Anda sudah tercatat masuk.</p>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-72">
+                        <select id="status-student-select" class="w-full p-2.5 custom-input focus:outline-none text-xs sm:text-sm font-bold border-amber-300">
+                            <option value="">-- Pilih Nama Siswa untuk Cek --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="status-result-box" class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center text-xs text-amber-900 font-semibold">
+                    Silakan pilih nama siswa di atas untuk melihat status pengumpulan tugas.
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- PAMERAN KARYA SISWA DI HALAMAN TUGAS        -->
+            <!-- ========================================== -->
+            <div id="student-gallery-showcase" class="bg-white/95 rounded-3xl p-6 border-4 border-emerald-300 shadow-md space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-emerald-100 flex-wrap gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl p-2 bg-emerald-100 rounded-2xl border border-emerald-300">🎨</span>
+                        <div>
+                            <h3 class="font-bubble text-emerald-950 text-lg sm:text-xl">Pameran Hasil Karya & Tugas Siswa</h3>
+                            <p class="text-xs text-gray-500 font-semibold" id="showcase-status-desc">Karya yang dipamerkan oleh Bu Guru Risa agar bisa saling mengapresiasi.</p>
+                        </div>
+                    </div>
+                    <span id="showcase-badge" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 flex items-center gap-1">
+                        <i class="fas fa-globe"></i> <span>Galeri Terbuka</span>
+                    </span>
+                </div>
+
+                <div id="showcase-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Catatan Edukasi & Privasi Siswa -->
+            <div class="p-4 rounded-2xl bg-sky-50 border border-sky-200 flex items-center gap-3 text-sky-900 text-xs font-semibold">
+                <i class="fas fa-shield-alt text-2xl text-sky-600 shrink-0"></i>
+                <p>
+                    <strong>Jaminan Privasi & Ruang Apresiasi Belajar:</strong> Lembar tugas dan berkas siswa tersimpan aman dan dinilai langsung oleh <strong>Ibu RISA AGUSTIAN, S.Pd</strong>. Hanya karya-karya positif terpilih yang dipamerkan di atas agar seluruh siswa saling terinspirasi dan bangga atas hasil belajarnya!
+                </p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- SECTION 2: GALERI & DOKUMEN PUBLIK         -->
+        <!-- ========================================== -->
+        <div id="section-galeri" class="hidden space-y-6">
+            <!-- Search & Category Filter Panel -->
+            <div class="bg-white/95 rounded-3xl shadow-md p-4 sm:p-6 border-4 border-pink-200">
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <!-- Search bar -->
+                    <div class="relative w-full md:w-80">
+                        <input type="text" id="search-input" placeholder="Cari foto atau dokumen..." class="w-full pl-10 pr-4 py-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-pink-200 text-sm sm:text-base">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+
+                    <!-- Category Filters -->
+                    <div class="flex flex-wrap gap-2 justify-center w-full md:w-auto" id="category-filters">
+                        <button class="cat-filter-btn bg-pink-500 text-white px-4 py-2 rounded-full font-bold text-xs sm:text-sm shadow-sm transition-all" data-category="all">Semua</button>
+                        <button class="cat-filter-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full font-bold text-xs sm:text-sm transition-all" data-category="Foto" id="btn-cat-Foto">📸 Foto Kegiatan</button>
+                        <button class="cat-filter-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full font-bold text-xs sm:text-sm transition-all" data-category="Dokumen" id="btn-cat-Dokumen">📄 Surat & Dokumen</button>
+                        <button class="cat-filter-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full font-bold text-xs sm:text-sm transition-all" data-category="Tugas" id="btn-cat-Tugas">🎨 Karya & Tugas</button>
+                        <button class="cat-filter-btn bg-gray-100 text-gray-700 hover:bg-gray-200 px-4 py-2 rounded-full font-bold text-xs sm:text-sm transition-all" data-category="Lainnya" id="btn-cat-Lainnya">📦 Lain-lain</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls bar with Upload Button -->
+            <div class="flex justify-between items-center px-2 flex-wrap gap-3">
+                <h3 class="text-xl sm:text-2xl text-pink-700 font-bubble flex items-center gap-2">
+                    <i class="fas fa-images text-yellow-500"></i> <span>Koleksi Dokumentasi Kelas (<span id="file-count">0</span>)</span>
+                </h3>
+                <div class="flex items-center gap-2">
+                    <button id="open-upload-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md border-b-2 border-pink-700 active:border-b-0 flex items-center gap-1.5 transition-all">
+                        <i class="fas fa-plus-circle"></i> <span>Tambah Foto / Berkas</span>
+                    </button>
+                    <button id="refresh-btn" class="text-pink-600 hover:text-pink-800 font-bold text-xs flex items-center gap-1 bg-white px-3 py-2 rounded-full shadow-xs border border-pink-100">
+                        <i class="fas fa-sync-alt"></i> Segarkan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grid Galeri Publik -->
+            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-spinner fa-spin text-4xl text-pink-400 mb-3"></i>
+                    <p class="text-gray-500 font-bold text-lg">Memuat koleksi kelas...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discreet Teacher Access -->
+        <footer class="mt-12 text-center text-xs text-gray-400">
+            <a href="/admin" class="hover:text-amber-800 underline font-semibold inline-flex items-center gap-1.5 transition-colors">
+                <i class="fas fa-lock"></i> <span>Masuk Ruang Kendali Wali Kelas (Bu Guru Risa)</span>
+            </a>
+        </footer>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. MODALS (Jadwal, Tugas, Upload, Media)   -->
+    <!-- ========================================== -->
+
+    <!-- MODAL JADWAL PELAJARAN & PIKET KELAS (FULL PAGE POPUP) -->
+    <div id="schedule-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6" onclick="closeScheduleModal(event)">
+        <div class="bg-[#fffde7] rounded-3xl border-4 border-amber-400 max-w-5xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative" onclick="event.stopPropagation()">
+            
+            <!-- Header Modal -->
+            <div class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 p-4 sm:p-5 text-amber-950 flex justify-between items-center px-6 border-b-4 border-amber-600">
+                <div class="flex items-center gap-3">
+                    <span class="w-12 h-12 rounded-2xl bg-white/90 text-amber-900 text-2xl flex items-center justify-center shadow-md shrink-0">
+                        📅
+                    </span>
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bubble leading-tight">Jadwal Pelajaran & Piket Kelas 2C</h3>
+                        <p class="text-xs sm:text-sm font-bold opacity-85">SDN Rawaendah • Wali Kelas: Ibu RISA AGUSTIAN, S.Pd</p>
+                    </div>
+                </div>
+                <button onclick="closeScheduleModal()" class="w-10 h-10 rounded-full bg-white/80 hover:bg-white text-amber-900 text-xl font-bold flex items-center justify-center shadow transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Tab Switcher Modal -->
+            <div class="p-3 bg-amber-100/70 border-b border-amber-200 flex justify-center gap-2">
+                <button id="modal-tab-lesson-btn" class="py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 bg-amber-500 text-white shadow-md">
+                    <span>📖</span> <span>Jadwal Pelajaran (Senin - Jumat)</span>
+                </button>
+                <button id="modal-tab-piket-btn" class="py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 text-amber-900 hover:bg-amber-200/80">
+                    <span>🧹</span> <span>Jadwal Piket Kebersihan</span>
+                </button>
+            </div>
+
+            <!-- Content Area (Scrollable) -->
+            <div class="p-4 sm:p-6 overflow-y-auto flex-grow space-y-6">
+                <!-- 1. Jadwal Pelajaran Grid (5 Hari) -->
+                <div id="modal-lesson-content">
+                    <div id="schedule-days-grid" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- 2. Jadwal Piket Grid (5 Hari) -->
+                <div id="modal-piket-content" class="hidden">
+                    <div id="piket-days-grid" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Modal -->
+            <div class="p-3.5 bg-amber-100/60 border-t border-amber-200 text-center text-xs text-amber-900 font-bold flex flex-col sm:flex-row justify-between items-center px-6 gap-2">
+                <span>💡 Hari ini otomatis di-highlight dengan bingkai emas bersinar.</span>
+                <button onclick="closeScheduleModal()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-6 rounded-full shadow text-xs">
+                    Tutup
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Setor Tugas & PR Modal -->
+    <div id="tugas-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-3xl border-4 border-emerald-300 max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-300 max-h-[92vh] flex flex-col" id="tugas-modal-content">
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white text-center flex justify-between items-center px-6">
+                <h3 class="text-xl sm:text-2xl font-bubble flex items-center gap-2">
+                    <i class="fas fa-pencil-alt"></i> Setor Tugas & PR Murid
+                </h3>
+                <button id="close-tugas-btn" class="text-white hover:text-emerald-200 text-2xl font-bold">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="tugas-form" class="p-6 space-y-4 overflow-y-auto">
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1">
+                        <i class="fas fa-user-graduate text-emerald-600"></i> Pilih Nama Siswa:
+                    </label>
+                    <select id="tugas-student-select" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-emerald-100 text-sm font-bold" required>
+                        <option value="" disabled selected>-- Pilih Nama Siswa Kelas --</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1">
+                        <i class="fas fa-book text-amber-500"></i> Mata Pelajaran / Jenis Tugas:
+                    </label>
+                    <select id="tugas-subject-select" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-emerald-100 text-sm font-bold">
+                        <option value="Matematika">🔢 Matematika</option>
+                        <option value="Bahasa Indonesia">📖 Bahasa Indonesia</option>
+                        <option value="PPKn">🇮🇩 PPKn</option>
+                        <option value="Seni Budaya & Prakarya (SBdP)">🎨 Seni Budaya & Prakarya (SBdP)</option>
+                        <option value="PJOK (Olahraga)">⚽ PJOK (Olahraga)</option>
+                        <option value="Pendidikan Agama (PAI)">🕌 Pendidikan Agama (PAI)</option>
+                        <option value="Tematik Umum / PR Harian">📚 Tematik Umum / PR Harian</option>
+                        <option value="__CUSTOM__">✏️ + Tulis Mata Pelajaran / Tugas Lain...</option>
+                    </select>
+                    <div id="tugas-custom-subject-box" class="hidden mt-2">
+                        <input type="text" id="tugas-custom-subject-input" placeholder="Tulis nama mata pelajaran / jenis tugas..." class="w-full p-2.5 custom-input focus:outline-none text-sm font-bold border-emerald-400 bg-emerald-50/50">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1">
+                        <i class="fas fa-sticky-note text-sky-500"></i> Keterangan / Judul Tugas:
+                    </label>
+                    <input type="text" id="tugas-desc-input" placeholder="Contoh: PR Hal 24 Latihan Berhitung" class="w-full p-2.5 custom-input focus:outline-none text-sm font-bold" required>
+                </div>
+
+                <div id="tugas-dropzone" class="border-4 border-dashed border-emerald-200 rounded-2xl p-5 text-center cursor-pointer hover:border-emerald-400 hover:bg-emerald-50/50 transition-all">
+                    <input type="file" id="tugas-file-input" class="hidden" accept="image/*,.pdf,.doc,.docx,video/*" multiple>
+                    <i class="fas fa-images text-4xl text-emerald-500 mb-2 block"></i>
+                    <p class="font-bold text-gray-700 text-sm sm:text-base" id="tugas-file-label">Pilih Foto Buku / Video / Dokumen</p>
+                    <p class="text-xs text-gray-400 mt-1">Bisa pilih BANYAK file sekaligus (beberapa halaman PR, foto & video)</p>
+                </div>
+
+                <!-- Selected Files List -->
+                <div id="tugas-files-queue" class="hidden space-y-1.5 max-h-36 overflow-y-auto p-2 bg-emerald-50/60 rounded-2xl border border-emerald-200">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div id="tugas-progress-container" class="hidden">
+                    <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
+                        <span id="tugas-status-text">Mengirim tugas...</span>
+                        <span id="tugas-percent-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div id="tugas-progress-bar" class="bg-emerald-500 h-3 rounded-full transition-all duration-200" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" id="cancel-tugas-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-full text-sm">Batal</button>
+                    <button type="submit" id="submit-tugas-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-full border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all text-sm flex items-center gap-2 shadow-md">
+                        <i class="fas fa-paper-plane"></i> Setor ke Bu Guru
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL RESI / BUKTI SETOR TUGAS DIGITAL     -->
+    <!-- ========================================== -->
+    <div id="receipt-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-4" onclick="closeReceiptModal(event)">
+        <div class="bg-white rounded-3xl border-4 border-emerald-400 max-w-md w-full overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-300 relative" id="receipt-modal-content" onclick="event.stopPropagation()">
+            <!-- Header Resi -->
+            <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-5 text-white text-center relative">
+                <span class="w-16 h-16 rounded-3xl bg-white/20 border-2 border-white/40 text-3xl flex items-center justify-center mx-auto mb-2 shadow-inner">
+                    🏆
+                </span>
+                <h3 class="text-xl sm:text-2xl font-bubble leading-tight">Bukti Setor Tugas Resmi</h3>
+                <p class="text-xs text-emerald-100 font-bold mt-0.5">Tersimpan Aman di Cloud Kelas 2C</p>
+                <button onclick="closeReceiptModal()" class="absolute top-4 right-4 text-white hover:text-emerald-200 text-xl font-bold">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Isi Bukti Resi -->
+            <div class="p-6 space-y-4">
+                <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-center">
+                    <p class="text-xs text-gray-500 font-bold mb-1">Status Pengumpulan:</p>
+                    <p id="receipt-salutation-text" class="text-sm sm:text-base font-bubble text-emerald-950">
+                        Alhamdulillah, tugas telah disetor!
+                    </p>
+                </div>
+
+                <!-- Detail Tabel Resi -->
+                <div class="space-y-2 text-xs bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                    <div class="flex justify-between py-1 border-b border-gray-200">
+                        <span class="text-gray-500 font-bold">Nama Murid:</span>
+                        <span id="receipt-student-name" class="font-extrabold text-gray-800">Nama Murid</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-gray-200">
+                        <span class="text-gray-500 font-bold">Mata Pelajaran:</span>
+                        <span id="receipt-subject" class="font-bold text-gray-800">Matematika</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-gray-200">
+                        <span class="text-gray-500 font-bold">Judul / Halaman:</span>
+                        <span id="receipt-task-title" class="font-bold text-gray-800">Tugas</span>
+                    </div>
+                    <div class="flex justify-between py-1 border-b border-gray-200">
+                        <span class="text-gray-500 font-bold">Jumlah Berkas:</span>
+                        <span id="receipt-files-count" class="font-bold text-emerald-700">1 Berkas Foto</span>
+                    </div>
+                    <div class="flex justify-between py-1">
+                        <span class="text-gray-500 font-bold">Waktu Pengiriman:</span>
+                        <span id="receipt-timestamp" class="font-bold text-gray-600">22 Okt 2026, 01.30 WIB</span>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-emerald-700 text-center font-bold">
+                    <i class="fas fa-check-double mr-1"></i> Teks bukti setoran telah otomatis disalin ke clipboard!
+                </p>
+
+                <!-- Tombol Aksi: Teruskan ke WA Grup -->
+                <div class="space-y-2 pt-1">
+                    <button id="forward-receipt-wa-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-2xl shadow-lg border-b-4 border-emerald-800 active:border-b-0 active:translate-y-1 transition-all text-xs sm:text-sm flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-lg text-emerald-200"></i> <span>Teruskan Bukti ke WA Grup Kelas</span>
+                    </button>
+                    <button onclick="closeReceiptModal()" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 rounded-xl text-xs">
+                        Selesai & Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-3xl border-4 border-pink-300 max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="upload-modal-content">
+            <div class="bg-gradient-to-r from-pink-400 to-rose-400 p-4 text-white text-center flex justify-between items-center px-6">
+                <h3 class="text-xl sm:text-2xl font-bubble flex items-center gap-2">
+                    <i class="fas fa-cloud-upload-alt"></i> Unggah Berkas Kelas
+                </h3>
+                <button id="close-upload-btn" class="text-white hover:text-pink-200 text-2xl font-bold">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="upload-form" class="p-6 space-y-4">
+                <div id="dropzone" class="border-4 border-dashed border-pink-200 rounded-2xl p-6 text-center cursor-pointer hover:border-pink-400 hover:bg-pink-50/50 transition-all">
+                    <input type="file" id="file-input" class="hidden">
+                    <i class="fas fa-folder-open text-4xl text-pink-400 mb-2 block"></i>
+                    <p class="font-bold text-gray-700 text-sm sm:text-base" id="selected-file-label">Pilih foto atau dokumen kelas</p>
+                    <p class="text-xs text-gray-400 mt-1">Mendukung Foto (JPG/PNG), Dokumen PDF/Word, Materi, & Video</p>
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-bold text-sm mb-1">Kategori:</label>
+                    <select id="upload-category" class="w-full p-2.5 custom-input focus:outline-none focus:ring-4 focus:ring-pink-100 text-sm">
+                        <option value="Foto">📸 Foto Kegiatan Siswa</option>
+                        <option value="Dokumen">📄 Dokumen & Surat Pengumuman</option>
+                        <option value="Tugas">📝 Materi Pelajaran & Tugas</option>
+                        <option value="Lainnya">📦 Lain-lain</option>
+                    </select>
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="upload-progress-container" class="hidden">
+                    <div class="flex justify-between text-xs font-bold text-gray-600 mb-1">
+                        <span id="upload-status-text">Menyiapkan berkas...</span>
+                        <span id="upload-percent-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div id="upload-progress-bar" class="bg-pink-500 h-3 rounded-full transition-all duration-200" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" id="cancel-upload-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-5 py-2.5 rounded-full text-sm">Batal</button>
+                    <button type="submit" id="submit-upload-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 py-2.5 rounded-full border-b-4 border-pink-700 active:border-b-0 active:translate-y-1 transition-all text-sm flex items-center gap-2">
+                        <i class="fas fa-upload"></i> Unggah Sekarang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Image Lightbox Modal -->
+    <div id="lightbox-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6" onclick="closeLightbox(event)">
+        <div class="max-w-4xl w-full flex flex-col items-center relative" onclick="event.stopPropagation()">
+            <button onclick="closeLightbox()" class="absolute -top-12 right-0 text-white hover:text-emerald-300 text-3xl font-bold">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-white/10 p-2 rounded-3xl border border-white/20 shadow-2xl overflow-hidden w-full max-h-[75vh] flex items-center justify-center">
+                <img id="lightbox-img" src="" alt="Preview" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain">
+            </div>
+            <div class="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center w-full px-2 text-white gap-3">
+                <div class="max-w-xl">
+                    <h4 id="lightbox-title" class="font-bubble text-base sm:text-lg text-emerald-300 leading-snug">Judul Foto</h4>
+                    <p id="lightbox-meta" class="text-xs text-gray-200 mt-1 leading-relaxed">Ukuran & Tanggal</p>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
+                    <button onclick="closeLightbox(); openTugasModal();" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 px-5 rounded-full text-xs sm:text-sm flex items-center gap-1.5 shadow-lg border-b-2 border-emerald-700 active:border-b-0">
+                        <i class="fas fa-pencil-alt"></i> Setor Tugas
+                    </button>
+                    <a id="lightbox-download" href="" download target="_blank" class="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded-full text-xs sm:text-sm flex items-center gap-1.5 shadow-lg border border-white/30">
+                        <i class="fas fa-download"></i> Unduh Asli
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="video-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6" onclick="closeVideoModal(event)">
+        <div class="max-w-3xl w-full flex flex-col items-center relative" onclick="event.stopPropagation()">
+            <button onclick="closeVideoModal()" class="absolute -top-12 right-0 text-white hover:text-pink-300 text-3xl font-bold">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-black rounded-3xl border-2 border-white/20 shadow-2xl overflow-hidden w-full">
+                <video id="modal-video-player" controls class="w-full max-h-[75vh] rounded-2xl bg-black">
+                    <source src="" type="video/mp4">
+                    Browser Anda tidak mendukung pemutar video HTML5.
+                </video>
+            </div>
+            <div class="mt-3 flex justify-between items-center w-full px-2 text-white">
+                <h4 id="video-title" class="font-bold text-sm sm:text-base">Judul Video</h4>
+                <a id="video-download" href="" download target="_blank" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-4 rounded-full text-xs flex items-center gap-2">
+                    <i class="fas fa-download"></i> Unduh Video
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div id="doc-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-6" onclick="closeDocModal(event)">
+        <div class="max-w-4xl w-full h-[85vh] bg-white rounded-3xl border-4 border-sky-300 shadow-2xl flex flex-col overflow-hidden relative" onclick="event.stopPropagation()">
+            <div class="bg-sky-500 text-white p-3 px-5 flex justify-between items-center">
+                <h4 id="doc-title" class="font-bold text-sm sm:text-base flex items-center gap-2">
+                    <i class="fas fa-file-alt"></i> <span>Pratinjau Dokumen</span>
+                </h4>
+                <button onclick="closeDocModal()" class="text-white hover:text-sky-200 text-2xl font-bold">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-grow bg-gray-100 p-2">
+                <iframe id="doc-iframe" src="" class="w-full h-full rounded-2xl border-none"></iframe>
+            </div>
+            <div class="p-3 bg-gray-50 border-t border-gray-200 flex justify-end gap-2">
+                <button onclick="closeDocModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-4 py-1.5 rounded-full text-xs">Tutup</button>
+                <a id="doc-download" href="" download target="_blank" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-1.5 rounded-full text-xs flex items-center gap-1.5">
+                    <i class="fas fa-download"></i> Unduh Dokumen
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Frontend Script -->
+    <script>
+        let allFiles = [];
+        let currentFilter = 'all';
+        let currentGalleryMode = 'folders'; // 'folders' or 'all'
+        let selectedFolderStudent = null;
+        let selectedFolderTask = null;
+        let studentRosterMap = {};
+        let selectedTugasFiles = []; // Multi-file queue for student homework
+        let currentSettings = {
+            allowPublicUpload: true,
+            allowStudentHomework: true,
+            subjects: [
+                'Matematika',
+                'Bahasa Indonesia',
+                'PPKn',
+                'Seni Budaya & Prakarya (SBdP)',
+                'PJOK (Olahraga)',
+                'Pendidikan Agama (PAI)',
+                'Tematik Umum / PR Harian'
+            ],
+            lockedCategories: { Foto: false, Dokumen: false, Tugas: false, Lainnya: false }
+        };
+
+        // Toast Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'flex items-center gap-3 bg-white p-4 rounded-2xl shadow-xl border-l-8 transform translate-x-12 opacity-0 transition-all duration-300 max-w-sm pointer-events-auto';
+            
+            let icon = '💡';
+            let color = 'border-sky-400 text-sky-800';
+            if (type === 'success') {
+                icon = '🌟';
+                color = 'border-pink-400 text-pink-800';
+                if (typeof confetti === 'function') {
+                    try {
+                        confetti({
+                            particleCount: 90,
+                            spread: 80,
+                            origin: { y: 0.6 },
+                            colors: ['#10b981', '#f59e0b', '#ec4899', '#3b82f6', '#8b5cf6']
+                        });
+                    } catch (e) {}
+                }
+            } else if (type === 'error') {
+                icon = '⚠️';
+                color = 'border-red-400 text-red-800';
+            }
+
+            toast.className += ` ${color}`;
+            toast.innerHTML = `<span class="text-2xl">${icon}</span><span class="font-bold text-xs sm:text-sm">${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-x-12', 'opacity-0'), 50);
+            setTimeout(() => {
+                toast.classList.add('translate-x-12', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function formatBytes(bytes) {
+            if (!+bytes) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+        }
+
+        function getFileIcon(ext) {
+            switch (ext) {
+                case 'pdf': return '<i class="fas fa-file-pdf text-red-500 text-3xl"></i>';
+                case 'doc':
+                case 'docx': return '<i class="fas fa-file-word text-blue-500 text-3xl"></i>';
+                case 'xls':
+                case 'xlsx': return '<i class="fas fa-file-excel text-green-500 text-3xl"></i>';
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                case 'webp': return '<i class="fas fa-image text-amber-500 text-3xl"></i>';
+                case 'zip':
+                case 'rar': return '<i class="fas fa-file-archive text-purple-500 text-3xl"></i>';
+                case 'mp4':
+                case 'mov': return '<i class="fas fa-video text-pink-500 text-3xl"></i>';
+                default: return '<i class="fas fa-file-alt text-gray-500 text-3xl"></i>';
+            }
+        }
+
+        // Fetch Settings & Files
+        async function fetchSettingsAndFiles() {
+            try {
+                const sRes = await fetch('/api/gallery-settings?t=' + Date.now());
+                const sData = await sRes.json();
+                if (sData.success && sData.settings) {
+                    currentSettings = sData.settings;
+                }
+            } catch (e) {
+                console.warn('Could not fetch settings:', e);
+            }
+
+            applySettingsUI();
+            populateSubjectsDropdown();
+            await fetchFiles();
+        }
+
+        function applySettingsUI() {
+            renderHeadlineBanner();
+
+            // Sync Class Info dynamically from settings
+            const ci = currentSettings.classInfo || {};
+            const heroTitle = document.querySelector('header h1');
+            const heroSub = document.querySelector('header p');
+            const heroTeacher = document.querySelector('header .bg-yellow-200');
+            if (heroTitle && ci.className) heroTitle.innerHTML = `<span class="header-decor">${ci.className}</span>`;
+            if (heroSub && ci.schoolName && ci.schoolYear) heroSub.textContent = `${ci.schoolName} • Tahun Ajaran ${ci.schoolYear}`;
+            if (heroTeacher && ci.teacherName) {
+                heroTeacher.innerHTML = `<i class="fas fa-chalkboard-teacher text-lg mr-1 text-amber-800"></i> Wali Kelas: <strong>${ci.teacherName}</strong> <span class="text-xs sm:text-sm block opacity-85 font-semibold mt-0.5">NIP. ${ci.teacherNip || '198608112025212016'}</span>`;
+            }
+
+            // 1. Single Unified Setor Tugas Button
+            const tugasBtn = document.getElementById('single-tugas-btn');
+            const isHomeworkAllowed = currentSettings.allowStudentHomework !== false;
+
+            if (tugasBtn) {
+                if (!isHomeworkAllowed) {
+                    tugasBtn.disabled = true;
+                    tugasBtn.className = 'w-full md:w-auto bg-gray-400 text-white font-bold py-3.5 px-8 rounded-2xl shadow border-b-4 border-gray-600 cursor-not-allowed opacity-80 text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap shrink-0';
+                    tugasBtn.innerHTML = '<i class="fas fa-lock text-base"></i> <span>Pengumpulan Tugas Ditutup Bu Guru</span>';
+                } else {
+                    tugasBtn.disabled = false;
+                    tugasBtn.className = 'w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-8 rounded-2xl shadow-xl border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all text-sm sm:text-base flex items-center justify-center gap-2 whitespace-nowrap shrink-0';
+                    tugasBtn.innerHTML = '<i class="fas fa-pencil-alt text-lg"></i> <span>Setor Tugas Sekarang</span>';
+                }
+            }
+
+            // 2. Upload Berkas Button di Galeri Publik
+            const uploadBtn = document.getElementById('open-upload-btn');
+            const isUploadAllowed = currentSettings.allowPublicUpload !== false;
+
+            if (uploadBtn) {
+                if (!isUploadAllowed) {
+                    uploadBtn.disabled = true;
+                    uploadBtn.className = 'bg-gray-400 text-white font-bold py-2 px-4 rounded-full text-xs shadow-xs border border-gray-500 cursor-not-allowed opacity-80 flex items-center gap-1.5';
+                    uploadBtn.innerHTML = '<i class="fas fa-lock text-xs"></i> <span>Unggah Berkas Ditutup</span>';
+                } else {
+                    uploadBtn.disabled = false;
+                    uploadBtn.className = 'bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-full text-xs shadow-md border-b-2 border-pink-700 active:border-b-0 flex items-center gap-1.5 transition-all';
+                    uploadBtn.innerHTML = '<i class="fas fa-plus-circle"></i> <span>Tambah Foto / Berkas</span>';
+                }
+            }
+
+            // Update category badges with lock icon if locked
+            const cats = ['Foto', 'Dokumen', 'Tugas', 'Lainnya'];
+            cats.forEach(c => {
+                const btn = document.getElementById(`btn-cat-${c}`);
+                const isLocked = !!(currentSettings.lockedCategories && currentSettings.lockedCategories[c]);
+                if (btn) {
+                    const baseText = {
+                        Foto: '📸 Foto Kegiatan',
+                        Dokumen: '📄 Dokumen & Surat',
+                        Tugas: '📝 Materi & Tugas',
+                        Lainnya: '📦 Lain-lain'
+                    }[c];
+                    btn.innerHTML = isLocked ? `${baseText} <i class="fas fa-lock text-amber-500 text-xs ml-1" title="Terkunci"></i>` : baseText;
+                }
+            });
+        }
+
+        function renderHeadlineBanner() {
+            const ta = currentSettings.taskAnnouncement || {};
+            const isEnabled = ta.enabled !== false && ta.title;
+
+            const titleEl = document.getElementById('hw-banner-title');
+            const subjEl = document.getElementById('hw-banner-subject');
+            const deadEl = document.getElementById('hw-banner-deadline');
+            const noteEl = document.getElementById('hw-banner-note');
+            const heroEl = document.getElementById('hw-banner-hero-media');
+            const otherAttEl = document.getElementById('hw-banner-other-attachments');
+
+            if (titleEl) titleEl.textContent = isEnabled ? (ta.title || 'Tugas Aktif') : 'Tidak Ada Tugas Aktif Hari Ini';
+            if (subjEl) subjEl.textContent = isEnabled ? (ta.subject || 'Tugas') : 'Santai & Belajar Mandiri';
+            if (deadEl) deadEl.innerHTML = isEnabled ? `<i class="far fa-clock"></i> Batas: ${ta.deadline || 'Hari ini'}` : '<i class="fas fa-check-circle text-green-500"></i> Bebas Tugas';
+            if (noteEl) noteEl.textContent = isEnabled ? (ta.note || 'Kerjakan tugas dengan teliti ya!') : 'Belum ada tugas atau PR baru dari Bu Guru Risa. Selamat beristirahat dan belajar ceria! 🌟';
+
+            // Reset media containers
+            if (heroEl) {
+                heroEl.innerHTML = '';
+                heroEl.classList.add('hidden');
+            }
+            if (otherAttEl) {
+                otherAttEl.innerHTML = '';
+            }
+
+            if (isEnabled && ta.attachments && ta.attachments.length > 0) {
+                const attachments = ta.attachments;
+                // Find hero image (poster)
+                const heroImg = attachments.find(att => {
+                    const ext = (att.filename || '').split('.').pop().toLowerCase();
+                    return att.type === 'image' || ['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext);
+                });
+
+                if (heroImg && heroEl) {
+                    heroEl.classList.remove('hidden');
+                    const safeName = (heroImg.filename || 'Poster Tugas').replace(/'/g, "\\'");
+                    const safeNote = (ta.note || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                    heroEl.innerHTML = `
+                        <div class="relative group cursor-pointer overflow-hidden rounded-3xl border-4 border-emerald-400 bg-emerald-950 shadow-2xl transition-all hover:border-yellow-400" onclick="openLightbox('${heroImg.url}', '${safeName}', '${safeNote}')" title="Klik untuk memperbesar poster panduan">
+                            <img src="${heroImg.url}" alt="${safeName}" class="w-full h-64 sm:h-72 lg:h-80 object-cover object-top group-hover:scale-105 transition-all duration-300">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col justify-end p-4 text-white">
+                                <span class="bg-yellow-400 text-yellow-950 text-[11px] font-bubble px-3 py-1 rounded-full self-start shadow-md mb-1.5 flex items-center gap-1.5 border border-yellow-200">
+                                    <i class="fas fa-search-plus text-xs"></i> <span>Klik untuk Zoom Layar Penuh</span>
+                                </span>
+                                <h5 class="text-xs font-bold text-white line-clamp-1 drop-shadow">🔍 ${heroImg.filename}</h5>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Render other attachments (videos/documents)
+                if (otherAttEl) {
+                    const others = attachments.filter(a => a !== heroImg);
+                    if (others.length > 0) {
+                        otherAttEl.innerHTML = others.map(att => {
+                            const isVid = att.type === 'video' || ['mp4', 'webm', 'mov'].some(ext => (att.filename || '').toLowerCase().endsWith('.' + ext));
+                            const safeName = (att.filename || 'Lampiran').replace(/'/g, "\\'");
+
+                            if (isVid) {
+                                return `
+                                    <div onclick="openVideoModal('${att.url}', '${safeName}', 'mp4')" class="flex items-center gap-2.5 p-2 pr-3.5 bg-purple-50 hover:bg-purple-100 rounded-2xl border-2 border-purple-300 cursor-pointer shadow-xs hover:shadow-md transition-all">
+                                        <span class="w-10 h-10 bg-purple-600 text-white rounded-xl flex items-center justify-center text-sm shadow-sm">
+                                            <i class="fas fa-play ml-0.5"></i>
+                                        </span>
+                                        <div>
+                                            <span class="text-xs font-bubble text-purple-950 block">Video Panduan Bu Guru</span>
+                                            <span class="text-[10px] text-purple-700 font-bold">Putar Video Penjelasan ▶</span>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                return `
+                                    <a href="${att.url}" target="_blank" download class="flex items-center gap-2.5 p-2 pr-3.5 bg-amber-50 hover:bg-amber-100 rounded-2xl border-2 border-amber-300 shadow-xs hover:shadow-md transition-all">
+                                        <span class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center text-sm shadow-sm">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <div>
+                                            <span class="text-xs font-bubble text-amber-950 block truncate max-w-[170px]">${att.filename}</span>
+                                            <span class="text-[10px] text-amber-700 font-bold">Unduh Dokumen 📥</span>
+                                        </div>
+                                    </a>
+                                `;
+                            }
+                        }).join('');
+                    }
+                }
+            }
+        }
+
+        async function fetchFiles() {
+            const grid = document.getElementById('files-grid');
+            const fileCountEl = document.getElementById('file-count');
+
+            try {
+                const res = await fetch('/api/list-files');
+                const data = await res.json();
+                if (!data.success) throw new Error(data.error);
+
+                allFiles = data.files || [];
+                renderFiles();
+                renderLiveSubmissionBoard();
+                renderStudentShowcase();
+            } catch (err) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-10 bg-white rounded-3xl border-2 border-red-200 p-6">
+                        <i class="fas fa-exclamation-circle text-4xl text-red-400 mb-2"></i>
+                        <h4 class="font-bubble text-red-600 text-lg">Gagal Memuat Galeri</h4>
+                        <p class="text-gray-600 text-sm mt-1">Sedang ada kendala koneksi. Coba segarkan kembali.</p>
+                    </div>
+                `;
+                fileCountEl.textContent = '0';
+            }
+        }
+
+        function isTaskApprovedPublic(file) {
+            if (!file) return false;
+            const norm = (s) => (s || '').trim().toLowerCase();
+
+            // 1. Jika ditandai secara eksplisit sebagai Karya Terbaik oleh Bu Guru:
+            const featuredList = (currentSettings.featuredSubmissions || []);
+            if (featuredList.includes(file.key) || featuredList.includes(file.filename)) {
+                return true;
+            }
+
+            // 2. Otoritas langsung dari tombol folder admin:
+            const pubFolders = (currentSettings.publicTaskFolders || []).map(norm);
+            const fileTask = norm(file.taskFolder);
+            const fileSubj = norm(file.subject);
+            if (pubFolders.includes(fileTask) || pubFolders.includes(fileSubj)) {
+                return true;
+            }
+
+            // 3. Opsi master galeri dari alert tugas aktif:
+            const ta = currentSettings.taskAnnouncement || {};
+            if (ta && ta.isPublicGallery) {
+                const taTitle = norm(ta.title);
+                const taSubj = norm(ta.subject);
+                if (fileTask === taTitle || fileSubj === taSubj || fileTask === 'tugas umum' || !file.taskFolder) {
+                    return true;
+                }
+                // Jika master toggle aktif dan tidak ada filter folder spesifik, perbolehkan semua tugas murid
+                return true;
+            }
+
+            return false;
+        }
+
+        function renderFiles() {
+            const grid = document.getElementById('files-grid');
+            const fileCountEl = document.getElementById('file-count');
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const isTeacher = !!sessionStorage.getItem('caca_admin_pin');
+
+            const isAnyTaskPublic = (currentSettings.taskAnnouncement && currentSettings.taskAnnouncement.isPublicGallery) ||
+                                    (currentSettings.publicTaskFolders && currentSettings.publicTaskFolders.length > 0) ||
+                                    (currentSettings.featuredSubmissions && currentSettings.featuredSubmissions.length > 0);
+
+            // 1. PRIVASI TUGAS: Pengunjung umum hanya di-block jika tidak ada tugas yang diizinkan publik
+            if (currentFilter === 'Tugas' && !isTeacher && !isAnyTaskPublic) {
+                fileCountEl.textContent = '0';
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white/95 rounded-3xl border-4 border-emerald-300 p-8 shadow-xl max-w-xl mx-auto">
+                        <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-emerald-300 text-emerald-600 text-3xl shadow-inner">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h4 class="font-bubble text-emerald-900 text-2xl mb-1">Ruang Tugas Murid Bersifat Privat</h4>
+                        <p class="text-gray-600 text-sm font-semibold mb-6">
+                            Saat ini seluruh tugas & PR yang disetor disimpan privat dan dinilai langsung oleh <strong>Ibu RISA AGUSTIAN, S.Pd</strong>.
+                        </p>
+                        <div class="flex justify-center gap-3 flex-wrap">
+                            <button onclick="openTugasModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2.5 px-6 rounded-full text-xs shadow-md inline-flex items-center gap-2 border-b-4 border-emerald-700 active:border-b-0">
+                                <i class="fas fa-pencil-alt"></i> Setor Tugas Anda
+                            </button>
+                            <a href="/admin" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-2.5 px-6 rounded-full text-xs shadow-md inline-flex items-center gap-2 border-b-4 border-amber-600 active:border-b-0">
+                                <i class="fas fa-key"></i> Masuk Wali Kelas
+                            </a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Check if current category is locked
+            const isCategoryLocked = currentFilter !== 'all' && currentSettings.lockedCategories && currentSettings.lockedCategories[currentFilter];
+
+            if (isCategoryLocked) {
+                fileCountEl.textContent = '0';
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white/95 rounded-3xl border-4 border-amber-300 p-8 shadow-xl max-w-xl mx-auto">
+                        <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-amber-300 text-amber-600 text-3xl shadow-inner">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4 class="font-bubble text-amber-900 text-2xl mb-1">Kategori Ini Terkunci</h4>
+                        <p class="text-amber-800 text-sm font-semibold mb-3">
+                            Kategori <strong>${currentFilter}</strong> sedang dikunci untuk umum oleh Wali Kelas Ibu Risa Agustian, S.Pd.
+                        </p>
+                        <a href="/admin" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded-full text-xs shadow-md inline-flex items-center gap-2 border-b-4 border-amber-700 active:border-b-0">
+                            <i class="fas fa-key"></i> Buka dengan Mode Wali Kelas
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter out locked categories and private student homework when visitor is not teacher
+            const filtered = allFiles.filter(file => {
+                const isStudentWork = (file.category === 'Tugas' || !!file.studentName);
+
+                // Jika file adalah hasil tugas murid:
+                if (isStudentWork) {
+                    if (isTeacher) return true; // Bu Guru bisa melihat semua
+                    if (!isTaskApprovedPublic(file)) return false; // Sembunyikan jika belum diizinkan publik
+                }
+
+                const isLocked = currentSettings.lockedCategories && currentSettings.lockedCategories[file.category];
+                if (currentFilter === 'all' && isLocked) return false;
+
+                const matchesSearch = file.filename.toLowerCase().includes(searchTerm) || (file.displayName && file.displayName.toLowerCase().includes(searchTerm));
+                const matchesCat = currentFilter === 'all' || 
+                                   file.category.toLowerCase() === currentFilter.toLowerCase() ||
+                                   (currentFilter === 'Tugas' && isStudentWork);
+                return matchesSearch && matchesCat;
+            });
+
+            fileCountEl.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white/80 rounded-3xl border-2 border-pink-100 p-8">
+                        <span class="text-5xl block mb-2">📂</span>
+                        <h4 class="font-bubble text-pink-700 text-xl">Belum ada berkas atau foto di kategori ini</h4>
+                        <p class="text-gray-500 text-sm mt-1">Silakan unggah dokumen atau foto kegiatan baru!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            renderMediaCards(filtered);
+        }
+
+        function renderMediaCards(filesToRender) {
+            const grid = document.getElementById('files-grid');
+            grid.innerHTML = filesToRender.map(file => {
+                const dateStr = new Date(file.lastModified).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                const downloadUrl = file.url || '#';
+                const isImage = ['jpg', 'jpeg', 'png', 'webp'].includes(file.extension);
+                const isVideo = ['mp4', 'mov', 'webm'].includes(file.extension);
+                const isPdf = file.extension === 'pdf';
+                const isText = ['txt', 'md'].includes(file.extension);
+
+                return `
+                    <div class="cute-card p-4 flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <!-- Rich Media Preview Area -->
+                            ${isImage && file.url ? `
+                                <div class="w-full h-44 bg-gray-100 rounded-2xl mb-3 overflow-hidden border-2 border-pink-100 relative group cursor-pointer" onclick="openLightbox('${file.url}', '${file.displayName || file.filename}', '${formatBytes(file.size)} • ${dateStr}')">
+                                    <img src="${file.url}" alt="${file.displayName || file.filename}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+                                    <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xl">
+                                        <i class="fas fa-search-plus bg-black/40 p-3 rounded-full"></i>
+                                    </div>
+                                </div>
+                            ` : ''}
+
+                            ${isVideo && file.url ? `
+                                <div class="w-full h-44 bg-slate-900 rounded-2xl mb-3 overflow-hidden border-2 border-pink-200 relative group cursor-pointer flex items-center justify-center" onclick="openVideoModal('${file.url}', '${file.displayName || file.filename}')">
+                                    <video src="${file.url}" class="w-full h-full object-cover opacity-75" preload="metadata"></video>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="w-14 h-14 bg-pink-500/90 text-white rounded-full flex items-center justify-center text-xl shadow-lg transform group-hover:scale-110 transition-transform">
+                                            <i class="fas fa-play ml-1"></i>
+                                        </span>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                        <i class="fas fa-film"></i> Video
+                                    </span>
+                                </div>
+                            ` : ''}
+
+                            ${!isImage && !isVideo ? `
+                                <div class="w-full h-32 bg-gray-50 rounded-2xl mb-3 border-2 border-dashed border-gray-200 flex flex-col items-center justify-center text-center p-3">
+                                    ${getFileIcon(file.extension)}
+                                    <span class="text-xs font-bold text-gray-500 mt-2 uppercase tracking-wider">${file.extension || 'BERKAS'}</span>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex items-start justify-between gap-1 mb-2 flex-wrap">
+                                ${file.studentName ? (() => {
+                                    const r = studentRosterMap[file.studentName];
+                                    const sal = (r && r.gender === 'P') ? 'Adinda' : 'Ananda';
+                                    return `
+                                        <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 border border-emerald-300">
+                                            <i class="fas fa-user-graduate"></i> ${sal} ${file.studentName} ⭐
+                                        </span>
+                                    `;
+                                })() : `
+                                    <span class="bg-pink-100 text-pink-800 text-[10px] font-bold px-2.5 py-1 rounded-full">${file.category}</span>
+                                `}
+                                ${file.subject ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${file.subject}</span>` : ''}
+                                <span class="text-xs text-gray-400">${formatBytes(file.size)}</span>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm line-clamp-2 mb-1" title="${file.filename}">${file.displayName || file.filename}</h4>
+                            <div class="text-[11px] text-gray-400 flex items-center justify-between mt-1">
+                                <span><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Action Buttons -->
+                        <div class="mt-4 pt-3 border-t border-gray-100 flex flex-col gap-1.5">
+                            <div class="flex gap-2">
+                                ${isImage ? `
+                                    <button onclick="openLightbox('${file.url}', '${file.displayName || file.filename}', '${formatBytes(file.size)} • ${dateStr}')" class="flex-grow bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-1.5 px-3 rounded-xl text-center text-xs transition-all flex items-center justify-center gap-1 shadow-xs">
+                                        <i class="fas fa-expand"></i> Pratinjau
+                                    </button>
+                                ` : ''}
+
+                                ${isVideo ? `
+                                    <button onclick="openVideoModal('${file.url}', '${file.displayName || file.filename}')" class="flex-grow bg-purple-500 hover:bg-purple-600 text-white font-bold py-1.5 px-3 rounded-xl text-center text-xs transition-all flex items-center justify-center gap-1 shadow-xs">
+                                        <i class="fas fa-play"></i> Putar Video
+                                    </button>
+                                ` : ''}
+
+                                ${(isPdf || isText) ? `
+                                    <button onclick="openDocModal('${file.url}', '${file.displayName || file.filename}')" class="flex-grow bg-sky-500 hover:bg-sky-600 text-white font-bold py-1.5 px-3 rounded-xl text-center text-xs transition-all flex items-center justify-center gap-1 shadow-xs">
+                                        <i class="fas fa-eye"></i> Baca Dokumen
+                                    </button>
+                                ` : ''}
+
+                                ${file.url ? `
+                                    <a href="${downloadUrl}" target="_blank" download class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-1.5 px-3 rounded-xl text-center text-xs transition-all flex items-center justify-center gap-1 shadow-xs" title="Unduh Berkas">
+                                        <i class="fas fa-download"></i> Unduh
+                                    </a>
+                                    <button onclick="copyFileLink('${downloadUrl}')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-xl text-xs" title="Salin Tautan">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // Folder View Logic (Per Siswa & Sub-Folder Tugas)
+        // ==========================================
+        function renderFolderView(filtered) {
+            const grid = document.getElementById('files-grid');
+            const breadcrumb = document.getElementById('folder-breadcrumb');
+            const breadcrumbStudent = document.getElementById('breadcrumb-student-name');
+            const breadcrumbTaskSep = document.getElementById('breadcrumb-task-sep');
+            const breadcrumbTask = document.getElementById('breadcrumb-task-name');
+
+            // 1. LEVEL 1: List of Student Folders
+            if (!selectedFolderStudent) {
+                breadcrumb.classList.add('hidden');
+
+                const studentGroups = {};
+                filtered.forEach(file => {
+                    const sName = file.studentName || 'Berkas Umum & Kegiatan';
+                    if (!studentGroups[sName]) studentGroups[sName] = [];
+                    studentGroups[sName].push(file);
+                });
+
+                const studentNames = Object.keys(studentGroups);
+
+                grid.innerHTML = studentNames.map(sName => {
+                    const files = studentGroups[sName];
+                    const isGeneral = sName === 'Berkas Umum & Kegiatan';
+                    const taskSet = new Set(files.map(f => f.taskFolder || 'Tugas'));
+                    const taskCount = taskSet.size;
+                    const fileCount = files.length;
+                    
+                    const roster = studentRosterMap[sName];
+                    const avatar = isGeneral ? '📦' : (roster && roster.gender === 'P' ? '👧' : '👦');
+                    const badgeColor = isGeneral ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-emerald-100 text-emerald-900 border-emerald-300';
+                    const safeName = sName.replace(/'/g, "\\'");
+
+                    return `
+                        <div onclick="openStudentFolder('${safeName}')" class="cute-card p-5 cursor-pointer hover:border-2 hover:border-emerald-400 flex flex-col justify-between group transition-all">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-4xl p-2.5 bg-emerald-50 rounded-2xl border border-emerald-100 group-hover:scale-110 transition-transform">${avatar}</span>
+                                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold border ${badgeColor}">
+                                        ${taskCount} Tugas • ${fileCount} File
+                                    </span>
+                                </div>
+                                <h4 class="font-bubble text-gray-800 text-base sm:text-lg mb-1 group-hover:text-emerald-600 transition-colors">${sName}</h4>
+                                <p class="text-xs text-gray-400 font-bold">
+                                    <i class="fas fa-folder-open text-emerald-500 mr-1"></i> Galeri Folder Siswa
+                                </p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-emerald-600">
+                                <span>Buka Folder Tugas Siswa</span>
+                                <i class="fas fa-arrow-right transform group-hover:translate-x-1.5 transition-transform"></i>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                return;
+            }
+
+            // Filter for selected student
+            const studentFiles = filtered.filter(f => (f.studentName || 'Berkas Umum & Kegiatan') === selectedFolderStudent);
+
+            // 2. LEVEL 2: Sub-folders per Task of that Student
+            if (!selectedFolderTask) {
+                breadcrumb.classList.remove('hidden');
+                breadcrumbStudent.textContent = selectedFolderStudent;
+                breadcrumbTaskSep.classList.add('hidden');
+                breadcrumbTask.classList.add('hidden');
+
+                const taskGroups = {};
+                studentFiles.forEach(file => {
+                    const tName = file.taskFolder || file.subject || 'Tugas Umum';
+                    if (!taskGroups[tName]) taskGroups[tName] = [];
+                    taskGroups[tName].push(file);
+                });
+
+                const taskNames = Object.keys(taskGroups);
+
+                grid.innerHTML = taskNames.map(tName => {
+                    const files = taskGroups[tName];
+                    const photoCount = files.filter(f => ['jpg', 'jpeg', 'png', 'webp'].includes(f.extension)).length;
+                    const videoCount = files.filter(f => ['mp4', 'mov', 'webm'].includes(f.extension)).length;
+                    const docCount = files.length - photoCount - videoCount;
+
+                    let infoParts = [];
+                    if (photoCount) infoParts.push(`${photoCount} Foto`);
+                    if (videoCount) infoParts.push(`${videoCount} Video`);
+                    if (docCount) infoParts.push(`${docCount} Dok`);
+                    const infoText = infoParts.join(', ') || `${files.length} Berkas`;
+                    const dateStr = new Date(files[0].lastModified).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const safeTask = tName.replace(/'/g, "\\'");
+
+                    return `
+                        <div onclick="openTaskFolder('${safeTask}')" class="cute-card p-5 cursor-pointer hover:border-2 hover:border-sky-400 flex flex-col justify-between group transition-all">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-4xl p-2.5 bg-sky-50 rounded-2xl border border-sky-100 group-hover:scale-110 transition-transform">📂</span>
+                                    <span class="bg-sky-100 text-sky-800 px-2.5 py-1 rounded-full text-[10px] font-bold">
+                                        ${infoText}
+                                    </span>
+                                </div>
+                                <h4 class="font-bubble text-gray-800 text-base mb-1 group-hover:text-sky-600 transition-colors">${tName}</h4>
+                                <p class="text-xs text-gray-400 font-bold"><i class="far fa-calendar-alt"></i> ${dateStr}</p>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold text-sky-600">
+                                <span>Lihat Isi Galeri (${files.length} media)</span>
+                                <i class="fas fa-folder-open transform group-hover:scale-110 transition-transform"></i>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                return;
+            }
+
+            // 3. LEVEL 3: Media Cards inside specific Task
+            breadcrumb.classList.remove('hidden');
+            breadcrumbStudent.textContent = selectedFolderStudent;
+            breadcrumbTaskSep.classList.remove('hidden');
+            breadcrumbTask.classList.remove('hidden');
+            breadcrumbTask.textContent = selectedFolderTask;
+
+            const taskFiles = studentFiles.filter(f => (f.taskFolder || f.subject || 'Tugas Umum') === selectedFolderTask);
+            renderMediaCards(taskFiles);
+        }
+
+        // Folder Navigation Helpers
+        window.openStudentFolder = function(name) {
+            selectedFolderStudent = name;
+            selectedFolderTask = null;
+            renderFiles();
+        };
+
+        window.openTaskFolder = function(taskName) {
+            selectedFolderTask = taskName;
+            renderFiles();
+        };
+
+        // Main Two Navigation Tabs Switcher
+        const mainTabTugasBtn = document.getElementById('main-tab-tugas-btn');
+        const mainTabGaleriBtn = document.getElementById('main-tab-galeri-btn');
+        const sectionTugas = document.getElementById('section-tugas');
+        const sectionGaleri = document.getElementById('section-galeri');
+
+        mainTabTugasBtn.addEventListener('click', () => {
+            sectionTugas.classList.remove('hidden');
+            sectionGaleri.classList.add('hidden');
+            mainTabTugasBtn.className = 'flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 bg-emerald-500 text-white shadow-md';
+            mainTabGaleriBtn.className = 'flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 text-gray-600 hover:bg-pink-50';
+        });
+
+        mainTabGaleriBtn.addEventListener('click', () => {
+            sectionGaleri.classList.remove('hidden');
+            sectionTugas.classList.add('hidden');
+            mainTabGaleriBtn.className = 'flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 bg-pink-500 text-white shadow-md';
+            mainTabTugasBtn.className = 'flex-1 py-3 px-4 rounded-2xl font-bubble text-sm sm:text-base transition-all flex items-center justify-center gap-2 text-gray-600 hover:bg-emerald-50';
+            renderFiles();
+        });
+
+        // Setup Cek Status Pengumpulan
+        function setupStatusChecker() {
+            const select = document.getElementById('status-student-select');
+            const resultBox = document.getElementById('status-result-box');
+            if (!select || !resultBox) return;
+
+            select.addEventListener('change', () => {
+                const sName = select.value;
+                if (!sName) {
+                    resultBox.className = 'p-4 rounded-2xl bg-amber-50 border border-amber-200 text-center text-xs text-amber-900 font-semibold';
+                    resultBox.textContent = 'Silakan pilih nama siswa di atas untuk melihat status pengumpulan tugas.';
+                    return;
+                }
+
+                const studentTasks = allFiles.filter(f => f.studentName === sName);
+
+                if (studentTasks.length === 0) {
+                    resultBox.className = 'p-4 rounded-2xl bg-red-50 border border-red-200 text-center text-xs text-red-900 font-semibold';
+                    resultBox.innerHTML = `
+                        <p class="font-bold text-sm mb-1">⚠️ Belum Ada Tugas Tercatat</p>
+                        <p>Belum ada rekaman tugas yang disetor atas nama <strong>${sName}</strong>. Segera kumpulkan tugas sebelum batas waktu ya!</p>
+                    `;
+                    return;
+                }
+
+                const taskMap = {};
+                studentTasks.forEach(f => {
+                    const t = f.taskFolder || f.subject || 'Tugas';
+                    if (!taskMap[t]) taskMap[t] = [];
+                    taskMap[t].push(f);
+                });
+
+                const taskEntries = Object.entries(taskMap);
+                resultBox.className = 'p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-left text-xs text-emerald-950 font-semibold';
+                resultBox.innerHTML = `
+                    <div class="flex items-center justify-between mb-2 pb-2 border-b border-emerald-200 flex-wrap gap-2">
+                        <span class="font-bold text-sm text-emerald-900 flex items-center gap-1.5">
+                            <i class="fas fa-check-circle text-emerald-600 text-base"></i> Status Tugas: ${sName}
+                        </span>
+                        <span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                            ${taskEntries.length} Tugas Terkirim
+                        </span>
+                    </div>
+                    <ul class="space-y-1.5">
+                        ${taskEntries.map(([tName, files]) => {
+                            const dateStr = new Date(files[0].lastModified).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                            return `
+                                <li class="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-100 shadow-xs">
+                                    <span class="font-bold text-gray-800">📘 ${tName} (${files.length} berkas)</span>
+                                    <span class="text-[11px] text-emerald-600 font-bold"><i class="far fa-clock"></i> ${dateStr} - Terkirim ✅</span>
+                                </li>
+                            `;
+                        }).join('')}
+                    </ul>
+                `;
+            });
+        }
+
+        // ==========================================
+        // Live Submission Board (Papan Siswa Hebat)
+        // ==========================================
+        let studentRosterList = [];
+
+        function renderLiveSubmissionBoard() {
+            const grid = document.getElementById('live-submissions-grid');
+            const progressLabel = document.getElementById('live-progress-label');
+            const progressPercent = document.getElementById('live-progress-percent');
+            const progressBar = document.getElementById('live-progress-bar');
+            const unsubmittedCountEl = document.getElementById('unsubmitted-count');
+            const unsubmittedNamesList = document.getElementById('unsubmitted-names-list');
+            if (!grid) return;
+
+            // Group all homework submissions by studentName
+            const studentSubmissions = {};
+            allFiles.forEach(file => {
+                if (file.studentName) {
+                    if (!studentSubmissions[file.studentName]) {
+                        studentSubmissions[file.studentName] = [];
+                    }
+                    studentSubmissions[file.studentName].push(file);
+                }
+            });
+
+            const submittedStudents = Object.keys(studentSubmissions);
+            const totalStudents = studentRosterList.length || 33;
+            const submittedCount = submittedStudents.length;
+            const percent = Math.min(100, Math.round((submittedCount / totalStudents) * 100));
+
+            // Update Progress Bar
+            if (progressLabel) progressLabel.textContent = `Progres Kelas: ${submittedCount}/${totalStudents} Siswa`;
+            if (progressPercent) progressPercent.textContent = `${percent}%`;
+            if (progressBar) progressBar.style.width = `${percent}%`;
+
+            // If nobody has submitted yet
+            if (submittedCount === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-6 bg-white rounded-2xl border border-dashed border-emerald-200 p-4">
+                        <span class="text-3xl block mb-1">🌱</span>
+                        <h4 class="font-bubble text-emerald-900 text-sm">Belum Ada Setoran Tugas</h4>
+                        <p class="text-[11px] text-gray-500 mt-0.5">Ayo jadi siswa pertama yang mengumpulkan tugas hari ini! 🌟</p>
+                    </div>
+                `;
+            } else {
+                // Sort submitted students by latest submission time
+                submittedStudents.sort((a, b) => {
+                    const latestA = new Date(studentSubmissions[a][0].lastModified);
+                    const latestB = new Date(studentSubmissions[b][0].lastModified);
+                    return latestB - latestA;
+                });
+
+                grid.innerHTML = submittedStudents.map((sName) => {
+                    const files = studentSubmissions[sName];
+                    const roster = studentRosterMap[sName];
+                    const avatar = roster && roster.gender === 'P' ? '👧' : '👦';
+                    const latestFile = files[0];
+                    const dateStr = new Date(latestFile.lastModified).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'short'
+                    });
+                    const timeStr = new Date(latestFile.lastModified).toLocaleTimeString('id-ID', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    const taskName = latestFile.taskFolder || latestFile.subject || 'Tugas';
+
+                    return `
+                        <div class="p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex items-center justify-between gap-2 hover:border-emerald-400 hover:shadow-sm transition-all">
+                            <div class="flex items-center gap-2.5 overflow-hidden">
+                                <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm font-bold shrink-0 border border-emerald-100">
+                                    ${avatar}
+                                </span>
+                                <div class="overflow-hidden">
+                                    <h4 class="font-bold text-gray-800 text-xs truncate" title="${sName}">${sName}</h4>
+                                    <p class="text-[10px] text-gray-400 truncate">
+                                        <i class="far fa-clock text-emerald-500"></i> ${dateStr} ${timeStr} • ${taskName}
+                                    </p>
+                                </div>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 flex items-center gap-1 border border-emerald-300">
+                                <i class="fas fa-check-circle text-emerald-600"></i> SELESAI ⭐
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Unsubmitted Students
+            const unsubmitted = studentRosterList.filter(s => !studentSubmissions[s.name]);
+            if (unsubmittedCountEl) unsubmittedCountEl.textContent = unsubmitted.length;
+            if (unsubmittedNamesList) {
+                unsubmittedNamesList.innerHTML = unsubmitted.map(s => `
+                    <span class="bg-white text-gray-700 px-2.5 py-1 rounded-xl text-[11px] font-semibold border border-gray-200 shadow-xs">
+                        ${s.id}. ${s.name}
+                    </span>
+                `).join('');
+            }
+        }
+
+        const toggleUnsubmittedBtn = document.getElementById('toggle-unsubmitted-btn');
+        if (toggleUnsubmittedBtn) {
+            toggleUnsubmittedBtn.addEventListener('click', () => {
+                const box = document.getElementById('unsubmitted-box');
+                if (box) box.classList.toggle('hidden');
+            });
+        }
+
+        // ==========================================
+        // Pameran Hasil Karya Siswa (Di Tab Tugas)
+        // ==========================================
+        function renderStudentShowcase() {
+            const showcaseEl = document.getElementById('student-gallery-showcase');
+            const showcaseGrid = document.getElementById('showcase-grid');
+            const showcaseBadge = document.getElementById('showcase-badge');
+            const showcaseDesc = document.getElementById('showcase-status-desc');
+            if (!showcaseEl || !showcaseGrid) return;
+
+            const ta = currentSettings.taskAnnouncement || {};
+            const pubFolders = currentSettings.publicTaskFolders || [];
+            const isPublicEnabled = !!ta.isPublicGallery || pubFolders.length > 0;
+
+            const studentFiles = allFiles.filter(f => {
+                if (f.category !== 'Tugas' && !f.studentName) return false;
+                return isTaskApprovedPublic(f);
+            });
+
+            // Urutkan karya: Karya Pilihan Terbaik Bu Guru muncul paling depan!
+            const featuredList = currentSettings.featuredSubmissions || [];
+            studentFiles.sort((a, b) => {
+                const featA = featuredList.includes(a.key) || featuredList.includes(a.filename);
+                const featB = featuredList.includes(b.key) || featuredList.includes(b.filename);
+                if (featA && !featB) return -1;
+                if (!featA && featB) return 1;
+                return new Date(b.lastModified) - new Date(a.lastModified);
+            });
+
+            if (!isPublicEnabled && studentFiles.length === 0) {
+                showcaseBadge.className = 'bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full border border-gray-200 flex items-center gap-1';
+                showcaseBadge.innerHTML = '<i class="fas fa-lock"></i> <span>Privat Khusus Bu Guru</span>';
+                showcaseDesc.textContent = 'Hasil lembar kerja dan tugas siswa disimpan aman dan hanya dapat dinilai oleh Ibu Risa Agustian, S.Pd.';
+                showcaseGrid.innerHTML = `
+                    <div class="col-span-full py-8 px-4 text-center bg-gray-50/70 rounded-2xl border border-dashed border-gray-200">
+                        <i class="fas fa-user-shield text-3xl text-emerald-600 mb-2"></i>
+                        <h4 class="font-bubble text-emerald-950 text-sm">Hasil Tugas Tersimpan Aman & Privat</h4>
+                        <p class="text-xs text-gray-500 max-w-md mx-auto mt-1">Bu Guru mengunci lembar kerja agar proses belajar tetap jujur dan nyaman. Hubungi Bu Guru jika ingin membuka pameran karya.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            showcaseBadge.className = 'bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300 flex items-center gap-1';
+            showcaseBadge.innerHTML = '<i class="fas fa-globe"></i> <span>🌟 Pameran Galeri Terbuka</span>';
+            showcaseDesc.textContent = 'Karya hebat siswa kelas 2C yang dipamerkan oleh Bu Guru Risa agar kita semua bisa saling mengapresiasi! 👏';
+
+            if (studentFiles.length === 0) {
+                showcaseGrid.innerHTML = `
+                    <div class="col-span-full py-10 px-4 text-center bg-emerald-50/50 rounded-2xl border-2 border-dashed border-emerald-200">
+                        <span class="text-3xl block mb-2">🌟</span>
+                        <h4 class="font-bubble text-emerald-950 text-sm sm:text-base">Belum Ada Karya yang Dipamerkan</h4>
+                        <p class="text-xs text-gray-500 max-w-md mx-auto mt-1">Bu Guru dapat memilih karya terbaik untuk dipamerkan melalui tombol bintang di Dashboard Admin.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            showcaseGrid.innerHTML = studentFiles.map(file => {
+                const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(file.extension);
+                const isVideo = ['mp4', 'webm', 'mov'].includes(file.extension);
+                const r = studentRosterMap[file.studentName];
+                const sal = (r && r.gender === 'P') ? 'Adinda' : 'Ananda';
+                const isFeatured = featuredList.includes(file.key) || featuredList.includes(file.filename);
+
+                // Format judul tugas yang rapi dan deskriptif
+                const cleanTitle = (() => {
+                    if (file.taskFolder && file.taskFolder !== 'Tugas' && file.taskFolder !== 'Tugas Umum') {
+                        return file.taskFolder.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    }
+                    if (file.subject && file.subject !== 'Tugas') {
+                        return file.subject;
+                    }
+                    return file.displayName || file.filename;
+                })();
+
+                return `
+                    <div class="cute-card p-3.5 flex flex-col justify-between overflow-hidden bg-white ${isFeatured ? 'border-2 border-amber-400 shadow-lg ring-2 ring-amber-200/60' : 'hover:border-emerald-400'}">
+                        <div>
+                            ${isImage ? `
+                                <div class="w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-3 bg-gray-50 cursor-pointer relative group border-2 border-emerald-200/70 shadow-inner" onclick="openLightbox('${file.url}', '${cleanTitle}', 'Karya ${sal} ${file.studentName || 'Murid'} • ${formatBytes(file.size)}')">
+                                    <img src="${file.url}" alt="${cleanTitle}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                                        <div class="w-12 h-12 rounded-full bg-white/90 text-emerald-700 flex items-center justify-center text-xl shadow-xl">
+                                            <i class="fas fa-search-plus"></i>
+                                        </div>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 backdrop-blur-xs">
+                                        <i class="fas fa-image text-amber-400"></i> Foto • ${formatBytes(file.size)}
+                                    </span>
+                                </div>
+                            ` : ''}
+
+                            ${isVideo ? `
+                                <div class="w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-3 bg-slate-900 cursor-pointer relative group flex items-center justify-center border-2 border-emerald-200/70 shadow-inner" onclick="openVideoModal('${file.url}', '${cleanTitle}', '${file.extension}')">
+                                    <!-- Real video frame preview -->
+                                    <video src="${file.url}#t=0.5" preload="metadata" muted playsinline class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"></video>
+
+                                    <!-- Dark gradient overlay & frosted glass play button -->
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                                        <div class="w-13 h-13 rounded-full bg-white/90 text-emerald-600 flex items-center justify-center text-xl shadow-2xl group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-white transition-all ring-4 ring-white/40">
+                                            <i class="fas fa-play ml-1"></i>
+                                        </div>
+                                    </div>
+                                    <span class="absolute bottom-2 right-2 bg-black/75 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 backdrop-blur-xs">
+                                        <i class="fas fa-film text-emerald-400"></i> Video • ${formatBytes(file.size)}
+                                    </span>
+                                </div>
+                            ` : ''}
+
+                            ${!isImage && !isVideo ? `
+                                <div class="w-full h-28 bg-emerald-50 rounded-2xl mb-3 border border-emerald-200 flex flex-col items-center justify-center text-center p-2">
+                                    <i class="fas fa-file-alt text-3xl text-emerald-600"></i>
+                                    <span class="text-xs font-bold text-emerald-800 mt-1 uppercase">${file.extension || 'BERKAS'}</span>
+                                </div>
+                            ` : ''}
+
+                            <div class="flex items-center gap-1.5 flex-wrap mb-1.5">
+                                ${isFeatured ? `
+                                    <span class="bg-gradient-to-r from-amber-400 to-yellow-300 text-amber-950 text-[10px] font-bubble px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 shadow-xs border border-amber-300">
+                                        <i class="fas fa-crown text-amber-800"></i> KARYA TERBAIK ⭐
+                                    </span>
+                                ` : ''}
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full inline-flex items-center gap-1 border border-emerald-300">
+                                    <i class="fas fa-star text-amber-500"></i> ${sal} ${file.studentName || 'Murid'}
+                                </span>
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-xs sm:text-sm line-clamp-1 mb-0.5" title="${cleanTitle}">${cleanTitle}</h4>
+                            <p class="text-[10px] text-gray-400">${file.subject || file.taskFolder || 'Tugas'} • ${formatBytes(file.size)}</p>
+                        </div>
+
+                        <div class="mt-3 pt-2 border-t border-gray-100 flex justify-between items-center">
+                            ${isImage ? `<button onclick="openLightbox('${file.url}', '${cleanTitle}', 'Karya ${sal} ${file.studentName}')" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1"><i class="fas fa-eye"></i> Lihat Foto</button>` : ''}
+                            ${isVideo ? `<button onclick="openVideoModal('${file.url}', '${cleanTitle}', '${file.extension}')" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1"><i class="fas fa-play"></i> Putar Video</button>` : ''}
+                            ${!isImage && !isVideo ? `<a href="${file.url}" target="_blank" class="text-xs font-bold text-emerald-600 hover:text-emerald-800 flex items-center gap-1"><i class="fas fa-external-link-alt"></i> Buka Berkas</a>` : ''}
+                            <a href="${file.url}" download target="_blank" class="text-gray-400 hover:text-gray-600 text-xs p-1" title="Unduh Berkas"><i class="fas fa-download"></i></a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ==========================================
+        // Jadwal Pelajaran & Piket Modal Logic
+        // ==========================================
+        const scheduleModal = document.getElementById('schedule-modal');
+        const openScheduleBtn = document.getElementById('open-schedule-btn');
+        const modalTabLessonBtn = document.getElementById('modal-tab-lesson-btn');
+        const modalTabPiketBtn = document.getElementById('modal-tab-piket-btn');
+        const modalLessonContent = document.getElementById('modal-lesson-content');
+        const modalPiketContent = document.getElementById('modal-piket-content');
+
+        if (openScheduleBtn) {
+            openScheduleBtn.addEventListener('click', openScheduleModal);
+        }
+
+        modalTabLessonBtn.addEventListener('click', () => {
+            modalLessonContent.classList.remove('hidden');
+            modalPiketContent.classList.add('hidden');
+            modalTabLessonBtn.className = 'py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 bg-amber-500 text-white shadow-md';
+            modalTabPiketBtn.className = 'py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 text-amber-900 hover:bg-amber-200/80';
+        });
+
+        modalTabPiketBtn.addEventListener('click', () => {
+            modalPiketContent.classList.remove('hidden');
+            modalLessonContent.classList.add('hidden');
+            modalTabPiketBtn.className = 'py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 bg-amber-500 text-white shadow-md';
+            modalTabLessonBtn.className = 'py-2 px-5 rounded-full font-bubble text-xs sm:text-sm transition-all flex items-center gap-1.5 text-amber-900 hover:bg-amber-200/80';
+        });
+
+        function openScheduleModal() {
+            renderScheduleModal();
+            scheduleModal.classList.remove('hidden');
+        }
+
+        function closeScheduleModal() {
+            scheduleModal.classList.add('hidden');
+        }
+
+        function renderScheduleModal() {
+            const lessonGrid = document.getElementById('schedule-days-grid');
+            const piketGrid = document.getElementById('piket-days-grid');
+            if (!lessonGrid || !piketGrid) return;
+
+            const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+            const daysMap = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const todayName = daysMap[new Date().getDay()];
+
+            // 1. Render Lesson Schedule
+            const ls = currentSettings.lessonSchedule || {};
+            lessonGrid.innerHTML = days.map(day => {
+                const isToday = day === todayName;
+                const lessons = ls[day] || [];
+                const dayBorder = isToday ? 'border-4 border-amber-500 bg-amber-50/90 shadow-xl ring-4 ring-amber-300' : 'border-2 border-amber-200 bg-white/95 shadow-sm';
+                const todayBadge = isToday ? `<span class="bg-red-500 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Hari Ini ⭐</span>` : '';
+
+                return `
+                    <div class="rounded-2xl p-3.5 ${dayBorder} flex flex-col justify-between transition-all">
+                        <div>
+                            <div class="flex items-center justify-between pb-2 mb-2 border-b border-amber-200/80">
+                                <h4 class="font-bubble text-base text-amber-950">${day}</h4>
+                                ${todayBadge}
+                            </div>
+                            <ul class="space-y-2 text-xs">
+                                ${lessons.map(item => `
+                                    <li class="p-2 rounded-xl bg-white border border-amber-100 shadow-xs">
+                                        <span class="text-[10px] text-gray-400 block font-bold">${item.time}</span>
+                                        <span class="font-bold text-gray-800">${item.subject}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // 2. Render Piket Schedule
+            const ps = currentSettings.piketSchedule || {};
+            piketGrid.innerHTML = days.map(day => {
+                const isToday = day === todayName;
+                const members = ps[day] || [];
+                const dayBorder = isToday ? 'border-4 border-emerald-500 bg-emerald-50/90 shadow-xl ring-4 ring-emerald-300' : 'border-2 border-emerald-200 bg-white/95 shadow-sm';
+                const todayBadge = isToday ? `<span class="bg-emerald-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider animate-pulse">Piket Hari Ini 🧹</span>` : '';
+
+                return `
+                    <div class="rounded-2xl p-3.5 ${dayBorder} flex flex-col justify-between transition-all">
+                        <div>
+                            <div class="flex items-center justify-between pb-2 mb-2 border-b border-emerald-200/80">
+                                <h4 class="font-bubble text-base text-emerald-950 flex items-center gap-1.5">
+                                    <span>🧹 ${day}</span>
+                                </h4>
+                                ${todayBadge}
+                            </div>
+                            <ul class="space-y-1.5 text-xs">
+                                ${members.map((name, idx) => {
+                                    const roster = studentRosterMap[name];
+                                    const avatar = roster && roster.gender === 'P' ? '👧' : '👦';
+                                    return `
+                                        <li class="p-1.5 px-2.5 rounded-xl bg-white border border-emerald-100 shadow-xs flex items-center justify-between font-bold text-gray-800 text-[11px]">
+                                            <span class="truncate">${avatar} ${name}</span>
+                                            <i class="fas fa-check text-emerald-500 text-[10px]"></i>
+                                        </li>
+                                    `;
+                                }).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.copyFileLink = function(url) {
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Tautan berhasil disalin! 📋', 'success');
+            }).catch(() => {
+                showToast('Gagal menyalin tautan.', 'error');
+            });
+        };
+
+        // Lightbox Functions
+        window.openLightbox = function(url, title, meta) {
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox-title').textContent = title;
+            document.getElementById('lightbox-meta').textContent = meta;
+            document.getElementById('lightbox-download').href = url;
+            document.getElementById('lightbox-modal').classList.remove('hidden');
+        };
+
+        window.closeLightbox = function() {
+            document.getElementById('lightbox-modal').classList.add('hidden');
+            document.getElementById('lightbox-img').src = '';
+        };
+
+        // Video Modal Functions
+        window.openVideoModal = function(url, title) {
+            const player = document.getElementById('modal-video-player');
+            player.src = url;
+            document.getElementById('video-title').textContent = title;
+            document.getElementById('video-download').href = url;
+            document.getElementById('video-modal').classList.remove('hidden');
+            player.play().catch(() => {});
+        };
+
+        window.closeVideoModal = function() {
+            const player = document.getElementById('modal-video-player');
+            player.pause();
+            player.src = '';
+            document.getElementById('video-modal').classList.add('hidden');
+        };
+
+        // Document Modal Functions
+        window.openDocModal = function(url, title) {
+            document.getElementById('doc-iframe').src = url;
+            document.getElementById('doc-title').innerHTML = `<i class="fas fa-file-alt"></i> ${title}`;
+            document.getElementById('doc-download').href = url;
+            document.getElementById('doc-modal').classList.remove('hidden');
+        };
+
+        window.closeDocModal = function() {
+            document.getElementById('doc-iframe').src = '';
+            document.getElementById('doc-modal').classList.add('hidden');
+        };
+
+        // Category Filter Buttons
+        document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.cat-filter-btn').forEach(b => {
+                    b.classList.remove('bg-pink-500', 'text-white');
+                    b.classList.add('bg-gray-100', 'text-gray-700');
+                });
+                btn.classList.remove('bg-gray-100', 'text-gray-700');
+                btn.classList.add('bg-pink-500', 'text-white');
+                currentFilter = btn.dataset.category;
+                renderFiles();
+            });
+        });
+
+        // Search Input
+        document.getElementById('search-input').addEventListener('input', renderFiles);
+        document.getElementById('refresh-btn').addEventListener('click', fetchSettingsAndFiles);
+
+        // Upload Modal Logic
+        const uploadModal = document.getElementById('upload-modal');
+        const uploadModalContent = document.getElementById('upload-modal-content');
+        const openUploadBtn = document.getElementById('open-upload-btn');
+        const closeUploadBtn = document.getElementById('close-upload-btn');
+        const cancelUploadBtn = document.getElementById('cancel-upload-btn');
+        const fileInput = document.getElementById('file-input');
+        const dropzone = document.getElementById('dropzone');
+        const selectedFileLabel = document.getElementById('selected-file-label');
+        const uploadForm = document.getElementById('upload-form');
+
+        function openModal() {
+            uploadModal.classList.remove('hidden');
+            setTimeout(() => uploadModalContent.classList.remove('scale-95', 'opacity-0'), 50);
+        }
+
+        function closeModal() {
+            uploadModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                uploadModal.classList.add('hidden');
+                uploadForm.reset();
+                selectedFileLabel.textContent = 'Pilih foto atau dokumen kelas';
+                document.getElementById('upload-progress-container').classList.add('hidden');
+            }, 300);
+        }
+
+        openUploadBtn.addEventListener('click', () => {
+            if (!currentSettings.allowPublicUpload) {
+                showToast('Unggahan publik sedang ditutup oleh Bu Guru.', 'error');
+                return;
+            }
+            openModal();
+        });
+        closeUploadBtn.addEventListener('click', closeModal);
+        cancelUploadBtn.addEventListener('click', closeModal);
+
+        dropzone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                selectedFileLabel.textContent = `📄 ${fileInput.files[0].name} (${formatBytes(fileInput.files[0].size)})`;
+            }
+        });
+
+        // Drag & Drop
+        ['dragenter', 'dragover'].forEach(name => {
+            dropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dropzone-active');
+            });
+        });
+        ['dragleave', 'drop'].forEach(name => {
+            dropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dropzone-active');
+            });
+        });
+        dropzone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                selectedFileLabel.textContent = `📄 ${fileInput.files[0].name} (${formatBytes(fileInput.files[0].size)})`;
+            }
+        });
+
+        // Handle Direct Upload
+        uploadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const file = fileInput.files[0];
+            if (!file) {
+                showToast('Pilih berkas terlebih dahulu!', 'error');
+                return;
+            }
+
+            const category = document.getElementById('upload-category').value;
+            const progressContainer = document.getElementById('upload-progress-container');
+            const progressBar = document.getElementById('upload-progress-bar');
+            const progressPercent = document.getElementById('upload-percent-text');
+            const statusText = document.getElementById('upload-status-text');
+            const submitBtn = document.getElementById('submit-upload-btn');
+
+            submitBtn.disabled = true;
+            progressContainer.classList.remove('hidden');
+            statusText.textContent = 'Menyiapkan berkas...';
+            progressBar.style.width = '10%';
+            progressPercent.textContent = '10%';
+
+            try {
+                const presignRes = await fetch('/api/upload-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        filename: file.name,
+                        contentType: file.type || 'application/octet-stream',
+                        category: category
+                    })
+                });
+
+                const presignData = await presignRes.json();
+                if (!presignData.success) throw new Error(presignData.error || 'Gagal menyiapkan unggahan berkas.');
+
+                statusText.textContent = 'Sedang mengunggah ke galeri kelas...';
+
+                await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('PUT', presignData.uploadUrl, true);
+                    xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+
+                    xhr.upload.onprogress = (evt) => {
+                        if (evt.lengthComputable) {
+                            const percent = Math.round((evt.loaded / evt.total) * 90) + 10;
+                            progressBar.style.width = `${percent}%`;
+                            progressPercent.textContent = `${percent}%`;
+                        }
+                    };
+
+                    xhr.onload = () => {
+                        if (xhr.status >= 200 && xhr.status < 300) resolve();
+                        else reject(new Error(`Gagal menyimpan berkas (Kode: ${xhr.status})`));
+                    };
+
+                    xhr.onerror = () => reject(new Error('Koneksi terputus saat mengunggah berkas. Periksa jaringan Anda.'));
+                    xhr.send(file);
+                });
+
+                progressBar.style.width = '100%';
+                progressPercent.textContent = '100%';
+                statusText.textContent = 'Berhasil disimpan!';
+
+                showToast(`Berkas "${file.name}" berhasil ditambahkan ke galeri! 🌟`, 'success');
+                setTimeout(() => {
+                    closeModal();
+                    fetchFiles();
+                }, 800);
+
+            } catch (err) {
+                showToast(err.message, 'error');
+                statusText.textContent = 'Gagal';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ==========================================
+        // Setor Tugas & PR Logic
+        // ==========================================
+        const tugasModal = document.getElementById('tugas-modal');
+        const tugasModalContent = document.getElementById('tugas-modal-content');
+        const openTugasBtn = document.getElementById('open-tugas-btn');
+        const closeTugasBtn = document.getElementById('close-tugas-btn');
+        const cancelTugasBtn = document.getElementById('cancel-tugas-btn');
+        const tugasForm = document.getElementById('tugas-form');
+        const tugasStudentSelect = document.getElementById('tugas-student-select');
+        const tugasSubjectSelect = document.getElementById('tugas-subject-select');
+        const tugasDescInput = document.getElementById('tugas-desc-input');
+        const tugasFileInput = document.getElementById('tugas-file-input');
+        const tugasDropzone = document.getElementById('tugas-dropzone');
+        const tugasFileLabel = document.getElementById('tugas-file-label');
+
+        async function loadStudentsForSelect() {
+            try {
+                const res = await fetch('/students.json');
+                const list = await res.json();
+                studentRosterMap = {};
+                studentRosterList = list;
+                tugasStudentSelect.innerHTML = '<option value="" disabled selected>-- Pilih Nama Siswa Kelas --</option>';
+                list.forEach(s => {
+                    studentRosterMap[s.name] = s;
+                    const opt = document.createElement('option');
+                    opt.value = s.name;
+                    opt.textContent = `${s.id}. ${s.name} (${s.gender})`;
+                    tugasStudentSelect.appendChild(opt);
+                });
+
+                const statusSelect = document.getElementById('status-student-select');
+                if (statusSelect) {
+                    statusSelect.innerHTML = '<option value="">-- Pilih Nama Siswa untuk Cek --</option>';
+                    list.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s.name;
+                        opt.textContent = `${s.id}. ${s.name} (${s.gender})`;
+                        statusSelect.appendChild(opt);
+                    });
+                }
+                setupStatusChecker();
+            } catch (err) {
+                console.warn('Could not load students.json:', err);
+            }
+
+            populateSubjectsDropdown();
+        }
+
+        function populateSubjectsDropdown() {
+            const selectEl = document.getElementById('tugas-subject-select');
+            if (!selectEl) return;
+            const subjects = (currentSettings.subjects && currentSettings.subjects.length > 0)
+                ? currentSettings.subjects
+                : ['Matematika', 'Bahasa Indonesia', 'PPKn', 'Seni Budaya & Prakarya (SBdP)', 'PJOK (Olahraga)', 'Pendidikan Agama (PAI)', 'Tematik Umum / PR Harian'];
+
+            selectEl.innerHTML = subjects.map(s => `<option value="${s}">📘 ${s}</option>`).join('') +
+                '<option value="__CUSTOM__">✏️ + Tulis Mata Pelajaran / Tugas Lain...</option>';
+        }
+
+        tugasSubjectSelect.addEventListener('change', () => {
+            const customBox = document.getElementById('tugas-custom-subject-box');
+            if (tugasSubjectSelect.value === '__CUSTOM__') {
+                customBox.classList.remove('hidden');
+                document.getElementById('tugas-custom-subject-input').focus();
+            } else {
+                customBox.classList.add('hidden');
+            }
+        });
+
+        function openTugasModal() {
+            if (currentSettings.allowStudentHomework === false) {
+                showToast('Pintu pengumpulan tugas saat ini sedang ditutup oleh Bu Guru Risa.', 'error');
+                return;
+            }
+            populateSubjectsDropdown();
+            tugasModal.classList.remove('hidden');
+            setTimeout(() => tugasModalContent.classList.remove('scale-95', 'opacity-0'), 50);
+        }
+
+        function closeTugasModal() {
+            tugasModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                tugasModal.classList.add('hidden');
+                tugasForm.reset();
+                selectedTugasFiles = [];
+                renderTugasFilesQueue();
+                document.getElementById('tugas-custom-subject-box').classList.add('hidden');
+                document.getElementById('tugas-progress-container').classList.add('hidden');
+            }, 300);
+        }
+
+        if (openTugasBtn) {
+            openTugasBtn.addEventListener('click', openTugasModal);
+        }
+        closeTugasBtn.addEventListener('click', closeTugasModal);
+        cancelTugasBtn.addEventListener('click', closeTugasModal);
+
+        function handleTugasFilesSelected(fileList) {
+            Array.from(fileList).forEach(f => {
+                if (!selectedTugasFiles.some(existing => existing.name === f.name && existing.size === f.size)) {
+                    selectedTugasFiles.push(f);
+                }
+            });
+            renderTugasFilesQueue();
+        }
+
+        function renderTugasFilesQueue() {
+            const queueEl = document.getElementById('tugas-files-queue');
+            if (!queueEl) return;
+            if (selectedTugasFiles.length === 0) {
+                queueEl.classList.add('hidden');
+                tugasFileLabel.textContent = 'Pilih Foto Buku / Video / Dokumen';
+                return;
+            }
+
+            queueEl.classList.remove('hidden');
+            tugasFileLabel.textContent = `📎 ${selectedTugasFiles.length} berkas dipilih (+ klik untuk tambah lagi)`;
+
+            queueEl.innerHTML = selectedTugasFiles.map((file, i) => {
+                const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+                return `
+                    <div class="flex items-center justify-between p-2 rounded-xl bg-white border border-emerald-200 shadow-xs">
+                        <div class="flex items-center gap-2 overflow-hidden">
+                            <span>${getFileIcon(ext)}</span>
+                            <span class="text-xs font-bold text-gray-700 truncate max-w-[210px]">${file.name}</span>
+                            <span class="text-[10px] text-gray-400">(${formatBytes(file.size)})</span>
+                        </div>
+                        <button type="button" onclick="removeTugasFile(${i})" class="text-red-400 hover:text-red-600 font-bold px-2 text-sm leading-none" title="Hapus berkas ini">✕</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.removeTugasFile = function(index) {
+            selectedTugasFiles.splice(index, 1);
+            renderTugasFilesQueue();
+        };
+
+        tugasDropzone.addEventListener('click', () => tugasFileInput.click());
+        tugasFileInput.addEventListener('change', (e) => {
+            handleTugasFilesSelected(e.target.files);
+        });
+
+        ['dragenter', 'dragover'].forEach(name => {
+            tugasDropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                tugasDropzone.classList.add('dropzone-active');
+            });
+        });
+        ['dragleave', 'drop'].forEach(name => {
+            tugasDropzone.addEventListener(name, (e) => {
+                e.preventDefault();
+                tugasDropzone.classList.remove('dropzone-active');
+            });
+        });
+        tugasDropzone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length > 0) {
+                handleTugasFilesSelected(e.dataTransfer.files);
+            }
+        });
+
+        tugasForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const student = tugasStudentSelect.value;
+            let subject = tugasSubjectSelect.value;
+            if (subject === '__CUSTOM__') {
+                const customSubj = document.getElementById('tugas-custom-subject-input').value.trim();
+                if (!customSubj) {
+                    showToast('Tuliskan nama mata pelajaran kustom terlebih dahulu!', 'error');
+                    return;
+                }
+                subject = customSubj;
+            }
+
+            const desc = tugasDescInput.value.trim();
+
+            if (!student) {
+                showToast('Pilih nama siswa terlebih dahulu!', 'error');
+                return;
+            }
+            if (selectedTugasFiles.length === 0) {
+                showToast('Pilih minimal satu berkas atau foto tugas!', 'error');
+                return;
+            }
+
+            const progressContainer = document.getElementById('tugas-progress-container');
+            const progressBar = document.getElementById('tugas-progress-bar');
+            const progressPercent = document.getElementById('tugas-percent-text');
+            const statusText = document.getElementById('tugas-status-text');
+            const submitBtn = document.getElementById('submit-tugas-btn');
+
+            submitBtn.disabled = true;
+            progressContainer.classList.remove('hidden');
+            progressBar.style.width = '5%';
+            progressPercent.textContent = '5%';
+
+            try {
+                const totalFiles = selectedTugasFiles.length;
+                for (let i = 0; i < totalFiles; i++) {
+                    const file = selectedTugasFiles[i];
+                    statusText.textContent = `Mengunggah berkas ${i + 1} dari ${totalFiles}: ${file.name}...`;
+
+                    const ext = file.name.includes('.') ? file.name.split('.').pop() : 'jpg';
+                    const baseName = totalFiles > 1 ? `${desc}_hal_${i + 1}.${ext}` : `${desc}.${ext}`;
+
+                    const presignRes = await fetch('/api/upload-url', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            filename: baseName,
+                            contentType: file.type || 'application/octet-stream',
+                            category: 'Tugas',
+                            studentName: student,
+                            subject: subject,
+                            taskTitle: desc || subject
+                        })
+                    });
+
+                    const presignData = await presignRes.json();
+                    if (!presignData.success) throw new Error(presignData.error || `Gagal menyiapkan upload untuk ${file.name}`);
+
+                    await new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('PUT', presignData.uploadUrl, true);
+                        xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+
+                        xhr.upload.onprogress = (evt) => {
+                            if (evt.lengthComputable) {
+                                const currentFilePercent = evt.loaded / evt.total;
+                                const overall = Math.round(((i + currentFilePercent) / totalFiles) * 95);
+                                progressBar.style.width = `${overall}%`;
+                                progressPercent.textContent = `${overall}%`;
+                            }
+                        };
+
+                        xhr.onload = () => {
+                            if (xhr.status >= 200 && xhr.status < 300) resolve();
+                            else reject(new Error(`Upload ${file.name} ditolak (Kode: ${xhr.status})`));
+                        };
+
+                        xhr.onerror = () => reject(new Error(`Koneksi terputus saat mengunggah ${file.name}`));
+                        xhr.send(file);
+                    });
+                }
+
+                progressBar.style.width = '100%';
+                progressPercent.textContent = '100%';
+                statusText.textContent = 'Semua Berkas Tugas Berhasil Terkirim!';
+
+                showToast(`Alhamdulillah! ${totalFiles} berkas tugas ${student} berhasil disetor ke Bu Guru Risa! 🌟`, 'success');
+                setTimeout(() => {
+                    closeTugasModal();
+                    fetchFiles();
+                    showReceiptModal(student, subject, desc, totalFiles);
+                }, 700);
+
+            } catch (err) {
+                showToast(err.message, 'error');
+                statusText.textContent = 'Gagal';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ==========================================
+        // Modal Resi Setor Tugas & Smart Salutation
+        // ==========================================
+        function showReceiptModal(student, subject, desc, totalFiles) {
+            const modal = document.getElementById('receipt-modal');
+            const modalContent = document.getElementById('receipt-modal-content');
+            const ci = currentSettings.classInfo || {};
+            const roster = studentRosterMap[student];
+            const isFemale = roster && roster.gender === 'P';
+            // Smart Salutation: Ananda untuk siswa laki-laki, Adinda untuk siswi perempuan!
+            const salutation = isFemale ? 'Adinda' : 'Ananda';
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            const timeFull = `${dateStr}, ${timeStr} WIB`;
+
+            document.getElementById('receipt-salutation-text').innerHTML = `
+                Alhamdulillah, tugas <strong>${salutation} ${student}</strong> telah berhasil disetor ke ${ci.teacherName || 'Ibu Guru Risa'}! ✨
+            `;
+            document.getElementById('receipt-student-name').textContent = `${salutation} ${student}`;
+            document.getElementById('receipt-subject').textContent = subject;
+            document.getElementById('receipt-task-title').textContent = desc || subject;
+            document.getElementById('receipt-files-count').textContent = `${totalFiles} Berkas (Foto/Media)`;
+            document.getElementById('receipt-timestamp').textContent = timeFull;
+
+            // Prepare WhatsApp forward text
+            const receiptText = `Alhamdulillah, tugas ${salutation} *${student}* sudah berhasil disetor ke ${ci.teacherName || 'Ibu Guru Risa'}! ✨
+
+📚 *Mata Pelajaran:* ${subject}
+📝 *Tugas:* ${desc || subject} (${totalFiles} Berkas)
+⏰ *Waktu Setor:* ${timeFull}
+✅ *Status:* Terkirim & Tersimpan di Cloud Kelas
+
+Terima kasih ${ci.teacherName || 'Ibu Guru Risa'}! 🙏🎒`;
+
+            // Auto copy to clipboard
+            navigator.clipboard.writeText(receiptText).catch(() => {});
+
+            // Setup forward button
+            const forwardBtn = document.getElementById('forward-receipt-wa-btn');
+            forwardBtn.onclick = () => {
+                const targetUrl = ci.waGroupLink || `https://api.whatsapp.com/send?text=${encodeURIComponent(receiptText)}`;
+                window.open(targetUrl, '_blank');
+            };
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+            }, 50);
+        }
+
+        window.closeReceiptModal = function() {
+            const modal = document.getElementById('receipt-modal');
+            const modalContent = document.getElementById('receipt-modal-content');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        };
+
+        // ==========================================
+        // Bagikan Tugas Aktif ke WA Grup Paguyuban
+        // ==========================================
+        const shareHwWaBtn = document.getElementById('share-hw-wa-btn');
+        if (shareHwWaBtn) {
+            shareHwWaBtn.addEventListener('click', () => {
+                const ci = currentSettings.classInfo || {};
+                const ta = currentSettings.taskAnnouncement || {};
+                const className = ci.className || 'Kelas 2C Ceria!';
+                const school = ci.schoolName || 'SDN Rawaendah';
+                const teacher = ci.teacherName || 'Ibu RISA AGUSTIAN, S.Pd';
+                const currentUrl = window.location.href;
+
+                const text = `📢 *PENGUMUMAN TUGAS - ${className.toUpperCase()}*
+🏫 ${school} • Tahun Ajaran ${ci.schoolYear || '2026/2027'}
+👩‍🏫 Wali Kelas: ${teacher}
+
+📚 *Mata Pelajaran:* ${ta.subject || 'Tugas Harian'}
+📝 *Tugas:* ${ta.title || 'Latihan Soal'}
+⏰ *Batas Waktu:* ${ta.deadline || 'Hari ini'}
+
+📌 *Instruksi Bu Guru:*
+"${ta.note || 'Kerjakan dengan teliti di buku tulis lalu setor lewat link di bawah ini ya!'}"
+
+👉 *Link Setor Tugas Online:*
+${currentUrl}
+
+Semangat belajar anak-anak hebat! 🎒🌟`;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Teks pengumuman tugas berhasil disalin ke clipboard! 📋', 'success');
+                }).catch(() => {});
+
+                const targetUrl = ci.waGroupLink || `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+                setTimeout(() => {
+                    window.open(targetUrl, '_blank');
+                }, 400);
+            });
+        }
+
+        // Initial Load
+        loadStudentsForSelect();
+        fetchSettingsAndFiles();
+    </script>
+</body>
+</html>
